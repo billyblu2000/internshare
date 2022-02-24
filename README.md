@@ -1,0 +1,1 @@
+# NYUSH Internship Information Sharing Platform
