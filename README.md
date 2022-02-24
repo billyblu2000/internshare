@@ -1,1 +1,0 @@
-# NYU Shanghai Spring 2022 Software Engineering Project
