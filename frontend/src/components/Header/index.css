@@ -1,0 +1,9 @@
+.header{
+    position: fixed;
+    top: 0;
+    height: 50px;
+    min-height: 50px;
+    background-color: white;
+    width: 100%;
+    box-shadow: 6px 6px 12px #d1d1d1, -6px -6px 12px #ffffff;
+}

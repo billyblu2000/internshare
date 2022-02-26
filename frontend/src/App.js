@@ -1,10 +1,12 @@
+import { useRoutes } from 'react-router-dom';
 import './App.css';
-import server from './server';
+import routes from './routes';
 
 function App() {
-  server('/test/', 'get', null, null)
+  const elements = useRoutes(routes)
   return (
     <div className="App">
+      {elements}
     </div>
   );
 }
