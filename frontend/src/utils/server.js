@@ -1,6 +1,6 @@
 import axios from "axios";
-import { env } from "./config";
-import { baseurl } from "./config";
+import { env } from "../config";
+import { baseurl } from "../config";
 
 export default function server(url, method='get', component, state){
     if (method === 'get'){

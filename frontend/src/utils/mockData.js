@@ -1,4 +1,4 @@
-import { baseurl } from './config'
+import { baseurl } from '../config'
 var Mock = require('mockjs')
 
 const rules = [

@@ -1,11 +1,11 @@
 import React from 'react'
-import HomeBody from '../HomeBody'
+import SearchBody from '../SearchBody'
 import Footer from '../Footer'
 
-export default function Home() {
+export default function Search() {
   return (
     <div>
-      <HomeBody></HomeBody>
+      <SearchBody></SearchBody>
       <Footer></Footer>
     </div>
   )
