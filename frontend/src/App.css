@@ -1,0 +1,5 @@
+.theme-box{
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow:  5px 5px 15px #cccccc, -5px -5px 15px #ffffff;
+}

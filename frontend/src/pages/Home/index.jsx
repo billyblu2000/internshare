@@ -1,6 +1,6 @@
 import React from 'react'
-import HomeBody from '../HomeBody'
-import Footer from '../Footer'
+import HomeBody from '../../components/HomeBody'
+import Footer from '../../components/Footer'
 
 export default function Home() {
   return (

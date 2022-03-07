@@ -1,9 +1,9 @@
 import { Link, Navigate } from 'react-router-dom'
 import { Result, Button } from 'antd'
-import Main from './components/Main'
-import Home from './components/Home'
-import Login from './components/Login'
-import Search from './components/Search'
+import Main from './pages/Main'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Search from './pages/Search'
 
 const error404 = (
     <>
