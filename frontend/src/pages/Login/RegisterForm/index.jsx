@@ -3,6 +3,11 @@ import { Button, Divider, message, Steps } from 'antd'
 import { UserOutlined, SolutionOutlined, MailOutlined, FileDoneOutlined } from '@ant-design/icons';
 import RegisterFormChooseAccountType from './RegisterFormChooseAccountType'
 import RegisterFormEmail from './RegisterFormEmail'
+import RegisterFormVerification from './RegisterFormVerification';
+import RegisterFormOther from './RegisterFormOther';
+import AnimatedIcon from '../../../utils/icons/AnimatedIcon';
+import inactiveData from '../../../utils/icons/animation/31-check-solid-edited.json'
+
 const { Step } = Steps;
 
 export default class RegisterForm extends Component {
@@ -11,51 +16,140 @@ export default class RegisterForm extends Component {
         step: 0,
         type: '',
         email: '',
+        code: '',
+        username: '',
+        password: '',
+        repassword: '',
+        major: '',
+        year: '',
     }
 
     nextStep = () => {
-        if (this.state.step === 0){
-            if (this.state.type !== 'individual' && this.state.type !== 'company'){
-                message.error({content:'Please select your identity', key: 'message'})
+        if (this.state.step === 0) {
+            if (this.state.type !== 'individual' && this.state.type !== 'company') {
+                message.error({ content: 'Please select your identity', key: 'message' })
                 return false;
             }
         }
-        else if (this.state.step === 1){
-            if (this.state.email === '' || this.state.email === '@nyu.edu'){
-                message.error({content:'Please enter your email (NetID)', key:'message'});
+        else if (this.state.step === 1) {
+            if (this.state.email === '' || this.state.email === '@nyu.edu') {
+                message.error({ content: 'Please enter your email (NetID)', key: 'message' });
+                this.alert('login-register-email-label');
                 return false;
             }
-            if (this.state.email.slice(-8) !== '@nyu.edu' && this.state.type === 'individual'){
-                message.error({content:'Sorry, you should use your NYU email', key:'message'});
+            if (this.state.email.slice(-8) !== '@nyu.edu' && this.state.type === 'individual') {
+                message.error({ content: 'Sorry, you should use your NYU email', key: 'message' });
+                this.alert('login-register-email-label');
                 return false;
             }
-            if (this.state.email.slice(-16) === '@nyu.edu@nyu.edu' && this.state.type === 'individual'){
-                this.setState({ step: this.state.step+1,  email: this.state.email.slice(0,-8)});
+            if (this.state.email.slice(-16) === '@nyu.edu@nyu.edu' && this.state.type === 'individual') {
+                this.setState({ step: this.state.step + 1, email: this.state.email.slice(0, -8) });
                 return true;
             }
+            if (/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.state.email) === false) {
+                message.error({ content: 'Please enter a valid email', key: 'message' });
+                this.alert('login-register-email-label');
+                return false;
+            }
         }
-        this.setState({ step: this.state.step+1 })
+        else if (this.state.step === 2) {
+            if (this.state.code.length !== 6){
+                message.error({ content: 'Please complete the verification code', key: 'message' });
+                return false;
+            }
+        }
+        else if (this.state.step === 3) {
+            if (this.state.username === ''){
+                message.error({ content: 'Please enter your username', key: 'message' });
+                this.alert('login-register-username-label');
+                return false;
+            } 
+            if (this.state.password === ''){
+                message.error({ content: 'Please enter your password', key: 'message' });
+                this.alert('login-register-password-label');
+                return false;
+            } 
+            if (this.state.repassword === ''){
+                message.error({ content: 'Please re-enter your password', key: 'message' });
+                this.alert('login-register-repassword-label');
+                return false;
+            } 
+            if (this.state.major === ''){
+                message.error({ content: 'Please select your major', key: 'message' });
+                this.alert('login-register-major-label');
+                return false;
+            } 
+            if (this.state.year === ''){
+                message.error({ content: 'Please select your graduation year', key: 'message' });
+                this.alert('login-register-year-label');
+                return false;
+            } 
+            if (this.state.password !== this.state.repassword){
+                message.error({ content: 'The two passwords you entered are not identical', key: 'message' });
+                this.alert('login-register-repassword-label');
+                this.alert('login-register-password-label');
+                return false;
+            }
+        }
+        this.setState({ step: this.state.step + 1 })
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    onKeyDownchange = (e) => {
+        if (e.keyCode === 13) {
+            this.nextState()
+        }
+    }
+
+    alert(label) {
+        document.getElementById(label).style.color='red';
+        setTimeout(() => {document.getElementById(label).style.color='gray';}, 3200);
     }
 
     render() {
         return (
             <div>
-                <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                    <Steps style={{ marginTop: '10px', width: '25%', marginLeft: '5%' }} size="small" direction="vertical" current={this.state.step}>
-                        <Step title="Identity" icon={<UserOutlined />} />
-                        <Step title="Email" icon={<MailOutlined />} />
-                        <Step title="Verification" icon={<SolutionOutlined />} />
-                        <Step title="Complete Info" icon={<FileDoneOutlined />} />
-                    </Steps>
-                    <Divider type='vertical' style={{ height: '190px' }}></Divider>
-                    {this.state.step === 0 ? <RegisterFormChooseAccountType type={this.state.type} changeType={(type) => this.setState({ type: type })} /> : null}
-                    {this.state.step === 1 ? <RegisterFormEmail setEmail={(email) => this.setState({ email: email })} identity={this.state.type}/> : null}
-                    {this.state.step === 2 ? <></> : null}
-                    {this.state.step === 3 ? <></> : null}
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '25px' }}>
-                <Button type='primary' shape='round' onClick={() => this.nextStep()}>Continue</Button>
-                </div>
+                {this.state.step === 4 ? <div style={{ marginTop: '50px', display: 'flex', justifyContent: 'space-around' }}><AnimatedIcon
+                    width='100px'
+                    speed={0.8}
+                    height='100px'
+                    initActive={false}
+                    inactiveData={inactiveData}
+                    toggleable={false} /></div> :
+                    <>
+                        <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                            <Steps style={{ marginTop: '10px', width: '25%', marginLeft: '5%', maxHeight: '180px' }} size="small" direction="vertical" current={this.state.step}>
+                                <Step title="Identity" icon={<UserOutlined />} />
+                                <Step title="Email" icon={<MailOutlined />} />
+                                <Step title="Verification" icon={<SolutionOutlined />} />
+                                <Step title="Complete Info" icon={<FileDoneOutlined />} />
+                            </Steps>
+                            <Divider type='vertical' style={{ height: '190px' }}></Divider>
+                            {this.state.step === 0 ? <RegisterFormChooseAccountType
+                                type={this.state.type}
+                                changeType={(type) => this.setState({ type: type })} /> : null}
+                            {this.state.step === 1 ? <RegisterFormEmail
+                                setEmail={(email) => this.setState({ email: email })}
+                                identity={this.state.type}
+                                nextStepFunc={this.nextStep} /> : null}
+                            {this.state.step === 2 ? <RegisterFormVerification
+                                nextStepFunc={this.nextStep}
+                                setVerification={(code) => this.setState({ code: code })}
+                                email={this.state.email} /> : null}
+                            {this.state.step === 3 ? <RegisterFormOther
+                                setUsername={(username) => this.setState({ username: username })}
+                                setPassword={(password) => this.setState({ password: password })}
+                                setMajor={(major) => this.setState({ major: major })}
+                                setYear={(year) => this.setState({ year: year })}
+                                setRePassword={(repassword) => this.setState({ repassword: repassword })}
+                            /> : null}
+                        </div>
+                        <div style={{ textAlign: 'center', marginTop: '25px', marginBottom: '25px' }}>
+                            <Button type='primary' shape='round' onClick={() => this.nextStep()}>Continue</Button>
+                        </div>
+                    </>
+                }
             </div>
         )
     }

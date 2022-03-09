@@ -24,6 +24,7 @@ export default class Header extends Component {
           activeData={activeData}
           changeActiveTo={this.state.active === id}
           tooltip={tooltip}
+          toggleable={true}
           onClick={() => this.handleClick(id)}>
         </AnimatedIcon>)
   }

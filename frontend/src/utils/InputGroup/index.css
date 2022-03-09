@@ -1,0 +1,76 @@
+.box-root-container{
+    display: flex;
+    flex-direction: column;
+    color:#57068C;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bolder;
+}
+.box-containers{
+    display: flex;
+    justify-content: center;
+}
+.box-container{
+    display: flex;
+    justify-content: center;
+}
+.box-containers div{
+    margin-right: .4rem;
+    width: 2rem;
+    height: 2rem;
+    border-bottom: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.box-container div{
+    margin-right: .4rem;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.box-input{
+    height: 2rem;
+    position: absolute;
+    top: -9999px;
+}
+.shake {
+    animation: shake 0.5s infinite;
+    -webkit-animation: shake 1.1s infinite;
+}
+@-webkit-keyframes shake {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes shake {
+
+    0% {
+        opacity: 0.8;
+    }
+    25%{
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}

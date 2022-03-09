@@ -42,7 +42,7 @@ export default function Login() {
       initialValues={{ remember: true }}
       autoComplete="off"
       style={{ marginLeft: '15%', marginRight: '15%', marginTop: '10px' }}
-      onFinishFailed={({ errorFields }) => message.error({content: errorFields[0].errors[0], key:'message'})}
+      onFinishFailed={({ errorFields }) => message.error({ content: errorFields[0].errors[0], key: 'message' })}
     >
       <div className='login-label'>Email</div>
       <Form.Item
@@ -107,22 +107,25 @@ export default function Login() {
   );
 
 
-  
+
 
   return (
-    <div className='theme-box login-box' data-aos='flip-left'>
-      <div className='login-top-img'>
-        <Link to='/main/home/'><ArrowLeftOutlined className='login-back-home-botton'></ArrowLeftOutlined></Link>
-        <img src='/logo/1.png' alt='logo' height='70px' style={{ userSelect: 'none' }} />
+    <>
+      <div className='theme-box login-box' data-aos='flip-left'>
+        <div className='login-top-img'>
+          <Link to='/main/home/'><ArrowLeftOutlined className='login-back-home-botton'></ArrowLeftOutlined></Link>
+          <img src='/logo/1.png' alt='logo' height='70px' style={{ userSelect: 'none' }} />
+        </div>
+        <Tabs defaultActiveKey="login-tab-login" centered style={{ marginTop: '20px' }} tabBarGutter={100} size='large'>
+          <TabPane tab="Login" key="login-tab-login">
+            {loginForm}
+          </TabPane>
+          <TabPane tab="Register" key="login-tab-register">
+            <RegisterForm />
+          </TabPane>
+        </Tabs>
       </div>
-      <Tabs defaultActiveKey="login-tab-login" centered style={{ marginTop: '20px' }} tabBarGutter={100} size='large'>
-        <TabPane tab="Login" key="login-tab-login">
-          {loginForm}
-        </TabPane>
-        <TabPane tab="Register" key="login-tab-register">
-        <RegisterForm/>
-        </TabPane>
-      </Tabs>
-    </div>
+      <div style={{ minHeight: '100px' }}></div>
+    </>
   )
 }

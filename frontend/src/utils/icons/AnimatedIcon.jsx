@@ -24,17 +24,20 @@ export default class AnimatedIcon extends Component {
         return (<>
             {
                 this.props.tooltip ? <Tooltip title={this.props.tooltip} color='#57068C' mouseEnterDelay={1.5}>
-                    <div style={{ width: this.props.width, height: this.props.height, cursor: 'pointer' }}
+                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null }}
                         onClick={() => {
                             if (this.props.onClick) {
                                 this.props.onClick();
                             }
-                            this.setState({ active: !this.state.active });
+                            if (this.props.toggleable){
+                                this.setState({ active: !this.state.active });
+                            }
+                            
                         }}
                     >
                         {this.state.active ?
                             <Lottie
-                                speed={2}
+                                speed={this.props.speed?this.props.speed:2}
                                 options={{
                                     animationData: this.props.activeData,
                                     loop: false,
@@ -42,7 +45,7 @@ export default class AnimatedIcon extends Component {
                                 }}
                             /> :
                             <Lottie
-                                speed={2}
+                                speed={this.props.speed?this.props.speed:2}
                                 options={{
                                     animationData: this.props.inactiveData,
                                     loop: false,
@@ -52,17 +55,19 @@ export default class AnimatedIcon extends Component {
                         }
                     </div>
                 </Tooltip> :
-                    <div style={{ width: this.props.width, height: this.props.height, cursor: 'pointer' }}
+                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null }}
                         onClick={() => {
                             if (this.props.onClick) {
                                 this.props.onClick();
                             }
-                            this.setState({ active: !this.state.active });
+                            if (this.props.toggleable){
+                                this.setState({ active: !this.state.active });
+                            }
                         }}
                     >
                         {this.state.active ?
                             <Lottie
-                                speed={2}
+                                speed={this.props.speed?this.props.speed:2}
                                 options={{
                                     animationData: this.props.activeData,
                                     loop: false,
@@ -70,7 +75,7 @@ export default class AnimatedIcon extends Component {
                                 }}
                             /> :
                             <Lottie
-                                speed={2}
+                                speed={this.props.speed?this.props.speed:2}
                                 options={{
                                     animationData: this.props.inactiveData,
                                     loop: false,
