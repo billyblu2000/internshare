@@ -30,8 +30,14 @@
 }
 .login-label{
     margin-top: 25px;
-    color: rgba(0, 0, 0, 0.5);
+    color: gray;
     transition: 0.5s;
+}
+.login-label-error{
+    margin-top: 25px;
+    color: rgba(255, 0, 0, 1);
+    transition: 0.2s;
+    font-weight: 800;
 }
 .login-forgot-password{
     color:rgba(0, 0, 0, 0.3);

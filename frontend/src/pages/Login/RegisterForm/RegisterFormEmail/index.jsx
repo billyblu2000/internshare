@@ -12,8 +12,8 @@ export default function RegisterFormEmail({ setEmail, identity, nextStepFunc }) 
     }
 
     return (
-        <div style={{ width: '70%', paddingLeft: '10%', paddingRight: '10%', paddingTop: '50px' }}>
-            {identity === 'individual' ? <div style={{ color: 'gray' }} id='login-register-email-label'>Enter your NYU email (NetID)</div> : <div></div>}
+        <div style={{ width: '70%', paddingLeft: '10%', paddingRight: '10%', paddingTop: '30px' }}>
+            {identity === 'individual' ? <div className='login-label' id='login-register-email-label'>Enter your NYU email (NetID)</div> : <div></div>}
             <div className={focus ? 'login-input-focus' : 'login-input'}>
                 <div style={{ display: 'flex' }}>
                     <AutoComplete

@@ -103,8 +103,8 @@ export default class RegisterForm extends Component {
     }
 
     alert(label) {
-        document.getElementById(label).style.color='red';
-        setTimeout(() => {document.getElementById(label).style.color='gray';}, 3200);
+        document.getElementById(label).setAttribute("class", 'login-label-error');
+        setTimeout(() => {document.getElementById(label).setAttribute("class", 'login-label');}, 3200);
     }
 
     render() {

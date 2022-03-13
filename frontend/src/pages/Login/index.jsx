@@ -4,6 +4,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import './index.css';
 import RegisterForm from './RegisterForm';
+import ForgetPasswordForm from './ForgetPasswordForm';
 
 const { TabPane } = Tabs;
 const { Option } = AutoComplete;
@@ -20,6 +21,7 @@ export default function Login() {
 
   const [focusElement, setFocusElement] = React.useState('')
   const [autoCompleteResult, setAutoCompleteResult] = React.useState([]);
+  const [forgetPasswordState, setForgetPasswordState] = React.useState(false);
   const [form] = Form.useForm();
 
   const handleSearch = (value) => {
@@ -34,77 +36,79 @@ export default function Login() {
   };
 
   const loginForm = (
-    <Form
-      name="basic"
-      form={form}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 10 }}
-      initialValues={{ remember: true }}
-      autoComplete="off"
-      style={{ marginLeft: '15%', marginRight: '15%', marginTop: '10px' }}
-      onFinishFailed={({ errorFields }) => message.error({ content: errorFields[0].errors[0], key: 'message' })}
-    >
-      <div className='login-label'>Email</div>
-      <Form.Item
-        label="Email"
-        name="email"
-        noStyle
-        rules={emailRules}
-      >
-        <div className={focusElement === 'login-email' ? 'login-input-focus' : 'login-input'}>
-          <AutoComplete
-            onSearch={handleSearch}
-            bordered={false}
-            allowClear
-            onBlur={() => setFocusElement('')}
-            onFocus={() => setFocusElement('login-email')}
-            onSelect={(value) => form.setFieldsValue({ 'email': value })}
-            style={{ padding: '0px', width: '100%', textAlign: 'center' }}
-
+    <>
+      {forgetPasswordState ? <ForgetPasswordForm/> :
+        <Form
+          name="basic"
+          form={form}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 10 }}
+          initialValues={{ remember: true }}
+          autoComplete="off"
+          style={{ marginLeft: '15%', marginRight: '15%', marginTop: '10px' }}
+          onFinishFailed={({ errorFields }) => message.error({ content: errorFields[0].errors[0], key: 'message' })}
+        >
+          <div className='login-label'>Email</div>
+          <Form.Item
+            label="Email"
+            name="email"
+            noStyle
+            rules={emailRules}
           >
-            {autoCompleteResult.map((email) => (
-              <Option key={email} value={email}>
-                {email}
-              </Option>
-            ))}
-          </AutoComplete>
-        </div>
-      </Form.Item>
+            <div className={focusElement === 'login-email' ? 'login-input-focus' : 'login-input'}>
+              <AutoComplete
+                onSearch={handleSearch}
+                bordered={false}
+                allowClear
+                onBlur={() => setFocusElement('')}
+                onFocus={() => setFocusElement('login-email')}
+                onSelect={(value) => form.setFieldsValue({ 'email': value })}
+                style={{ padding: '0px', width: '100%', textAlign: 'center' }}
 
-      <div className='login-label'>Password</div>
-      <Form.Item
-        label="Password"
-        name="password"
-        noStyle
-        rules={passwordRules}
-      >
-        <div className={focusElement === 'login-password' ? 'login-input-focus' : 'login-input'}>
-          <Input.Password
-            placeholder=""
-            bordered={false}
-            allowClear
-            onBlur={() => setFocusElement('')}
-            onFocus={() => setFocusElement('login-password')}
-            style={{ fontSize: '20px', textAlign: 'center' }}
-          />
-        </div>
+              >
+                {autoCompleteResult.map((email) => (
+                  <Option key={email} value={email}>
+                    {email}
+                  </Option>
+                ))}
+              </AutoComplete>
+            </div>
+          </Form.Item>
 
-      </Form.Item>
+          <div className='login-label'>Password</div>
+          <Form.Item
+            label="Password"
+            name="password"
+            noStyle
+            rules={passwordRules}
+          >
+            <div className={focusElement === 'login-password' ? 'login-input-focus' : 'login-input'}>
+              <Input.Password
+                placeholder=""
+                bordered={false}
+                allowClear
+                onBlur={() => setFocusElement('')}
+                onFocus={() => setFocusElement('login-password')}
+                style={{ fontSize: '20px', textAlign: 'center' }}
+              />
+            </div>
 
-      <Link to='/login/'>
-        <div style={{ marginTop: '43px', float: "left", }}
-          className='login-forgot-password'>Forgot Password?</div>
-      </Link>
+          </Form.Item>
 
-      <Form.Item style={{ marginTop: '40px', float: 'right' }}>
-        <Button type="primary" htmlType="submit" shape='round' size='medium'>
-          &nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;
-        </Button>
-      </Form.Item>
+          <Link to='/login/'>
+            <div style={{ marginTop: '43px', float: "left", }} onClick={() => setForgetPasswordState(true)}
+              className='login-forgot-password'>Forgot Password?</div>
+          </Link>
+
+          <Form.Item style={{ marginTop: '40px', float: 'right' }}>
+            <Button type="primary" htmlType="submit" shape='round' size='medium'>
+              &nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;
+            </Button>
+          </Form.Item>
 
 
-    </Form>
-  );
+        </Form>}
+    </>);
 
 
 
