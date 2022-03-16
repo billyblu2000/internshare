@@ -1,7 +1,5 @@
 from flask import Flask
-from google.cloud import bigquery
-import os
-
+import pymysql
 
 app = Flask(__name__, static_url_path='')
 
@@ -10,25 +8,14 @@ app = Flask(__name__, static_url_path='')
 def index(error):
     return app.send_static_file('index.html')
 
-
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(os.path.realpath(__file__)) + '/key.json'
-
-client = bigquery.Client()
-
-table_id = "central-list-344013.InternSHare.users"
-
-schema = [
-    bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-    bigquery.SchemaField("ID", "INTEGER", mode="REQUIRED"),
-]
-
-table = bigquery.Table(table_id, schema=schema)
-table = client.create_table(table)  # Make an API request.
-print(
-    "Created table {}.{}.{}".format(
-        table.project, table.dataset_id, table.table_id)
-)
-
+DB_NAME = 'internshare'
+db = pymysql.connect(host='internshare.ctoh8sqi2mdr.ap-southeast-1.rds.amazonaws.com',user='admin',password='Alibaba123..')
+cursor = db.cursor()
 
 if __name__ == "__main__":
+    cursor.execute(f'CREATE DATABASE IF NOT EXISTS {DB_NAME}')
+    db.select_db(DB_NAME)
+    cursor.execute('CREATE TABLE user (id INT(6), lastname VARCHAR(30), firstname VARCHAR(30), email VARCHAR(30))')
+    print(1)
     app.run("127.0.0.1", 5000)
+
