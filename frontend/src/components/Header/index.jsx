@@ -8,11 +8,21 @@ import homeInactiveData from '../../utils/icons/animation/41-home-outline-edited
 import homeActiveData from '../../utils/icons/animation/41-home-solid-edited.json'
 import boltInactiveData from '../../utils/icons/animation/117-bolt-outline-edited.json'
 import boltActiveData from '../../utils/icons/animation/117-bolt-solid-edited.json'
+import { checkLogin } from  '../../utils/user'
 import './index.css';
 
 export default class Header extends Component {
 
-  state = { active: '' }
+  state = { active: '', login:false }
+
+  componentDidMount(){
+    if (checkLogin()){
+      this.setState({login:true})
+    }
+    else{
+      this.setState({login:false})
+    }
+  }
 
   getAnimatedIcon(inactiveData, activeData, id, tooltip=null) {
     return (
@@ -35,6 +45,9 @@ export default class Header extends Component {
     }
   }
 
+  handleAvatarClick = () => {
+  }
+
   render() {
     return (
       <div className='header'>
@@ -44,7 +57,7 @@ export default class Header extends Component {
           </a>
         </div>
         <div className='header-nav'>
-          <div className='header-button header-me'>B</div>
+          <div className='header-button header-me' style={{backgroundColor:'#DDDDDD'}} onClick={this.handleAvatarClick}></div>
           <div style={{ float: 'right', lineHeight: '50px', marginRight: '10px' }}>
             <Divider type='vertical'></Divider>
           </div>
