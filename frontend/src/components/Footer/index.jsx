@@ -4,7 +4,7 @@ import './index.css'
 export default class Footer extends Component {
  render() {
     return (
-      <div></div>
+      <div style={{marginTop:'100px'}}>&nbsp;</div>
     )
   }
 }
