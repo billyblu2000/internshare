@@ -89,13 +89,13 @@ class GeneralPost(Base):
     __tablename__ = 'generalPosts'
     id = Column(Integer(), primary_key=True)
     is_Company = Column(Boolean())
-    if is_Company:
-        publisher_email = Column(String(100), ForeignKey("companies.id"))
-    else:
-        publisher_email = Column(String(100), ForeignKey("students.id"))
+    company_email = Column(String(100), ForeignKey("companies.email"))
+    student_email = Column(String(100), ForeignKey("students.email"))
     content = Column(String(1000), nullable=False)
     publisher_email = Column(String(100), nullable=False, primary_key=True)
     Datetime = Column(DateTime(), default=datetime.utcnow)
+
+    comment_relationship = relationship("Comment", back_populates='generalpost_comment')
 
     def __repr__(self):
         return f"<General Post id={self.id} publisher email={self.publisher_email} Date={self.Datetime} content ={self.content}>"
@@ -105,10 +105,8 @@ class JobPost(Base):
     __tablename__ = 'jobPosts'
     id = Column(Integer(),primary_key=True)
     is_Company = Column(Boolean())
-    if is_Company:
-        publisher_email = Column(String(100), ForeignKey("companies.id"))
-    else:
-        publisher_email = Column(String(100), ForeignKey("students.id"))
+    company_email = Column(String(100), ForeignKey("companies.email"))
+    student_email = Column(String(100), ForeignKey("students.email"))
     Datetime = Column(DateTime(), default=datetime.utcnow)
     job_description = Column(String(1000), nullable=False)
     job_requirements = Column(String(1000), nullable=False)
@@ -116,6 +114,7 @@ class JobPost(Base):
     end_time = Column(String(100),nullable=False)
 
     memberships = relationship("Apply", back_populates='jobpost_rela')
+    comment_relationship = relationship("Comment", back_populates='jobpost_comment')
 
     def __repr__(self):
         return f"<Job Post id={self.id} publisher email={self.publisher_email} Date={self.Datetime} description ={self.description} requirements={self.job_requirements} " \
@@ -156,20 +155,23 @@ class Profile(Base):
 class Comment(Base):
     __tablename__ = 'comments'
     id = Column(Integer(),primary_key=True)
-    is_Company = Column(Boolean())
-    if is_Company:
-        publisher_email = Column(String(100), ForeignKey("companies.id"))
-    else:
-        publisher_email = Column(String(100), ForeignKey("students.id"))
+    company_email = Column(String(100), ForeignKey("companies.email"))
+    student_email = Column(String(100), ForeignKey("students.email"))
+    jpost_id = Column(String(100), ForeignKey("jobPosts.id"))
+    gpost_id = Column(String(100), ForeignKey("generalPosts.id"))
+    comment_id = Column(String(100), ForeignKey("comments.id"))
     content = Column(String(1000), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
     target_id = Column(Integer(), nullable=False)
-    Is_father = Column(Boolean(),nullable=False)
     From = Column(Integer(),nullable=False)
     Likes = Column(String(1000),nullable=False)
 
     student_comment = relationship("Student",back_populates='comment_relationship')
     company_comment = relationship("Company",back_populates='comment_relationship')
+    jobpost_comment = relationship("JobPost",back_populates='comment_relationship')
+    generalpost_comment = relationship("GeneralPost",back_populates='comment_relationship')
+    comment_comment = relationship("Comment",remote_side=[id])
+
 
     def __repr__(self):
         return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} " \
