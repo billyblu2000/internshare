@@ -1,6 +1,6 @@
 from flask import Flask
 import pymysql
-from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, UniqueConstraint
+from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, UniqueConstraint, VARCHAR
 from datetime import datetime
 import os
 from sqlalchemy.orm import sessionmaker,declarative_base,relationship,scoped_session
@@ -27,16 +27,17 @@ def index(error):
 
 class Student(Base):
     __tablename__ = 'students'
-    id = Column(Integer())
+    id = Column(Integer(),primary_key=True)
     name = Column(String(30), nullable=False)
-    email = Column(String(80), primary_key=True, nullable=False, unique=True)
+    email = Column(String(80), nullable=False)
     password = Column(String(30), nullable=False)
     major = Column(String(100), nullable=False)
     graduation_time = Column(String(100),nullable=False)
     personalityTestResults = Column(String(100),nullable=False)
+    profile_id = Column(Integer(),ForeignKey("profiles.id"))
 
     pro_relationship = relationship('Profile',back_populates='stu_relationship')
-    memberships = relationship("Apply", back_populates='student_rela')
+    memberships_a = relationship("Apply", back_populates='student_rela')
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
     comment_relationship = relationship("Comment",back_populates='student_comment')
@@ -48,9 +49,9 @@ class Student(Base):
 
 class Company(Base):
     __tablename__ = 'companies'
-    id = Column(Integer())
+    id = Column(Integer(),primary_key=True)
     name = Column(String(30), nullable=False)
-    email = Column(String(80), primary_key=True, nullable=False, unique=True)
+    email = Column(String(80),nullable=False, unique=True)
     password = Column(String(30), nullable=False)
 
     jobpost_relationship = relationship("JobPost")
@@ -79,7 +80,7 @@ class Application(Base):
     isOnline = Column(Boolean())
     Datetime = Column(DateTime(),default=datetime.utcnow)
 
-    memberships = relationship("Apply", back_populates='appli_rela')
+    memberships_b = relationship("Apply", back_populates='appli_rela')
 
     def __repr__(self):
         return f"<Application id={self.id} student email={self.student_email} post id={self.post_id} " \
@@ -92,7 +93,7 @@ class GeneralPost(Base):
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
     content = Column(String(1000), nullable=False)
-    publisher_email = Column(String(100), nullable=False, primary_key=True)
+    publisher_email = Column(String(100), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
 
     comment_relationship = relationship("Comment", back_populates='generalpost_comment')
@@ -113,7 +114,7 @@ class JobPost(Base):
     start_date = Column(String(100),nullable=False)
     end_time = Column(String(100),nullable=False)
 
-    memberships = relationship("Apply", back_populates='jobpost_rela')
+    memberships_c = relationship("Apply", back_populates='jobpost_rela')
     comment_relationship = relationship("Comment", back_populates='jobpost_comment')
 
     def __repr__(self):
@@ -135,13 +136,13 @@ class Profile(Base):
     email = Column(String(100), nullable=False)
     name = Column(String(100), nullable=False)
     CV_id = Column(Integer(),nullable=False)
-    project_experience = Column(String(5000), nullable=False)
-    internship_experience = Column(String(5000), nullable=False)
-    education_background = Column(String(5000), nullable=False)
-    awards = Column(String(5000), nullable=False)
-    activities = Column(String(5000), nullable=False)
-    skills = Column(String(5000), nullable=False)
-    student_id = Column(Integer(), ForeignKey('students.id'))
+    project_experience = Column(String(500), nullable=False)
+    internship_experience = Column(String(500), nullable=False)
+    education_background = Column(String(500), nullable=False)
+    awards = Column(String(500), nullable=False)
+    activities = Column(String(500), nullable=False)
+    skills = Column(String(500), nullable=False)
+
 
     stu_relationship = relationship("Student", back_populates='pro_relationship')
 
@@ -157,14 +158,14 @@ class Comment(Base):
     id = Column(Integer(),primary_key=True)
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
-    jpost_id = Column(String(100), ForeignKey("jobPosts.id"))
-    gpost_id = Column(String(100), ForeignKey("generalPosts.id"))
-    comment_id = Column(String(100), ForeignKey("comments.id"))
-    content = Column(String(1000), nullable=False)
+    jpost_id = Column(Integer(), ForeignKey("jobPosts.id"))
+    gpost_id = Column(Integer(), ForeignKey("generalPosts.id"))
+    comment_id = Column(Integer(), ForeignKey("comments.id"))
+    content = Column(String(500), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
     target_id = Column(Integer(), nullable=False)
     From = Column(Integer(),nullable=False)
-    Likes = Column(String(1000),nullable=False)
+    Likes = Column(Integer(),nullable=False)
 
     student_comment = relationship("Student",back_populates='comment_relationship')
     company_comment = relationship("Company",back_populates='comment_relationship')
@@ -177,17 +178,16 @@ class Comment(Base):
         return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} " \
                f"target={self.target_id} From={self.From} Likes={self.Likes}>"
 
-
 class Apply(Base):
-    __tablename__='applies'
-    student_id = Column(Integer(), ForeignKey('students.id'), primary_key=True)
-    application_id = Column(Integer(), ForeignKey('applications.id'), primary_key=True)
-    jobpost_id = Column(Integer(), ForeignKey('jobPosts.id'), primary_key=True)
+    __tablename__ = 'applies'
+    student_id = Column(ForeignKey('students.id'), primary_key=True)
+    application_id = Column(ForeignKey('applications.id'), primary_key=True)
+    jobpost_id = Column(ForeignKey('jobPosts.id'), primary_key=True)
+    extra_data = Column(String(50))
 
-    UniqueConstraint('student_id', 'application_id', 'jobpost_id')
-    student_rela = relationship('Student', uselist=False, backref='memberships', lazy='dynamic')
-    appli_rela = relationship('Application', uselist=False, backref='memberships', lazy='dynamic')
-    jobpost_rela = relationship('JobPost', uselist=False, backref='memberships', lazy='dynamic')
+    student_rela = relationship('Student', back_populates='memberships_a')
+    appli_rela = relationship('Application', back_populates='memberships_b')
+    jobpost_rela = relationship('JobPost', back_populates='memberships_c')
 
     def __init__(self, student, application, jobpost):
         self.user_id = student
