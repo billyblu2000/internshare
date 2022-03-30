@@ -75,12 +75,13 @@ class Admin(Base):
 class Application(Base):
     __tablename__ = 'applications'
     id = Column(Integer(),primary_key=True)
-    student_email = Column(String(100), nullable=False)
-    post_id = Column(Integer(), nullable=False)
+    student_email = Column(String(100),ForeignKey('students.id'))
+    post_id = Column(Integer(),ForeignKey('jobPosts.id'))
     isOnline = Column(Boolean())
     Datetime = Column(DateTime(),default=datetime.utcnow)
 
-    memberships_b = relationship("Apply", back_populates='appli_rela')
+    student_rela = relationship('Student', back_populates='memberships_a')
+    jobpost_rela = relationship('JobPost', back_populates='memberships_c')
 
     def __repr__(self):
         return f"<Application id={self.id} student email={self.student_email} post id={self.post_id} " \
@@ -177,25 +178,6 @@ class Comment(Base):
     def __repr__(self):
         return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} " \
                f"target={self.target_id} From={self.From} Likes={self.Likes}>"
-
-class Apply(Base):
-    __tablename__ = 'applies'
-    student_id = Column(ForeignKey('students.id'), primary_key=True)
-    application_id = Column(ForeignKey('applications.id'), primary_key=True)
-    jobpost_id = Column(ForeignKey('jobPosts.id'), primary_key=True)
-    extra_data = Column(String(50))
-
-    student_rela = relationship('Student', back_populates='memberships_a')
-    appli_rela = relationship('Application', back_populates='memberships_b')
-    jobpost_rela = relationship('JobPost', back_populates='memberships_c')
-
-    def __init__(self, student, application, jobpost):
-        self.user_id = student
-        self.team_id = application
-        self.role_id = jobpost
-
-    def __repr__(self):
-        return "<Membership(%s)>"
 
 
 if __name__ == "__main__":
