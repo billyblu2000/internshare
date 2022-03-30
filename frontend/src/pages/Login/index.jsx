@@ -1,10 +1,12 @@
 import React from 'react';
 import { Tabs, Form, Input, Button, AutoComplete, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import './index.css';
 import RegisterForm from './RegisterForm';
 import ForgetPasswordForm from './ForgetPasswordForm';
+import { checkLogin, setCookie } from '../../utils/user'
+import Api from '../../utils/Api'
 
 const { TabPane } = Tabs;
 const { Option } = AutoComplete;
@@ -23,6 +25,7 @@ export default function Login() {
   const [autoCompleteResult, setAutoCompleteResult] = React.useState([]);
   const [forgetPasswordState, setForgetPasswordState] = React.useState(false);
   const [form] = Form.useForm();
+  const loggedIn = checkLogin();
 
   const handleSearch = (value) => {
     let res = [];
@@ -35,9 +38,24 @@ export default function Login() {
     setAutoCompleteResult(res);
   };
 
+  const tryLogin = (values) => {
+    message.loading({ content: 'Logging in...', key: 'message' });
+    new Api('login', [values['email'], values['password']], handleLoginResponse);
+  }
+  const handleLoginResponse = (res) => {
+    console.log(res)
+    if (res.status === 'success'){
+      message.success({ content: 'Logged in!', key: 'message' });
+    }
+    else{
+      message.error({ content: res.status, key: 'message' });
+    }
+    
+  }
+
   const loginForm = (
     <>
-      {forgetPasswordState ? <ForgetPasswordForm/> :
+      {forgetPasswordState ? <ForgetPasswordForm /> :
         <Form
           name="basic"
           form={form}
@@ -46,6 +64,7 @@ export default function Login() {
           initialValues={{ remember: true }}
           autoComplete="off"
           style={{ marginLeft: '15%', marginRight: '15%', marginTop: '10px' }}
+          onFinish={(values) => tryLogin(values)}
           onFinishFailed={({ errorFields }) => message.error({ content: errorFields[0].errors[0], key: 'message' })}
         >
           <div className='login-label'>Email</div>
@@ -115,21 +134,23 @@ export default function Login() {
 
   return (
     <>
-      <div className='theme-box login-box' data-aos='flip-left'>
-        <div className='login-top-img'>
-          <Link to='/main/home/'><ArrowLeftOutlined className='login-back-home-botton'></ArrowLeftOutlined></Link>
-          <img src='/logo/1.png' alt='logo' height='70px' style={{ userSelect: 'none' }} />
-        </div>
-        <Tabs defaultActiveKey="login-tab-login" centered style={{ marginTop: '20px' }} tabBarGutter={100} size='large'>
-          <TabPane tab="Login" key="login-tab-login">
-            {loginForm}
-          </TabPane>
-          <TabPane tab="Register" key="login-tab-register">
-            <RegisterForm />
-          </TabPane>
-        </Tabs>
-      </div>
+      {loggedIn ? <Navigate to='/main/home/' /> :
+        <div className='theme-box login-box' data-aos='flip-left'>
+          <div className='login-top-img'>
+            <Link to='/main/home/'><ArrowLeftOutlined className='login-back-home-botton'></ArrowLeftOutlined></Link>
+            <img src='/logo/1.png' alt='logo' height='70px' style={{ userSelect: 'none' }} />
+          </div>
+          <Tabs defaultActiveKey="login-tab-login" centered style={{ marginTop: '20px' }} tabBarGutter={100} size='large'>
+            <TabPane tab="Login" key="login-tab-login">
+              {loginForm}
+            </TabPane>
+            <TabPane tab="Register" key="login-tab-register">
+              <RegisterForm />
+            </TabPane>
+          </Tabs>
+        </div>}
       <div style={{ minHeight: '100px' }}></div>
     </>
   )
 }
+

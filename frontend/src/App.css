@@ -3,3 +3,19 @@
     background: #ffffff;
     box-shadow:  5px 5px 15px #cccccc, -5px -5px 15px #ffffff;
 }
+.theme-box-hoverable{
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    background: #ffffff;
+    box-shadow:  7px 7px 22px #ebebeb,
+    -7px -7px 22px #ffffff;
+    transition:0.2s;
+}
+.theme-box-hoverable:hover{
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    background: #56068c2d;
+    box-shadow: 10px 10px 20px #cccccc,
+    -10px -10px 20px #ffffff;
+}

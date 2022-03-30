@@ -1,0 +1,19 @@
+.mask{
+    position:fixed;
+    min-width:100%;
+    min-height:100%;
+    top:50px;
+    left:0px;
+    background-color: rgba(0, 0, 0, 0);
+    transition:0.2s;
+}
+.mask-vis{
+    position:fixed;
+    min-width:100%;
+    min-height:100%;
+    top:50px;
+    left:0px;
+    background-color: rgba(0, 0, 0, 0.705);
+    transition:0.2s;
+    z-index:2;
+}
