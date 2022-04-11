@@ -1,0 +1,23 @@
+.me-left-nav-button{
+    padding-left: 30px;
+    padding-top: 13px;
+    padding-bottom: 10px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.me-left-nav-button:hover{
+    background-color:#8a8a8a31;
+}
+.me-left-nav-button-selected{
+    padding-left: 30px;
+    padding-top: 13px;
+    padding-bottom: 10px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    background-color:#56068c31;
+    color:#57068C;
+    transition: 0.2s;
+}

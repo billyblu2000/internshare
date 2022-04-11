@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom'
+import HeaderMe from './HeaderMe';
 import AnimatedIcon from '../../utils/icons/AnimatedIcon'
 import workInactiveData from '../../utils/icons/animation/178-work-outline-edited.json'
 import workActiveData from '../../utils/icons/animation/178-work-solid-edited.json'
@@ -45,9 +46,6 @@ export default class Header extends Component {
     }
   }
 
-  handleAvatarClick = () => {
-  }
-
   render() {
     return (
       <div className='header'>
@@ -57,7 +55,7 @@ export default class Header extends Component {
           </a>
         </div>
         <div className='header-nav'>
-          <div className='header-button header-me' style={{backgroundColor:'#DDDDDD'}} onClick={this.handleAvatarClick}></div>
+          <HeaderMe></HeaderMe>
           <div style={{ float: 'right', lineHeight: '50px', marginRight: '10px' }}>
             <Divider type='vertical'></Divider>
           </div>

@@ -7,7 +7,23 @@ export const apis = {
         path:'/api/login',
         method:'post',
         params:['email', 'password'],
-    }
+    },
+    'registerStudentStep1':{
+        path:'/api/register/student/sendemail',
+        method:'post',
+        params:['email']
+    },
+    'registerStudentStep2':{
+        path:'/api/register/student/verify',
+        method:'get',
+        params:['email','code'],
+    },
+    'registerStudentStep3':{
+        path:'/api/register/student',
+        method:'post',
+        params:['email', 'password', 'confirPW', 'major', 'year'],
+    },
+    
 }
 
 export default class Api{

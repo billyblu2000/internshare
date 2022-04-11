@@ -1,0 +1,14 @@
+.header-me-button{
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color:#000000;
+    transition: 0.2s;
+    border-top: 1px solid #00000000;
+    border-bottom: 1px solid #00000000;
+}
+.header-me-button:hover{
+    color: #57068C;
+    font-weight: bold;
+    padding-left: 3px;
+}

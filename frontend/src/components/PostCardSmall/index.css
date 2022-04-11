@@ -1,0 +1,11 @@
+.postcard-avatar{
+    float: left;
+    min-width: 50px;
+    min-height: 50px;
+    color:white;
+    font-size:20px;
+    border-radius:10px;
+    line-height:50px;
+    text-align:center;
+    user-select: none;
+}
