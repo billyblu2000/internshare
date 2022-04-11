@@ -1,5 +1,6 @@
 import pymysql
-from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, UniqueConstraint, VARCHAR
+from mysqlx import Table
+from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, delete
 from datetime import datetime
 import os
 from sqlalchemy.orm import sessionmaker,declarative_base,relationship,scoped_session
@@ -27,16 +28,17 @@ class Student(Base):
     graduation_time = Column(String(100), nullable=False)
     personalityTestResults = Column(String(100), nullable=False)
     profile_id = Column(Integer(), ForeignKey("profiles.id"))
+    color = Column(String(100),nullable=False)
 
     pro_relationship = relationship('Profile', back_populates='stu_relationship')
-    memberships_a = relationship("Apply", back_populates='student_rela')
+    memberships_a = relationship("Application", back_populates='student_rela')
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
     comment_relationship = relationship("Comment", back_populates='student_comment')
 
     def __repr__(self):
         return f"<Student id={self.id} name={self.name} email={self.email} major={self.major} graduation time={self.grade} " \
-               f"Personality Test Results={self.personalityTestResults}>"
+               f"Personality Test Results={self.personalityTestResults} color={self.color}>"
 
 
 class Company(Base):
@@ -70,13 +72,14 @@ class Application(Base):
     post_id = Column(Integer(), ForeignKey('jobPosts.id'))
     isOnline = Column(Boolean())
     Datetime = Column(DateTime(), default=datetime.utcnow)
+    status = Column(String(100))
 
     student_rela = relationship('Student', back_populates='memberships_a')
     jobpost_rela = relationship('JobPost', back_populates='memberships_c')
 
     def __repr__(self):
         return f"<Application id={self.id} student email={self.student_email} post id={self.post_id} " \
-               f"isOnline={self.isOnline} Datetime={self.Datetime}>"
+               f"isOnline={self.isOnline} Datetime={self.Datetime} Status={self.status}>"
 
 
 class GeneralPost(Base):
@@ -88,12 +91,18 @@ class GeneralPost(Base):
     content = Column(String(1000), nullable=False)
     publisher_email = Column(String(100), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
+    post_title = Column(String(100),nullable=False)
 
     comment_relationship = relationship("Comment", back_populates='generalpost_comment')
 
     def __repr__(self):
-        return f"<General Post id={self.id} publisher email={self.publisher_email} Date={self.Datetime} content ={self.content}>"
+        return f"<General Post id={self.id} post title={self.post_title} publisher email={self.publisher_email} Date={self.Datetime} content ={self.content}>"
 
+class PostHashtag(Base):
+    __tablename__ = 'postHashtags'
+    id = Column(Integer, primary_key=True, index=True)
+    hashtag = Column(String(100),ForeignKey('hashtags.hashtag'))
+    jobpost_id = Column(Integer, ForeignKey('jobPosts.id'))
 
 class JobPost(Base):
     __tablename__ = 'jobPosts'
@@ -104,15 +113,26 @@ class JobPost(Base):
     Datetime = Column(DateTime(), default=datetime.utcnow)
     job_description = Column(String(1000), nullable=False)
     job_requirements = Column(String(1000), nullable=False)
-    start_date = Column(String(100), nullable=False)
-    end_time = Column(String(100), nullable=False)
+    start_date = Column(DateTime())
+    end_time = Column(DateTime())
+    company_name = Column(String(100),nullable=False)
+    post_title = Column(String(100),nullable=False)
 
-    memberships_c = relationship("Apply", back_populates='jobpost_rela')
+    memberships_c = relationship("Application", back_populates='jobpost_rela')
     comment_relationship = relationship("Comment", back_populates='jobpost_comment')
+    jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost')
 
     def __repr__(self):
-        return f"<Job Post id={self.id} publisher email={self.publisher_email} Date={self.Datetime} description ={self.description} requirements={self.job_requirements} " \
+        return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title} publisher email={self.publisher_email} Date={self.Datetime} description ={self.description} requirements={self.job_requirements} " \
                f"start date={self.start_date} end date={self.end_time}>"
+
+
+class Hashtag(Base):
+    __tablename__ = 'hashtags'
+    hashtag = Column(String(500), primary_key=True)
+
+    hashtag_relationship = relationship("JobPost", secondary=PostHashtag.__table__, backref='Hashtag')
+
 
 
 class CV(Base):
