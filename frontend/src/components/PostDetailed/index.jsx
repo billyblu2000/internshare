@@ -18,6 +18,10 @@ const commentData = [
   }
 ];
 
+const recommendData = [
+  
+]
+
 export default function PostDetailed() {
   const { id } = useParams();
   console.log(id);

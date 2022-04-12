@@ -38,10 +38,10 @@ export default class Api{
         this.request();
     }
 
-    serverGet = (url) => {
+    serverGet = (url, params) => {
         var myCallBack = this.callback;
         var log = this.log;
-        axios.get(url).then(function (response) {
+        axios.get(url, {params:params}).then(function (response) {
             myCallBack(response.data);
             if (log){
                 console.log('GET ' + url + ': ' + response.data);
@@ -65,21 +65,17 @@ export default class Api{
         });
     }
 
-    constructGetUrl = () => {
-        var path = this.base + this.config.path;
-        var paramsString = '';
+    constructGetParams = () => {
+        var params = {}
         for (let i = 0; i<this.config.params.length; i++){
-            paramsString = paramsString + '&' + this.config.params[i] + '=' + this.params[i];
+            params[this.config.params[i]] = this.params[i]
         }
-        if (paramsString !== ''){
-            path = path + '?' + paramsString.slice(1);
-        }
-        return path;
+        return params
     }
 
     request = () => {
         if (this.config.method === 'get'){
-            this.serverGet(this.constructGetUrl());
+            this.serverGet(this.config.path, this.constructGetParams());
         }
         else if (this.config.method === 'post'){
             var data = {};
