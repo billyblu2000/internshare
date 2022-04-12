@@ -3,19 +3,20 @@ from mysqlx import Table
 from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, delete
 from datetime import datetime
 import os
+import sqlalchemy
 from sqlalchemy.orm import sessionmaker,declarative_base,relationship,scoped_session
 
 DB_NAME = 'internshare'
 connect_string = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('admin', 'Alibaba123..', 'internshare.ctoh8sqi2mdr.ap-southeast-1.rds.amazonaws.com', 3306, 'internshare')
 engine = create_engine(connect_string, convert_unicode=True, echo=True)
-session = scoped_session(
+sessions = scoped_session(
     sessionmaker(
         bind=engine,
         autocommit=False,
         autoflush=False
     )
 )
-session.configure(bind=engine)
+sessions.configure(bind=engine)
 Base = declarative_base()
 
 class Student(Base):
@@ -26,7 +27,7 @@ class Student(Base):
     password = Column(String(30), nullable=False)
     major = Column(String(100), nullable=False)
     graduation_time = Column(String(100), nullable=False)
-    personalityTestResults = Column(String(100), nullable=False)
+    personalityTestResults = Column(String(100), nullable=True)
     profile_id = Column(Integer(), ForeignKey("profiles.id"))
     color = Column(String(100),nullable=False)
 
@@ -37,7 +38,7 @@ class Student(Base):
     comment_relationship = relationship("Comment", back_populates='student_comment')
 
     def __repr__(self):
-        return f"<Student id={self.id} name={self.name} email={self.email} major={self.major} graduation time={self.grade} " \
+        return f"<Student id={self.id} name={self.name} email={self.email} major={self.major} graduation time={self.graduation_time} " \
                f"Personality Test Results={self.personalityTestResults} color={self.color}>"
 
 
