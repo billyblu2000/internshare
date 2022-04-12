@@ -9,6 +9,7 @@ import datetime
 import logging
 from colorhash import ColorHash
 from werkzeug.security import generate_password_hash, check_password_hash
+import env
 
 from database.dataclass import *
 
@@ -25,8 +26,8 @@ mail = Mail(app)
 # mail config
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'yl7002@nyu.edu'
-app.config['MAIL_PASSWORD'] = 'ycxs!!!0429'# have to enable chrome to be less secure
+app.config['MAIL_USERNAME'] = env.email
+app.config['MAIL_PASSWORD'] = env.password
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -123,7 +124,7 @@ def verify_code():
 @app.route('/api/register/student',methods = ['GET','POST'])
 def student_register():
     content = request.get_json()
-    # name = content["name"]
+    name = content["name"]
     email = content["email"]
     pw = content["password"]
     pw2 = content["confirPW"]
