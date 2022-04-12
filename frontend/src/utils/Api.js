@@ -21,7 +21,7 @@ export const apis = {
     'registerStudentStep3':{
         path:'/api/register/student',
         method:'post',
-        params:['email', 'password', 'confirPW', 'major', 'year'],
+        params:['email', 'password', 'confirPW', 'major', 'year', 'name'],
     },
     
 }
@@ -65,7 +65,7 @@ export default class Api{
         });
     }
 
-    constructGetParams = () => {
+    constructParams = () => {
         var params = {}
         for (let i = 0; i<this.config.params.length; i++){
             params[this.config.params[i]] = this.params[i]
@@ -75,14 +75,10 @@ export default class Api{
 
     request = () => {
         if (this.config.method === 'get'){
-            this.serverGet(this.config.path, this.constructGetParams());
+            this.serverGet(this.config.path, this.constructParams());
         }
         else if (this.config.method === 'post'){
-            var data = {};
-            for (let i = 0; i<this.params.length; i++){
-                data[this.config.params[i]] = this.params[i];
-            }
-            this.serverPost(this.config.path, data)
+            this.serverPost(this.config.path, this.constructParams());
         }
 
     }

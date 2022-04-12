@@ -112,7 +112,7 @@ export default class RegisterForm extends Component {
         else if (this.state.step === 3){
             if (this.state.type === 'individual'){
                 message.loading({ content: 'Please wait...', key: 'message' });
-                new Api('registerStudentStep3', [this.state.email, this.state.password, this.state.repassword, this.state.major, this.state.year], this.handleResponse)
+                new Api('registerStudentStep3', [this.state.email, this.state.password, this.state.repassword, this.state.major, this.state.year, this.state.username], this.handleResponse)
             }
         }
         document.body.scrollTop = 0;
