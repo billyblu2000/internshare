@@ -22,9 +22,9 @@ Base = declarative_base()
 class Student(Base):
     __tablename__ = 'students'
     id = Column(Integer(),index=True)
-    name = Column(String(30), nullable=False)
+    name = Column(String(100), nullable=False)
     email = Column(String(80), nullable=False, primary_key=True)
-    password = Column(String(30), nullable=False)
+    password = Column(String(100), nullable=False)
     major = Column(String(100), nullable=False)
     graduation_time = Column(String(100), nullable=False)
     personalityTestResults = Column(String(100), nullable=True)
@@ -45,9 +45,9 @@ class Student(Base):
 class Company(Base):
     __tablename__ = 'companies'
     id = Column(Integer(), primary_key=True,index=True)
-    name = Column(String(30), nullable=False)
+    name = Column(String(100), nullable=False)
     email = Column(String(80), nullable=False, unique=True)
-    password = Column(String(30), nullable=False)
+    password = Column(String(100), nullable=False)
 
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
