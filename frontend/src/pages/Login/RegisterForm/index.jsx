@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Divider, message, Steps } from 'antd'
 import { UserOutlined, SolutionOutlined, MailOutlined, FileDoneOutlined } from '@ant-design/icons';
+import Api from '../../../utils/Api';
+import { Navigate } from "react-router-dom";
 import RegisterFormChooseAccountType from './RegisterFormChooseAccountType'
 import RegisterFormEmail from './RegisterFormEmail'
 import RegisterFormVerification from './RegisterFormVerification';
@@ -22,6 +24,7 @@ export default class RegisterForm extends Component {
         repassword: '',
         major: '',
         year: '',
+        nav:false,
     }
 
     nextStep = () => {
@@ -91,9 +94,53 @@ export default class RegisterForm extends Component {
                 return false;
             }
         }
-        this.setState({ step: this.state.step + 1 })
+        if (this.state.step === 0) {
+            this.setState({ step: this.state.step + 1 })
+        }
+        else if (this.state.step === 1) {
+            if (this.state.type === 'individual'){
+                message.loading({ content: 'Please wait...', key: 'message' });
+                new Api('registerStudentStep1', [this.state.email], this.handleResponse);
+            }
+        }
+        else if (this.state.step === 2){
+            if (this.state.type === 'individual'){
+                message.loading({ content: 'Please wait...', key: 'message' });
+                new Api('registerStudentStep2', [this.state.email, this.state.code], this.handleResponse)
+            }
+        }
+        else if (this.state.step === 3){
+            if (this.state.type === 'individual'){
+                message.loading({ content: 'Please wait...', key: 'message' });
+                new Api('registerStudentStep3', [this.state.email, this.state.password, this.state.repassword, this.state.major, this.state.year, this.state.username], this.handleResponse)
+            }
+        }
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
+    }
+
+    handleResponse = (res) => {
+        if (res.status === 'success'){
+            message.loading({ content: 'Please wait...', key: 'message', duration:0.01 });
+            this.setState({ step: this.state.step + 1 })
+        }
+        else{
+            message.error({ content: res.status, key: 'message' });
+        }
+    }
+
+    resendVerificationCode = () => {
+        message.loading({ content: 'Please wait...', key: 'message' });
+        new Api('registerStudentStep1', [this.state.email], this.handleResendVerificationResponse)
+    }
+
+    handleResendVerificationResponse = (res) => {
+        if (res.status === 'success'){
+            message.success({ content: 'Verification code sent!', key: 'message'});
+        }
+        else{
+            message.error({ content: res.status, key: 'message' });
+        }
     }
 
     onKeyDownchange = (e) => {
@@ -107,9 +154,19 @@ export default class RegisterForm extends Component {
         setTimeout(() => {document.getElementById(label).setAttribute("class", 'login-label');}, 3200);
     }
 
+    navToMain = () => {
+        if (this.state.nav === false){
+            setTimeout(() => this.setState({nav:true}), 1000);
+        }
+    }
+
     render() {
+        if (this.state.step === 4){
+            this.navToMain();
+        }
         return (
             <div>
+                {this.state.nav? <Navigate to='/main/home'/>:null}
                 {this.state.step === 4 ? <div style={{ marginTop: '50px', display: 'flex', justifyContent: 'space-around' }}><AnimatedIcon
                     width='100px'
                     speed={0.8}
@@ -136,6 +193,7 @@ export default class RegisterForm extends Component {
                             {this.state.step === 2 ? <RegisterFormVerification
                                 nextStepFunc={this.nextStep}
                                 setVerification={(code) => this.setState({ code: code })}
+                                resendCallback={this.resendVerificationCode}
                                 email={this.state.email} /> : null}
                             {this.state.step === 3 ? <RegisterFormOther
                                 setUsername={(username) => this.setState({ username: username })}

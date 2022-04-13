@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, Form, Input, Button, AutoComplete, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import './index.css';
 import RegisterForm from './RegisterForm';
 import ForgetPasswordForm from './ForgetPasswordForm';
@@ -26,6 +26,7 @@ export default function Login() {
   const [forgetPasswordState, setForgetPasswordState] = React.useState(false);
   const [form] = Form.useForm();
   const loggedIn = checkLogin();
+  const nav = useNavigate();
 
   const handleSearch = (value) => {
     let res = [];
@@ -46,6 +47,7 @@ export default function Login() {
     console.log(res)
     if (res.status === 'success'){
       message.success({ content: 'Logged in!', key: 'message' });
+      nav('/main/home/');
     }
     else{
       message.error({ content: res.status, key: 'message' });

@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>InternSHare Verification Code</title>
+    <style>
+        .card {
+            padding: 50px;
+            margin: auto;
+            margin-top: 100px;
+            width: 500px;
+            background-color: white;
+        }
+        .text-body{
+            margin-top:50px;
+        }
+        p{
+            margin-top:0px;
+            margin-bottom: 0px;
+        }
+        .verification-code{
+            text-align:center;
+            margin-top:30px;
+            margin-bottom:30px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 24px;
+            font-weight:bold;
+            color:#57068C;
+            letter-spacing: 10px;
+        }
+    </style>
 </head>
-<body>
-Hey {{name}}!
 
-Thank you for registering for our website! The verification code is {{code}}. <br>
-Please enter it within 15 minutes.
-
-Best,
-InternShare Team
+<body style="background-color:rgb(233, 233, 233)">
+    <div class="card">
+        <div style="text-align:center">
+            <img src="https://raw.githubusercontent.com/billyblu2000/internshare/master/docs/imgs/Logo1.png" height="80px" alt="logo" />
+        </div>
+        <div class="text-body">
+            <div>Hey <span style="font-weight:bold;">{{ name }}</span>!</div>
+            <div>
+                <p style="margin-top:20px">Thank you for registering for our website! The verification code is</p>
+                <div class="verification-code">{{ code }}</div>
+                <p>Please enter it within 15 minutes. </p>
+                <p style="margin-top:20px">Best,</p>
+                <p>InternSHare Team </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -4,6 +4,8 @@ import Main from './pages/Main'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Search from './pages/Search'
+import Me from './pages/Me'
+import PostDetailed from './components/PostDetailed'
 
 const error404 = (
     <>
@@ -40,9 +42,46 @@ const routes = [
                 path: '',
                 element: error404,
                 children: []
+            },
+            {
+                path: 'me',
+                element: <Me></Me>,
+                children: [
+                    {
+                        path: 'profile',
+                        element: 'profile',
+                        children: []
+                    },
+                    {
+                        path: 'applies',
+                        element: 'app',
+                        children: []
+                    },
+                    {
+                        path: 'posts',
+                        element: 'post',
+                        children: []
+                    },
+                    {
+                        path: 'messages',
+                        element: 'mes',
+                        children: []
+                    },
+                    {
+                        path: 'settings',
+                        element: 'set',
+                        children: []
+                    }
+                ]
+            },
+            {
+                path: 'post/:id',
+                element: <PostDetailed/>,
+                children: []
             }
         ]
     },
+    
     {
         path: '/login',
         element: <Login />,
@@ -55,7 +94,7 @@ const routes = [
     },
     {
         path: '*',
-        element: <Navigate to='/main/'></Navigate>,
+        element: <Navigate to='/main/' replace={true}></Navigate>,
         children: []
     }
 ]

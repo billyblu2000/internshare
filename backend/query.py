@@ -7,7 +7,7 @@ local_session=session()
 SELECT password FROM user WHERE email = %s
 
 email = %s
-user = local_session.query(user).filter(User.email==email).first()
+user = local_session.query(student).filter(Student.email==email).first()
 
 2.student_register
 SELECT * FROM user WHERE email = %s
