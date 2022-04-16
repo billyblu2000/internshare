@@ -27,7 +27,7 @@ class Student(Base):
     password = Column(String(100), nullable=False)
     major = Column(String(100), nullable=False)
     graduation_time = Column(String(100), nullable=False)
-    personalityTestResults = Column(String(100), nullable=False)
+    personalityTestResults = Column(String(100), nullable=True)
     profile_id = Column(Integer(), ForeignKey("profiles.id"))
     color = Column(String(100),nullable=False)
 

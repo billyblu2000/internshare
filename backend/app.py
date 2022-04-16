@@ -56,13 +56,11 @@ def login():
     # when login, need to specify them as company or student?
     content = request.get_json()
     pw = content['password']
-    print(pw)
     email=content['email']
     if "@nyu.edu" in email:
         user = local_session.query(Student).filter(Student.email == email).first()
         # if it is a student, not none
         if user:
-            print(check_password_hash(user.password, pw),check_password_hash(pw,user.password))
             if check_password_hash(user.password, pw):
                 session["role"]="student"
                 session["name"] = user.name
@@ -137,7 +135,6 @@ def student_register():
         return json.dumps({"status":"user already exists"})
     major = content["major"]
     year = content["year"]
-    print(pw)
     hashpw = generate_password_hash(pw)
     hashcolor = color_generator.generate_background_color()
     new_student = Student(name= name, email= email, password= hashpw, major=major,
@@ -235,13 +232,12 @@ def check_status():
         res[post_id] = status
     res["status"] = "success"
     # no status in the applications
-    print(res)
     return json.dumps(res)
 
 @app.route("/api/homepage/searchsuggestions",methods = ['GET'])
 def hp_search_suggestion():
     # content = request.args["content"]
-    content = "sof"
+    content = "soft"
     # search in the hashtag??
     suggestions = []
     for i in global_position:
@@ -249,10 +245,9 @@ def hp_search_suggestion():
             suggestions.append(i)
     random.shuffle(suggestions)
     suggestions= suggestions[:10]
+    print(suggestions)
     # extract words from the company and job title
     return json.dumps(suggestions)
-
-
 
 
 @app.route("/api/homepage/searchone",methods = ['GET','POST'])
@@ -289,6 +284,9 @@ def search_particular_post():
     return json.dumps(res)
 
 
+@app.route("/getpost")
+def comment():
+    return json.dumps()
 
 @app.errorhandler(404)
 def index(error):
