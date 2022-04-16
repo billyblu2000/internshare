@@ -21,10 +21,10 @@ Base = declarative_base()
 
 class Student(Base):
     __tablename__ = 'students'
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(30), nullable=False)
-    email = Column(String(80), nullable=False)
-    password = Column(String(30), nullable=False)
+    id = Column(Integer(),index=True)
+    name = Column(String(100), nullable=False)
+    email = Column(String(80), nullable=False, primary_key=True)
+    password = Column(String(100), nullable=False)
     major = Column(String(100), nullable=False)
     graduation_time = Column(String(100), nullable=False)
     personalityTestResults = Column(String(100), nullable=False)
@@ -44,10 +44,10 @@ class Student(Base):
 
 class Company(Base):
     __tablename__ = 'companies'
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(30), nullable=False)
+    id = Column(Integer(), primary_key=True,index=True)
+    name = Column(String(100), nullable=False)
     email = Column(String(80), nullable=False, unique=True)
-    password = Column(String(30), nullable=False)
+    password = Column(String(100), nullable=False)
 
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
@@ -59,7 +59,7 @@ class Company(Base):
 
 class Admin(Base):
     __tablename__ = 'admins'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     password = Column(String(100), nullable=False)
 
     def __repr__(self):
@@ -68,7 +68,7 @@ class Admin(Base):
 
 class Application(Base):
     __tablename__ = 'applications'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     student_email = Column(String(100), ForeignKey('students.id'))
     post_id = Column(Integer(), ForeignKey('jobPosts.id'))
     isOnline = Column(Boolean())
@@ -85,7 +85,7 @@ class Application(Base):
 
 class GeneralPost(Base):
     __tablename__ = 'generalPosts'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     is_Company = Column(Boolean())
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
@@ -107,7 +107,7 @@ class PostHashtag(Base):
 
 class JobPost(Base):
     __tablename__ = 'jobPosts'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     is_Company = Column(Boolean())
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
@@ -138,7 +138,7 @@ class Hashtag(Base):
 
 class CV(Base):
     __tablename__ = 'cvs'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     last_update_time = Column(DateTime(), default=datetime.utcnow)
     pdf_path = Column(String(5000), nullable=False)
 
@@ -148,7 +148,7 @@ class CV(Base):
 
 class Profile(Base):
     __tablename__ = 'profiles'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     email = Column(String(100), nullable=False)
     name = Column(String(100), nullable=False)
     CV_id = Column(Integer(), nullable=False)
@@ -170,7 +170,7 @@ class Profile(Base):
 
 class Comment(Base):
     __tablename__ = 'comments'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer(), primary_key=True,index=True)
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
     jpost_id = Column(Integer(), ForeignKey("jobPosts.id"))
