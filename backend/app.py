@@ -1,20 +1,20 @@
 from flask import Flask, render_template, request, session, url_for, redirect
 import pymysql
 from flask_mail import Mail, Message
-from flask_session import Session
 import OTP
-import json
+import json, random
 import redis
+import os
 import datetime
 import logging
-from colorhash import ColorHash
 from werkzeug.security import generate_password_hash, check_password_hash
-import env
+import color_generator
+
 
 from database.dataclass import *
 
-local_session=sessions()
-codeDict={"yl7002@nyu.edu":"123456"}
+local_session = sessions()
+codeDict = {}
 
 app = Flask(__name__, static_url_path='')
 # session config
@@ -26,20 +26,22 @@ mail = Mail(app)
 # mail config
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = env.email
-app.config['MAIL_PASSWORD'] = env.password
+app.config['MAIL_USERNAME'] = os.getenv("NAME")
+app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD")
 
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # stop logging path
-log = logging.getLogger('werkzeug')
-log.disabled = True
+# log = logging.getLogger('werkzeug')
+# log.disabled = True
+
+with open(os.getcwd()+'/positions.json', 'r') as f:
+  global_position = json.load(f)
 
 
 # r = redis.Redis(host='localhost', port=6379, db=0)
-
 
 # for session
 # session["email"] = email
@@ -48,32 +50,32 @@ log.disabled = True
 # session["name'] = username
 
 
-
-
 # login page
 @app.route('/api/login',methods = ['GET','POST'])
 def login():
     # when login, need to specify them as company or student?
     content = request.get_json()
     pw = content['password']
+    print(pw)
     email=content['email']
     if "@nyu.edu" in email:
         user = local_session.query(Student).filter(Student.email == email).first()
         # if it is a student, not none
         if user:
-            if user.password == pw:
+            print(check_password_hash(user.password, pw),check_password_hash(pw,user.password))
+            if check_password_hash(user.password, pw):
                 session["role"]="student"
                 session["name"] = user.name
                 session["color"] = user.color
                 session["email"] = email
+                session["major"] = user.major
                 return json.dumps({"status":"success"})
-
             else:
                 return json.dumps({"status": "password does not match"})
     # turn to company database
     user = local_session.query(Company).filter(Company.email == email).first()
     if user:
-        if check_password_hash(pw,user.password):
+        if check_password_hash(user.password,pw):
             session["role"] = "company"
             session["name"] = user.name
             return json.dumps({"status": "success"})
@@ -87,7 +89,6 @@ def login():
 @app.route('/api/register/student/sendemail',methods = ['GET','POST'])
 def send_verification_email():
     code = OTP.generateOTP() # preserve in database??
-    print(code)
     try:
         content = request.get_json()
         username = content["email"]
@@ -136,8 +137,9 @@ def student_register():
         return json.dumps({"status":"user already exists"})
     major = content["major"]
     year = content["year"]
+    print(pw)
     hashpw = generate_password_hash(pw)
-    hashcolor = ColorHash(name).hex
+    hashcolor = color_generator.generate_background_color()
     new_student = Student(name= name, email= email, password= hashpw, major=major,
                           graduation_time=year,personalityTestResults="", color=hashcolor)
     local_session.add(new_student)
@@ -172,16 +174,48 @@ def company_verify():
 
 @app.route("/api/recommendpost")
 def recommendPost():
-    user = session["username"]
-    if user:
     # get the major from the databases;
     # get graduation time from the databases;
     # get the desired post from the databases
     # based on job requirements and graduation time
-        return json.dumps({"status": "success", "post": {}})
-    else:
-        # has not logged in yet
-        return json.dumps({"status": "failure"})
+    if "major" in session:
+        major = session["major"]
+
+    # search for five jobPosts and five General Posts
+    # how to retreive the data
+
+    # 10 job posts
+    jobs = local_session.query()
+
+    # based on time descendent
+    generals = local_session.query()
+
+    res = {
+        "job": {},
+        "general": {}
+    }
+    for job in jobs:
+        res["job"][job.id] = {
+            "title": job.title,
+            "date": job.Datetime,
+            "description": job.job_description,
+            "company": job.company_name,
+            "student_email": job.student_email,
+            "requirement": job.jon_requirements,
+        }
+    for general in generals:
+        res["general"][general.id] = {
+            "studennt_email": general.student_email,
+            "company": general.company_email,
+            # company email or company name
+            # why need company email or student_email
+            "content": general.content,
+            "title": general.title,
+            "publishser": general.publisher_email,
+            "date": general.Datetime
+        }
+    res["status"] = "success"
+    return json.dumps(res)
 
 
 
@@ -191,15 +225,68 @@ def check_status():
     # returns a list of apply status, each status corresponding to an apply
     # of this user, the status should contain the position name and
     # the company name (if any), and the current status.
-    user = session["user"]
+    email = session["email"]
+    result = local_session.query(Application).filter(Application.student_email == email).all()
+    res = {}
+    for i in range(len(result)):
+        cur = result[i]
+        post_id = cur.post_id
+        status = cur.status
+        res[post_id] = status
+    res["status"] = "success"
     # no status in the applications
-    return json.dumps({"status": "success","id":"refuse"})
+    print(res)
+    return json.dumps(res)
 
-@app.route("/api/homepage/searchsuggestions")
+@app.route("/api/homepage/searchsuggestions",methods = ['GET'])
 def hp_search_suggestion():
-    
-    return json.dumps({"status": "success"})
+    # content = request.args["content"]
+    content = "sof"
+    # search in the hashtag??
+    suggestions = []
+    for i in global_position:
+        if content.lower() in i.lower():
+            suggestions.append(i)
+    random.shuffle(suggestions)
+    suggestions= suggestions[:10]
+    # extract words from the company and job title
+    return json.dumps(suggestions)
 
+
+
+
+@app.route("/api/homepage/searchone",methods = ['GET','POST'])
+def search_particular_post():
+    filter = request.args["filter"]
+    # search inside the content to get results
+    jobs = local_session.query()
+    generals = local_session.query()
+    res = {
+        "job": {},
+        "general": {}
+    }
+    for job in jobs:
+        res["job"][job.id] = {
+            "title": job.title,
+            "date": job.Datetime,
+            "description": job.job_description,
+            "company": job.company_name,
+            "student_email": job.student_email,
+            "requirement": job.jon_requirements,
+        }
+    for general in generals:
+        res["general"][general.id] = {
+            "studennt_email": general.student_email,
+            "company": general.company_email,
+            # company email or company name
+            # why need company email or student_email
+            "content": general.content,
+            "title": general.title,
+            "publishser": general.publisher_email,
+            "date": general.Datetime
+        }
+    res["status"] = "success"
+    return json.dumps(res)
 
 
 
@@ -216,8 +303,10 @@ if __name__ == "__main__":
     db.select_db(DB_NAME)
     cursor.execute('CREATE TABLE IF NOT EXISTS user (id INT(6), lastname VARCHAR(30), firstname VARCHAR(30), email VARCHAR(30))')
     app.run("127.0.0.1", 5000,debug = "True")
+    print("ready to run!")
     # export FLASK_ENV=development
     # export FLASK_APP=backend/app.py
     # flask run
 
 
+# - Hash tag relation ship, major and related hashtag, also users’ personal interest
