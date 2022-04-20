@@ -1,0 +1,24 @@
+.postdetail-avatar{
+    display:inline-block;
+    min-width: 100px;
+    min-height: 100px;
+    color:white;
+    font-size:40px;
+    border-radius:20px;
+    line-height:100px;
+    text-align:center;
+    user-select: none;
+    vertical-align:top;
+}
+
+.postdetail-tag{
+    margin-left:5px;
+    margin-right:5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top:3px;
+    padding-bottom:3px;
+    border-radius: 10px;
+    background-color:rgb(32, 126, 102);
+    color:white;
+}

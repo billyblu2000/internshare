@@ -1,18 +1,29 @@
 import React from 'react';
+import { useLayoutEffect } from 'react'
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, useLocation } from 'react-router-dom'
 import App from './App';
-import { useMock, lightBackground } from './config'
+import { useMock } from './config'
 import './index.css';
 
-if (useMock){
+if (useMock) {
   require('./utils/mockData')
 }
-document.getElementsByTagName('body')[0].style.backgroundColor=lightBackground
+
+const Wrapper = ({ children }) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
+    <BrowserRouter onUpdate={() => window.scrollTo(0, 0)}>
+      <Wrapper>
+        <App />
+      </Wrapper>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

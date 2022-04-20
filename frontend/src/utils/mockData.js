@@ -26,6 +26,16 @@ const rules = [
     //         'status|1':['success', 'failed']
     //     }
     // },
+    // {
+    //     name:'searchSuggestions',
+    //     template: () => {
+    //         var arr = [];
+    //         for (let i = 0; i<=Math.random()*10; i++){
+    //             arr.push(Mock.Random.city());
+    //         }
+    //         return arr;
+    //     }
+    // }
 ]
 
 var data = []

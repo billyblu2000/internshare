@@ -1,0 +1,20 @@
+.search-result-box {
+    border-radius: 5px;
+    background: #ffffff;
+    transition: 0.2s;
+    cursor: pointer;
+    margin-top: 12px;
+    padding:10px;
+}
+
+.search-result-box:hover {
+    border-radius: 5px;
+    /* border: 1px solid #57068C; */
+    background: #ffffff;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 10px;
+    box-shadow: 5px 5px 10px #858585,
+    -5px -5px 10px #ffffff;
+    z-index:10000;
+}

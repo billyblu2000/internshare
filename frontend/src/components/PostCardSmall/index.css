@@ -1,5 +1,5 @@
-.postcard-avatar{
-    float: left;
+.postcardsmall-avatar{
+    display:inline-block;
     min-width: 50px;
     min-height: 50px;
     color:white;
@@ -8,4 +8,5 @@
     line-height:50px;
     text-align:center;
     user-select: none;
+    vertical-align:top;
 }

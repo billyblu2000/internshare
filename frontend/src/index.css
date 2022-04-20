@@ -4,6 +4,8 @@ body {
   'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width:1185px;
+  background-color: rgba(235, 236, 237, 1);
 }
 
 code {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { showRespond } from "../config";
 import { baseurl } from "../config";
+import { message } from "antd";
 
 export const apis = {
     'login': {
@@ -23,7 +24,26 @@ export const apis = {
         method:'post',
         params:['email', 'password', 'confirPW', 'major', 'year', 'name'],
     },
-    
+    'searchSuggestions':{
+        path:'/api/homepage/searchsuggestions',
+        method:'post',
+        params:['content']
+    },
+    'search':{
+        path:'/api/homepage/searchone',
+        method:'post',
+        params:[]
+    },
+    'recommend':{
+        path:'/api/recommendpost',
+        method:'get',
+        params:[],
+    },
+    'checkApplyStatus':{
+        path:'/api/applystatus',
+        method:'get',
+        params:[]
+    }
 }
 
 export default class Api{
@@ -61,6 +81,9 @@ export default class Api{
             }
         })
         .catch(function (error) {
+            if (error.toString() === 'Error: Request failed with status code 500'){
+                message.error({content:'Sorry, something wrong happends to the server..', key:'message'})
+            }
             console.log('POST ' + url + ': ' + error);
         });
     }

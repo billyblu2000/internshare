@@ -12,6 +12,19 @@ import boltActiveData from '../../utils/icons/animation/117-bolt-solid-edited.js
 import { checkLogin } from  '../../utils/user'
 import './index.css';
 
+var _wr = function(type) {
+  var orig = window.history[type];
+  return function() {
+      var rv = orig.apply(this, arguments);
+      var e = new Event(type);
+      e.arguments = arguments;
+      window.dispatchEvent(e);
+      return rv;
+  };
+}
+window.history.pushState = _wr('pushState');
+window.history.replaceState = _wr('replaceState');
+
 export default class Header extends Component {
 
   state = { active: '', login:false }
@@ -23,8 +36,33 @@ export default class Header extends Component {
     else{
       this.setState({login:false})
     }
+    window.addEventListener('pushState', this.routerEvent);
+    window.addEventListener('replaceState', this.routerEvent);
+    window.addEventListener('popstate', this.routerEvent);
   }
 
+  componentWillUnmount(){
+    window.removeEventListener('pushState',this.routerEvent);
+    window.removeEventListener('replaceState', this.routerEvent);
+    window.removeEventListener('popstate', this.routerEvent);
+  }
+
+  routerEvent = (e) => {
+    var pathName = e.target.location.pathname;
+    if (pathName.slice(0,10) === '/main/home'){
+      this.setState({active:'home'})
+    }
+    else if (pathName.slice(0,12) === '/main/search'){
+      this.setState({active:'work'})
+    }
+    else if (pathName.slice(0,11) === '/main/space'){
+      this.setState({active:'bolt'})
+    }
+    else{
+      this.setState({active:''})
+    }
+  }
+  
   getAnimatedIcon(inactiveData, activeData, id, tooltip=null) {
     return (
         <AnimatedIcon

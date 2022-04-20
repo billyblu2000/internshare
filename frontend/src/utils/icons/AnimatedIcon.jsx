@@ -24,7 +24,7 @@ export default class AnimatedIcon extends Component {
         return (<>
             {
                 this.props.tooltip ? <Tooltip title={this.props.tooltip} color='#57068C' mouseEnterDelay={1.5}>
-                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null }}
+                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null, display:this.props.inline?'inline-block':'block' }}
                         onClick={() => {
                             if (this.props.onClick) {
                                 this.props.onClick();
@@ -55,7 +55,7 @@ export default class AnimatedIcon extends Component {
                         }
                     </div>
                 </Tooltip> :
-                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null }}
+                    <div style={{ width: this.props.width, height: this.props.height, cursor: this.props.toggleable?'pointer':null,display:this.props.inline?'inline-block':'block' }}
                         onClick={() => {
                             if (this.props.onClick) {
                                 this.props.onClick();

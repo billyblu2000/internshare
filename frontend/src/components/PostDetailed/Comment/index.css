@@ -1,0 +1,31 @@
+.comment-avatar{
+    display: inline-block;
+    vertical-align:top;
+    min-width: 40px;
+    min-height: 40px;
+    color:white;
+    font-size:15px;
+    border-radius:7px;
+    line-height:40px;
+    text-align:center;
+    user-select: none;
+}
+.comment-like-number{
+    margin-left: 2px;
+    color:#57068C;
+    cursor: pointer;
+}
+.comment-reply-button{
+    transition: 0.2s;
+    color: #000;
+    cursor: pointer;
+}
+.comment-reply-button:hover{
+    color:#57068C;
+}
+.comment{
+    transition: 0.2s;
+}
+.comment-reply-box{
+    transition: 0.2s;
+}

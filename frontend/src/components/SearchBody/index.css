@@ -1,0 +1,9 @@
+.search-filter-button{
+    transition: 0.2s;
+    color: rgba(0, 0, 0, 0.649);
+    cursor: pointer;
+}
+.search-filter-button:hover{
+    color:#57068C;
+    
+}

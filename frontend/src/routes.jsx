@@ -4,6 +4,7 @@ import Main from './pages/Main'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Search from './pages/Search'
+import Space from './pages/Space'
 import Me from './pages/Me'
 import PostDetailed from './components/PostDetailed'
 
@@ -35,7 +36,7 @@ const routes = [
             },
             {
                 path: 'space',
-                element: <Search />,
+                element: <Space />,
                 children: []
             },
             {
