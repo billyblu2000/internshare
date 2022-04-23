@@ -1,0 +1,735 @@
+{
+  "name": "root",
+  "children": [
+    {
+      "name": "Internet/IT",
+      "children": [
+        {
+          "name": "product",
+          "children": [
+            "product",
+            "product assistant",
+            "user research",
+            "game planning",
+            "Security Product Manager",
+            "Strategic Product Manager",
+            "E-commerce product manager",
+            "Supply Chain Product Manager",
+            "software product manager",
+            "Commercial product manager",
+            "data product manager",
+            "Web Product Manager",
+            "growth product manager",
+            "Mobile Product Manager",
+            "hardware product manager",
+            "financial product manager",
+            "product manager",
+            "product design",
+            "product project management",
+            "game"
+          ]
+        },
+        {
+          "name": "Operation",
+          "children": [
+            "Operation",
+            "Product Operations",
+            "Content operation",
+            "website editor",
+            "customer service",
+            "SEO / SEM",
+            "E-commerce operation",
+            "event operation",
+            "data operations",
+            "Community operation",
+            "New media operation",
+            "Game operation",
+            "Overseas operations",
+            "Category Operation",
+            "User operation",
+            "COO",
+            "Website operation",
+            "edit"
+          ]
+        },
+        {
+          "name": "technology",
+          "children": [
+            "technology",
+            "test",
+            "front end",
+            "IT operation and maintenance",
+            "database",
+            "algorithm",
+            "data mining",
+            "Cloud Computing/Big Data",
+            "rear end",
+            "technical management",
+            "mobile development",
+            "communication technology",
+            "information security",
+            "Sales technical support",
+            "data analysis",
+            "architect"
+          ]
+        },
+        {
+          "name": "software",
+          "children": [
+            "software",
+            "C",
+            "Android",
+            "C/C",
+            "iOS",
+            "Java",
+            "Node.js",
+            "PHP",
+            "Python",
+            "Ruby/Perl",
+            "ERP",
+            "Linux",
+            "Hadoop",
+            "PLC"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Communications/Hardware",
+      "children": [
+        {
+          "name": "Electronic and electrical",
+          "children": [
+            "Electronic and electrical",
+            "electrical engineering",
+            "Electrical Design",
+            "Semiconductor/Chip",
+            "electronic engineering",
+            "photoelectric",
+            "FAE",
+            "IC verification",
+            "electromagnetic",
+            "Microelectronics",
+            "circuit",
+            "Appliances / Instruments / Meters",
+            "hardware equipment",
+            "Guidance",
+            "Production/Testing",
+            "Testing/Reliability",
+            "layout design",
+            "Transformers and Magnetoelectrics",
+            "electrical control engineer",
+            "Analog Circuit Design/Application"
+          ]
+        },
+        {
+          "name": "communication",
+          "children": [
+            "communication",
+            "Internet of Things",
+            "radio frequency",
+            "Wireless communication",
+            "Telecom exchange",
+            "Telecom network",
+            "data communication",
+            "Communication test",
+            "Communication power",
+            "communication technology",
+            "communication device",
+            "Communication research and development",
+            "mobile communication",
+            "wired transmission",
+            "Network/Information Security",
+            "optical transmission",
+            "Optical communication",
+            "broadcast",
+            "acoustics",
+            "5G",
+            "Core Network",
+            "security system",
+            "Simulation application",
+            "Laser/Optoelectronics Technology"
+          ]
+        },
+        {
+          "name": "hardware",
+          "children": [
+            "hardware",
+            "embedded",
+            "integrated circuit",
+            "ARM development",
+            "DSP development",
+            "FPGA development",
+            "PCB process",
+            "PLC",
+            "MCU",
+            "circuit engineer",
+            "driver development",
+            "system integration",
+            "Heat Conduction",
+            "repair",
+            "mold design",
+            "automation/automatic control"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Design/Media",
+      "children": [
+        {
+          "name": "design",
+          "children": [
+            "design",
+            "Original painting/illustration",
+            "animation/motion",
+            "Post/Special Effects",
+            "graphic design",
+            "visual design",
+            "Web/Artwork",
+            "2D/3D",
+            "UI / UE",
+            "Flash",
+            "industrial design",
+            "art design",
+            "APP design",
+            "Interactive Design",
+            "clothing design",
+            "Exhibition design",
+            "home design",
+            "Display design",
+            "environmental design",
+            "game design",
+            "Scene design",
+            "motion design",
+            "role conception",
+            "game interface design",
+            "PS",
+            "Jewelry Design",
+            "Automotive Design",
+            "cartoonist",
+            "Portrait retoucher",
+            "CAD Design/Drawing",
+            "Package Design"
+          ]
+        },
+        {
+          "name": "Advertising exhibition",
+          "children": [
+            "Advertising exhibition",
+            "plan",
+            "AE",
+            "creative",
+            "copywriting",
+            "Advertising Design",
+            "Exhibition",
+            "audit",
+            "make",
+            "Advertising coordination",
+            "Advertising art direction"
+          ]
+        },
+        {
+          "name": "media",
+          "children": [
+            "media",
+            "Choreographer",
+            "reporter",
+            "Host/Broadcast",
+            "photography",
+            "Film and television media",
+            "Multimedia production",
+            "Makeup",
+            "performing arts",
+            "Editing / Post-production",
+            "film",
+            "screenwriter",
+            "Editing/Creating",
+            "Field control",
+            "camera/production",
+            "vocal",
+            "Coordination/Management",
+            "text media",
+            "stage beauty",
+            "Art Direction",
+            "light",
+            "Costumes/Props",
+            "live streaming",
+            "anchor",
+            "Actor/Model",
+            "broker",
+            "dubbing",
+            "Scout",
+            "stage manager",
+            "show management",
+            "Group/with group actors",
+            "self-media",
+            "Broadcasting",
+            "Movie/Video",
+            "recording",
+            "News Publishing",
+            "performance/exhibition"
+          ]
+        },
+        {
+          "name": "Publishing and printing",
+          "children": [
+            "Publishing and printing",
+            "editing/editing",
+            "Proofreading/Entry",
+            "Layout Design",
+            "Package",
+            "Contributor",
+            "print",
+            "issued",
+            "Art editor"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "General functions",
+      "children": [
+        {
+          "name": "administrative",
+          "children": [
+            "administrative",
+            "Assistant/Secretary",
+            "reception",
+            "logistics",
+            "reporter",
+            "business driver",
+            "clerk",
+            "file management",
+            "Administration",
+            "Total aid"
+          ]
+        },
+        {
+          "name": "Human Resources",
+          "children": [
+            "Human Resources",
+            "company culture",
+            "Personnel/HR",
+            "Recruitment",
+            "headhunting",
+            "HRBP",
+            "performance appraisal",
+            "training",
+            "Salary and benefits",
+            "Employee Relations",
+            "Organizational Development"
+          ]
+        },
+        {
+          "name": "Accounting",
+          "children": [
+            "Accounting",
+            "finance",
+            "Accounting/Cashier",
+            "audit",
+            "tax",
+            "cost",
+            "Wind control",
+            "settlement",
+            "General Ledger Accountant",
+            "Verifier",
+            "CPA",
+            "asset Management",
+            "Financial Management"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Finance/Legal",
+      "children": [
+        {
+          "name": "finance",
+          "children": [
+            "finance",
+            "Wind control",
+            "invest",
+            "financial analysis",
+            "financial advisor",
+            "analyst",
+            "fund",
+            "securities",
+            "Securities Analyst",
+            "trust/guarantee",
+            "economic Research",
+            "Internet banking",
+            "futures",
+            "financing",
+            "stock",
+            "Traders",
+            "warrant",
+            "Financial product",
+            "Asset valuation",
+            "M&amp;A",
+            "Post-investment management",
+            "customer service",
+            "trader",
+            "Auction/Pawn/Collection Appraisal"
+          ]
+        },
+        {
+          "name": "Insurance",
+          "children": [
+            "Insurance",
+            "actuary",
+            "policy",
+            "business",
+            "insurance sales",
+            "Insurance back office",
+            "financial planner",
+            "Underwriting/claims",
+            "Insurance contract management",
+            "insurance trainer",
+            "Audit/Legal/Compliance",
+            "Channels and Annuities",
+            "Product development",
+            "risk control",
+            "Customer Management/Renewal Management",
+            "Insurance Broker/Insurance Consultant"
+          ]
+        },
+        {
+          "name": "bank",
+          "children": [
+            "bank",
+            "account Manager",
+            "Lobby manager",
+            "business manager",
+            "Department manager",
+            "loan",
+            "credit",
+            "letter review",
+            "trust",
+            "credit card",
+            "bank sales",
+            "teller",
+            "liquidate",
+            "asset Management",
+            "Interbank",
+            "business channel",
+            "Collection",
+            "International settlement/foreign exchange transaction",
+            "Import/Export/L/C Settlement"
+          ]
+        },
+        {
+          "name": "Legal",
+          "children": [
+            "Legal",
+            "Paralegal",
+            "intellectual property",
+            "Compliance",
+            "lawyer",
+            "Firm lawyer",
+            "patent",
+            "Judge",
+            "Regulatory/Enforcement",
+            "civil",
+            "litigation",
+            "forensics",
+            "Forensic"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "manufacturing",
+      "children": [
+        {
+          "name": "manufacture",
+          "children": [
+            "manufacture",
+            "Safety",
+            "equipment",
+            "Production",
+            "quality",
+            "automation",
+            "engineer",
+            "industrial design",
+            "Technology/Process",
+            "Raw material processing",
+            "Production documentary",
+            "system management",
+            "Printing/Packaging",
+            "O&amp;M/Overhaul",
+            "Warranty/Testing",
+            "Assembly/Construction",
+            "Operation management",
+            "Project management",
+            "Production Planning/Material Control"
+          ]
+        },
+        {
+          "name": "mechanical",
+          "children": [
+            "mechanical",
+            "Mechanical Design",
+            "Equipment",
+            "Machine made",
+            "Mechanical Drawing",
+            "CNC/CNC",
+            "stamping",
+            "Fixture",
+            "mold",
+            "welding",
+            "Injection",
+            "Casting/Forging",
+            "boiler",
+            "pneumatic",
+            "Rail",
+            "Aircraft Design and Manufacturing",
+            "Aircraft Repair/Maintenance",
+            "Train Design and Manufacturing",
+            "Train Repair/Maintenance",
+            "Ship Design and Manufacturing",
+            "Ship Repair/Maintenance",
+            "material management",
+            "Electromechanical",
+            "car",
+            "Robots/Artificial Intelligence"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Business/Trade",
+      "children": [
+        {
+          "name": "PR medium",
+          "children": [
+            "PR medium",
+            "PR",
+            "medium",
+            "event planning",
+            "activity execution",
+            "brand",
+            "Branding",
+            "brand cooperation",
+            "media consultant",
+            "media cooperation",
+            "media placement",
+            "Conference and exhibition",
+            "Planning manager"
+          ]
+        },
+        {
+          "name": "market business",
+          "children": [
+            "market business",
+            "business",
+            "brand",
+            "channel",
+            "market",
+            "planning",
+            "Bidding",
+            "plan",
+            "Analysis/Research",
+            "APP promotion",
+            "business development",
+            "SEM",
+            "SEO",
+            "city ​​manager",
+            "event planning",
+            "Customer Representative",
+            "commodity manager",
+            "business channel",
+            "market planning",
+            "market consultant",
+            "Marketing",
+            "marketing",
+            "Internet Marketing",
+            "Marketing Director",
+            "Site selection development",
+            "Game promotion",
+            "overseas market",
+            "e-commerce"
+          ]
+        },
+        {
+          "name": "Sale",
+          "children": [
+            "Sale",
+            "Channel/Distribution",
+            "Marketing",
+            "Tele-marketing",
+            "Customer service",
+            "sales support",
+            "promote",
+            "sales management",
+            "Sales Administration",
+            "Advertising sales",
+            "Agent sales"
+          ]
+        },
+        {
+          "name": "trading",
+          "children": [
+            "trading",
+            "customs broker",
+            "Trade commissioner",
+            "purchase",
+            "logistics",
+            "supply chain",
+            "Warehouse/Warehouse Management",
+            "Merchandiser",
+            "trade commissioner",
+            "shipping agent",
+            "Declaration",
+            "write off",
+            "schedule",
+            "Transportation",
+            "delivery",
+            "Quality Control",
+            "foreign trade manager"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Education and training",
+      "children": [
+        {
+          "name": "Teaching support",
+          "children": [
+            "Teaching support",
+            "Academic Affairs",
+            "teaching assistant",
+            "Curriculum planning",
+            "Course Consultant",
+            "course",
+            "Educational product development",
+            "education administration"
+          ]
+        },
+        {
+          "name": "teacher",
+          "children": [
+            "teacher",
+            "Early childhood education",
+            "language",
+            "math",
+            "foreign language",
+            "science",
+            "liberal arts",
+            "arts",
+            "sports",
+            "Vocational Technology",
+            "tutor",
+            "Primary School Teachers",
+            "Secondary School Teachers",
+            "lecturer",
+            "coach",
+            "early education",
+            "Postgraduate counseling",
+            "Research/Academic",
+            "Study abroad counseling",
+            "special education",
+            "language training"
+          ]
+        },
+        {
+          "name": "translate",
+          "children": [
+            "translate",
+            "Japanese",
+            "English",
+            "Russian",
+            "German",
+            "French",
+            "Spanish",
+            "other languages",
+            "Korean/Korean translation",
+            "simultaneous interpretation"
+          ]
+        },
+        {
+          "name": "consult",
+          "children": [
+            "consult",
+            "Consultant",
+            "researcher",
+            "training",
+            "Consulting data analysis",
+            "Consulting project management",
+            "Intellectual Property/Patent/Trademark Attorney"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Biomedical",
+      "children": [
+        {
+          "name": "medical care",
+          "children": [
+            "medical care",
+            "care",
+            "Internal Medicine",
+            "surgical",
+            "Specialist",
+            "dentistry",
+            "mental/spiritual",
+            "Traditional Chinese Medicine",
+            "anaesthetization",
+            "pharmacist",
+            "veterinary",
+            "Nutrition",
+            "doctor",
+            "medicine",
+            "Nurse",
+            "Medical Technology",
+            "pharmacy",
+            "Healthy plastic surgery",
+            "clinical",
+            "health care",
+            "Medical Marketing/Media"
+          ]
+        },
+        {
+          "name": "Biopharmaceutical",
+          "children": [
+            "Biopharmaceutical",
+            "Biological Engineering",
+            "clinical research",
+            "pharmaceutical",
+            "medical instruments",
+            "Pharmaceutical sales",
+            "biology",
+            "Raw communication",
+            "Biochemical/Drug",
+            "Clinical data analysis",
+            "pharmaceutical production",
+            "Pharmaceutical Marketing",
+            "Drug registration",
+            "Pharmaceutical project manager"
+          ]
+        },
+        {
+          "name": "chemical",
+          "children": [
+            "chemical",
+            "Chemical analysis",
+            "Cosmetics research and development",
+            "Color matching technology",
+            "laboratory technology",
+            "Food/Beverage R&amp;D",
+            "plastic engineer",
+            "Coating research and development",
+            "Paper R&amp;D",
+            "chemical machinery",
+            "Fine Chemicals",
+            "Equipment consumables",
+            "Petroleum and petrochemical",
+            "New Materials/Environmental Technology"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -4,56 +4,29 @@ import { SearchOutlined } from '@ant-design/icons';
 import './index.css'
 import Api from '../../utils/Api';
 import ResultItem from './ResultItem';
+import filterTreeData from  '../../static/english_categories.json';
 
-const treeData = [
-  {
-    title: 'Internet',
-    key: 'internet',
-    children: [
-      {
-        title: 'Software Development',
-        key: 'software Development',
-      },
-      {
-        title: 'Data Scientist',
-        key: 'data scientist',
-      }
-    ]
-  },
-  {
-    title: 'Business',
-    key: 'business',
-    children: [
-      {
-        title: '5',
-        key: '5',
-      },
-      {
-        title: '6',
-        key: '6',
-      },
-      {
-        title: '7',
-        key: '7',
-      },
-      {
-        title: '8',
-        key: '8',
-      },
-      {
-        title: '9',
-        key: '9',
-      },
-    ]
-  }
-]
+const treeData = loadTreeData(filterTreeData)
 const searchData = [
   {}, {}, {}, {}
 ]
 export default class SearchBody extends Component {
 
   state = {
-    sugOptions:[]
+    sugOptions:[],
+    filterChecked:treeData.map(item => item.key)
+  }
+
+  onFilterCheck = (checkedKeys, e) => {
+    this.setState({filterChecked:e.checkedNodes.map(item => item.key)})
+  }
+
+  onClearFilterCheck = () => {
+    this.setState({filterChecked:[]})
+  }
+
+  onSelectAllFilterCheck = () => {
+    this.setState({filterChecked:treeData.map(item => item.key)})
   }
 
   onSearch = (value) => {
@@ -86,20 +59,23 @@ export default class SearchBody extends Component {
               placeholder="type to search positions">
             </Input>
           </AutoComplete>
-          <div className='theme-box' style={{ padding: '15px', minHeight: '320px', maxHeight: '320px' }}>
+          <div className='theme-box' style={{ padding: '15px', minHeight: '355px', maxHeight: '355px' }}>
             <Typography.Title level={5} style={{ textAlign: 'center' }}>Category Filter</Typography.Title>
-            <div style={{ maxHeight: '220px', minHeight: '220px', overflow: 'auto', }}>
+            <div style={{ maxHeight: '255px', minHeight: '255px', overflow: 'auto', }}>
               <Tree
                 checkable
                 // onSelect={onSelect}
                 // onCheck={onCheck}
                 treeData={treeData}
+                defaultCheckedKeys={treeData.map(item => item.key)}
+                onCheck={this.onFilterCheck}
+                checkedKeys={this.state.filterChecked}
               />
             </div>
             <Divider style={{ margin: '0px', }}></Divider>
             <div style={{ display: 'flex', justifyContent: 'space-evenly', paddingTop: '15px', marginBottom: '20px' }}>
-              <div className='search-filter-button'>Clear All</div>
-              <div className='search-filter-button'>Select All</div>
+              <div className='search-filter-button' onClick={this.onClearFilterCheck}>Clear All</div>
+              <div className='search-filter-button' onClick={this.onSelectAllFilterCheck}>Select All</div>
               <div className='search-filter-button'>Apply</div>
             </div>
           </div>
@@ -121,10 +97,24 @@ export default class SearchBody extends Component {
         </div>
         <div style={{ display: 'inline-block', width: '67%', marginLeft: '30%', verticalAlign: 'top', minWidth: '200px' }}>
           <div className='theme-box' style={{ minHeight: '1000px', padding: '10px 20px 10px 20px' }}>
-            {searchData.map(() => <ResultItem></ResultItem>)}
+            {searchData.map(() => <><ResultItem></ResultItem><Divider style={{marginTop:'0px',marginBottom:'0px'}}></Divider></>)}
           </div>
         </div>
       </div>
     )
   }
+}
+function loadTreeData(originalData){
+  var newData = originalData.children.map(item => {
+    var category = {title:item.name, key: 'filter-data-first-'+item.name, children:[]};
+    category.children = item.children.map(subItem => {
+      var subCategory = {title:subItem.name, key:'filter-data-second-'+subItem.name, children:[]};
+      subCategory.children = subItem.children.map(subSubItem => {
+        return {title: subSubItem, key: 'filter-data-third-' + subSubItem}
+      })
+      return subCategory;
+    })
+    return category;
+  })
+  return newData;
 }

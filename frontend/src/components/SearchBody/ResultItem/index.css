@@ -9,12 +9,26 @@
 
 .search-result-box:hover {
     border-radius: 5px;
-    /* border: 1px solid #57068C; */
+    border: 1px solid #57068C;
     background: #ffffff;
     padding-top: 20px;
     padding-bottom: 20px;
     margin-left: 10px;
-    box-shadow: 5px 5px 10px #858585,
+    margin-right: 10px;
+    box-shadow: 5px 5px 10px #81668f,
     -5px -5px 10px #ffffff;
     z-index:10000;
+}
+.search-result-avatar{
+    display:inline-block;
+    justify-content:space-between;
+    min-width: 50px;
+    min-height: 50px;
+    color:white;
+    font-size:20px;
+    border-radius:12px;
+    line-height:50px;
+    text-align:center;
+    user-select: none;
+    vertical-align:top;
 }

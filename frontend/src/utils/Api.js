@@ -26,7 +26,7 @@ export const apis = {
     },
     'searchSuggestions':{
         path:'/api/homepage/searchsuggestions',
-        method:'post',
+        method:'get',
         params:['content']
     },
     'search':{
