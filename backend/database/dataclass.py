@@ -90,14 +90,14 @@ class GeneralPost(Base):
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
     content = Column(String(1000), nullable=False)
-    publisher_email = Column(String(100), nullable=False)
+    # publisher_email = Column(String(100), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
     post_title = Column(String(100),nullable=False)
 
     comment_relationship = relationship("Comment", back_populates='generalpost_comment')
 
     def __repr__(self):
-        return f"<General Post id={self.id} post title={self.post_title} publisher email={self.publisher_email} Date={self.Datetime} content ={self.content}>"
+        return f"<General Post id={self.id} post title={self.post_title} Date={self.Datetime} content ={self.content}>"
 
 class PostHashtag(Base):
     __tablename__ = 'postHashtags'

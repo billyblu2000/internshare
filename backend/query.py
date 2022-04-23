@@ -82,7 +82,7 @@ for i in post:
 content_list.append(post[i].content)
 
 5. check_status
-variable name: email
+varaible name: email
 given student email and check that student's job application status,
 only given back the job post id and status
 

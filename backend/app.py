@@ -37,17 +37,20 @@ mail = Mail(app)
 # log = logging.getLogger('werkzeug')
 # log.disabled = True
 
-with open(os.getcwd()+'/positions.json', 'r') as f:
+#/backend
+
+with open(os.getcwd()+'/backend/positions.json', 'r') as f:
   global_position = json.load(f)
 
 
 # r = redis.Redis(host='localhost', port=6379, db=0)
 
 # for session
-# session["email"] = email
+# session["email"] = "yl7002@nyu.edu"
 # session["type"] = "student"
-# session["color"] = color
-# session["name'] = username
+# session["color"] = "ffffff"
+# session["name"] = 'Yumeng Lu'
+# session["major"] = "computer science"
 
 
 # login page
@@ -101,7 +104,6 @@ def send_verification_email():
     mail.send(msg)
     return json.dumps({"status":"success"})
 
-
 # verify
 # student
 @app.route('/api/register/student/verify',methods = ['GET','POST'])
@@ -119,7 +121,6 @@ def verify_code():
         return json.dumps({"status": "code does not match"})
     else:
         return json.dumps({"status": "code does not match"})
-
 
 @app.route('/api/register/student',methods = ['GET','POST'])
 def student_register():
@@ -169,52 +170,52 @@ def company_verify():
     # need api?
     return json.dumps({"status":"success"})
 
-@app.route("/api/recommendpost")
-def recommendPost():
+@app.route("/api/recommendpost/jobs")
+def recommendPostjobs():
     # get the major from the databases;
     # get graduation time from the databases;
     # get the desired post from the databases
     # based on job requirements and graduation time
+    res = {}
     if "major" in session:
         major = session["major"]
-
     # search for five jobPosts and five General Posts
     # how to retreive the data
+    # get the job post id
+    result = local_session.query(PostHashtag).filter(PostHashtag.hashtag == major).all()
+    list_id = []
+    for i in range(len(result)):
+        list_id.append(result[i].jobpost_id)
 
-    # 10 job posts
-    jobs = local_session.query()
-
-    # based on time descendent
-    generals = local_session.query()
-
-    res = {
-        "job": {},
-        "general": {}
-    }
-    for job in jobs:
-        res["job"][job.id] = {
-            "title": job.title,
+    # cur job post
+    for id in list_id:
+        job = local_session.query(JobPost).filter(JobPost.id == id).first()
+        res[job.id] = {
+            "title": job.post_title,
             "date": job.Datetime,
             "description": job.job_description,
             "company": job.company_name,
             "student_email": job.student_email,
-            "requirement": job.jon_requirements,
+            "requirement": job.job_requirements,
         }
-    for general in generals:
-        res["general"][general.id] = {
+    return res
+
+@app.route("/api/recommendpost/generals")
+def recommendPostGenerals():
+    res = {}
+    post = local_session.query(GeneralPost).all()
+    content_list = []
+    for i in range(min(5,len(post))):
+        general =post[i]
+        res[general.id] = {
             "studennt_email": general.student_email,
             "company": general.company_email,
-            # company email or company name
-            # why need company email or student_email
             "content": general.content,
-            "title": general.title,
-            "publishser": general.publisher_email,
+            "title": general.post_title,
             "date": general.Datetime
         }
-    res["status"] = "success"
-    return json.dumps(res)
-
-
+    print(res)
+    return res
 
 
 @app.route("/api/applystatus")
@@ -225,19 +226,26 @@ def check_status():
     email = session["email"]
     result = local_session.query(Application).filter(Application.student_email == email).all()
     res = {}
+    # retrieve all info abt the job
     for i in range(len(result)):
         cur = result[i]
         post_id = cur.post_id
         status = cur.status
-        res[post_id] = status
-    res["status"] = "success"
-    # no status in the applications
-    return json.dumps(res)
+        print('\n\n\n\n', status,post_id, '\n\n\n\n\n')
+        job_info = local_session.query(JobPost).filter(JobPost.id == post_id).first()
+        res[post_id] = {
+            "status": status,
+            "title":job_info.post_title,
+            "company_name":job_info.company_name,
+            "start":job_info.start_date,
+            "end":job_info.end_time
+            }
+    print(res)
+    return res
 
 @app.route("/api/homepage/searchsuggestions",methods = ['GET'])
 def hp_search_suggestion():
-    # content = request.args["content"]
-    content = "soft"
+    content = request.args["content"]
     # search in the hashtag??
     suggestions = []
     for i in global_position:
@@ -250,42 +258,60 @@ def hp_search_suggestion():
     return json.dumps(suggestions)
 
 
-@app.route("/api/homepage/searchone",methods = ['GET','POST'])
-def search_particular_post():
+@app.route("/api/homepage/searchone/jobpost",methods = ['GET','POST'])
+def search_particular_post_job():
     filter = request.args["filter"]
+    res = {}
     # search inside the content to get results
-    jobs = local_session.query()
-    generals = local_session.query()
-    res = {
-        "job": {},
-        "general": {}
-    }
-    for job in jobs:
-        res["job"][job.id] = {
-            "title": job.title,
-            "date": job.Datetime,
-            "description": job.job_description,
-            "company": job.company_name,
-            "student_email": job.student_email,
-            "requirement": job.jon_requirements,
-        }
-    for general in generals:
-        res["general"][general.id] = {
-            "studennt_email": general.student_email,
-            "company": general.company_email,
-            # company email or company name
-            # why need company email or student_email
-            "content": general.content,
-            "title": general.title,
-            "publishser": general.publisher_email,
-            "date": general.Datetime
-        }
-    res["status"] = "success"
-    return json.dumps(res)
+    post = local_session.query(JobPost).all()
+    content_list = []
+    for i in post:
+        content_list.append(post[i].job_description)
+    # same with the general post
+    post = local_session.query(GeneralPost).all()
+    content_list = []
+    for i in post:
+        content_list.append(post[i].content)
 
 
-@app.route("/getpost")
+    # for job in jobs:
+    #     res["job"][job.id] = {
+    #         "title": job.title,
+    #         "date": job.Datetime,
+    #         "description": job.job_description,
+    #         "company": job.company_name,
+    #         "student_email": job.student_email,
+    #         "requirement": job.jon_requirements,
+    #     }
+    return res
+
+@app.route("/api/homepage/searchone/general",methods = ['GET','POST'])
+def search_particular_post_general():
+    filter = request.args["filter"]
+    res = {}
+    # search inside the content to get results
+    # generals = local_session.query()
+
+    # for general in generals:
+    #     res["general"][general.id] = {
+    #         "studennt_email": general.student_email,
+    #         "company": general.company_email,
+    #         # company email or company name
+    #         # why need company email or student_email
+    #         "content": general.content,
+    #         "title": general.title,
+    #         "date": general.Datetime
+    #     }
+    return res
+
+
+@app.route("/getpostcomment")
 def comment():
+    content = request.get_json()
+    page_num = content["pagenumber"]
+    id = content["jobpostid"]
+    result = local_session
+    # what is comment_id/ target_id/ from/ likes
     return json.dumps()
 
 @app.errorhandler(404)
@@ -300,11 +326,10 @@ if __name__ == "__main__":
     cursor.execute(f'CREATE DATABASE IF NOT EXISTS {DB_NAME}')
     db.select_db(DB_NAME)
     cursor.execute('CREATE TABLE IF NOT EXISTS user (id INT(6), lastname VARCHAR(30), firstname VARCHAR(30), email VARCHAR(30))')
-    app.run("127.0.0.1", 5000,debug = "True")
     print("ready to run!")
+    app.run("127.0.0.1", 5000,debug = "True")
     # export FLASK_ENV=development
     # export FLASK_APP=backend/app.py
     # flask run
 
 
-# - Hash tag relation ship, major and related hashtag, also users’ personal interest
