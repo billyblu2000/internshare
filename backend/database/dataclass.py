@@ -90,7 +90,6 @@ class GeneralPost(Base):
     company_email = Column(String(100), ForeignKey("companies.email"))
     student_email = Column(String(100), ForeignKey("students.email"))
     content = Column(String(1000), nullable=False)
-    publisher_email = Column(String(100), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
     post_title = Column(String(100),nullable=False)
 
@@ -114,10 +113,13 @@ class JobPost(Base):
     Datetime = Column(DateTime(), default=datetime.utcnow)
     job_description = Column(String(1000), nullable=False)
     job_requirements = Column(String(1000), nullable=False)
-    start_date = Column(DateTime())
-    end_time = Column(DateTime())
+    job_start_date = Column(DateTime())
+    job_end_time = Column(DateTime())
+    apply_start_date = Column(DateTime())
+    apply_end_time = Column(DateTime(),nullable=False)
     company_name = Column(String(100),nullable=False)
     post_title = Column(String(100),nullable=False)
+    estimate_salary = Column(Integer())
 
     memberships_c = relationship("Application", back_populates='jobpost_rela')
     comment_relationship = relationship("Comment", back_populates='jobpost_comment')
@@ -125,7 +127,8 @@ class JobPost(Base):
 
     def __repr__(self):
         return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title} publisher email={self.publisher_email} Date={self.Datetime} description ={self.description} requirements={self.job_requirements} " \
-               f"start date={self.start_date} end date={self.end_time}>"
+               f"job start date={self.job_start_date} job end date={self.job_end_time} apply start date={self.apply_start_date}>" \
+               f"apply end date={self.apply_end_time} estimate salary ={self.estimate_salary}"
 
 
 class Hashtag(Base):
@@ -158,6 +161,7 @@ class Profile(Base):
     awards = Column(String(500), nullable=False)
     activities = Column(String(500), nullable=False)
     skills = Column(String(500), nullable=False)
+    public = Column(Boolean(), nullable=False)
 
     stu_relationship = relationship("Student", back_populates='pro_relationship')
 
@@ -165,7 +169,7 @@ class Profile(Base):
         return f"<Profile id={self.id} email ={self.email} name={self.name} " \
                f"CV id={self.CV_id} project experience={self.project_experience}" \
                f"internship experience={self.internship_experience} education background={self.education_background}" \
-               f"awards={self.awards} activities={self.activities} skills={self.skills}>"
+               f"awards={self.awards} activities={self.activities} skills={self.skills} public={self.public}>"
 
 
 class Comment(Base):
