@@ -51,7 +51,7 @@ jobpost = local_session.query(jobPosts).filter(jobPosts.id == id).all()
 
 #this is to return the jobpost information and maybe you want to save it in a list?
 
-generalposts = local_session.query(generalPosts).order_by(generalPosts.Datetime.desc()).all()
+generalposts = local_session.query(GeneralPost).order_by(generalPosts.Datetime.desc()).limit(5).all()
 
 #iterate again to get 5? haha
 
@@ -94,4 +94,41 @@ or maybe do like a dictionary with jobpost id as key and status as value
 result[i].post_id #return the post_id
 result[i].status #return the status
 
+
+
+6. Given a job post id, retrieve all comment related to that job post, if it is a
+student, join the table with student to get student name and color as well:
+i.e the returned columns should look like:
+
+id, company_email, student_email, jpost_id, comment_id,
+content,Datetime, Likes, student_name, student_color
+
+
+7. given content, jpost_id, student_email, write the comment into comment table
+
+
+8. also for the filter hashtag billy updated in our wechat group,
+could you add them to the hashtag table ?
+
+
+9. given profile id, change profile stauts: private-> public or public -> private
+
+
+10. given a student email and retrieve all his post
+
+
+11. given post_id, view all applicants of a job
+
+
+12. given post id and post_id, change application status
+
+
+13. given a job post id, delete that from table
+
+
+14. given comment id, increase the like number by one
+
+
+
+You can test if these are correct by using local_session and then i can directly copy post them to app.py.
 """

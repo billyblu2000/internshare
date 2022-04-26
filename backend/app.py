@@ -203,10 +203,10 @@ def recommendPostjobs():
 @app.route("/api/recommendpost/generals")
 def recommendPostGenerals():
     res = {}
-    post = local_session.query(GeneralPost).all()
+    generalposts = local_session.query(GeneralPost).order_by(GeneralPost.Datetime.desc()).limit(5).all()
     content_list = []
-    for i in range(min(5,len(post))):
-        general =post[i]
+    for i in range(min(5,len(generalposts))):
+        general =generalposts[i]
         res[general.id] = {
             "studennt_email": general.student_email,
             "company": general.company_email,
@@ -214,7 +214,6 @@ def recommendPostGenerals():
             "title": general.post_title,
             "date": general.Datetime
         }
-    print(res)
     return res
 
 
@@ -240,7 +239,6 @@ def check_status():
             "start":job_info.start_date,
             "end":job_info.end_time
             }
-    print(res)
     return res
 
 @app.route("/api/homepage/searchsuggestions",methods = ['GET'])
@@ -260,7 +258,7 @@ def hp_search_suggestion():
 
 @app.route("/api/homepage/searchone/jobpost",methods = ['GET','POST'])
 def search_particular_post_job():
-    filter = request.args["filter"]
+    filter = request.args["s"]
     res = {}
     # search inside the content to get results
     post = local_session.query(JobPost).all()
@@ -270,10 +268,9 @@ def search_particular_post_job():
     # same with the general post
     post = local_session.query(GeneralPost).all()
     content_list = []
+    page_num = request.args["pagenumber"]
     for i in post:
         content_list.append(post[i].content)
-
-
     # for job in jobs:
     #     res["job"][job.id] = {
     #         "title": job.title,
@@ -288,6 +285,7 @@ def search_particular_post_job():
 @app.route("/api/homepage/searchone/general",methods = ['GET','POST'])
 def search_particular_post_general():
     filter = request.args["filter"]
+    page_num = request.args["pagenumber"]
     res = {}
     # search inside the content to get results
     # generals = local_session.query()
@@ -296,8 +294,6 @@ def search_particular_post_general():
     #     res["general"][general.id] = {
     #         "studennt_email": general.student_email,
     #         "company": general.company_email,
-    #         # company email or company name
-    #         # why need company email or student_email
     #         "content": general.content,
     #         "title": general.title,
     #         "date": general.Datetime
@@ -308,7 +304,6 @@ def search_particular_post_general():
 @app.route("/getpostcomment")
 def comment():
     content = request.get_json()
-    page_num = content["pagenumber"]
     id = content["jobpostid"]
     result = local_session
     # what is comment_id/ target_id/ from/ likes
