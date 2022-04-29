@@ -10,15 +10,15 @@ export default function Me() {
     const nav = useNavigate();
 
     return (
-        <div style={{ marginTop: '50px' }}>
-            <div style={{ float: 'left', width: '200px', paddingTop: '30px' }}>
+        <div style={{ marginTop: '50px', verticalAlign:'top', marginBottom: '50px' }}>
+            <div style={{ position:'fixed', width: '15%', paddingTop: '30px', minWidth:'200px' }}>
                 {getDivButton('profile', 'Profile', selected, setSelected, nav, '/main/me/profile')}
                 {getDivButton('applies', 'My Applies', selected, setSelected, nav, '/main/me/applies')}
                 {getDivButton('posts', 'My Posts', selected, setSelected, nav, '/main/me/posts')}
                 {getDivButton('messages', 'Messages', selected, setSelected, nav, '/main/me/messages')}
                 {getDivButton('settings', 'Settings', selected, setSelected, nav, '/main/me/settings')}
             </div>
-            <div style={{ float: 'left' }}>
+            <div style={{ marginLeft:'15%', width:'85%', marginTop:'80px' }}>
                 <Outlet></Outlet>
             </div>
         </div>

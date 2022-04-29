@@ -1,0 +1,11 @@
+.profile-field-title{
+    background-color:#57068C;
+    color:white;
+    padding:5px;
+    border-radius: 2px;
+    font-size:18px
+}
+.profile-field-content{
+    margin-top: 10px;
+    margin-bottom: 50px;
+}

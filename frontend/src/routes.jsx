@@ -6,6 +6,12 @@ import Login from './pages/Login'
 import Search from './pages/Search'
 import Space from './pages/Space'
 import Me from './pages/Me'
+import Profile from './pages/Me/Profile'
+import Applies from './pages/Me/Applies'
+import Posts from './pages/Me/Posts'
+import Messages from './pages/Me/Messages'
+import Settings from './pages/Me/Settings'
+import User from './pages/User'
 import PostDetailed from './components/PostDetailed'
 
 const error404 = (
@@ -50,27 +56,27 @@ const routes = [
                 children: [
                     {
                         path: 'profile',
-                        element: 'profile',
+                        element: <Profile/>,
                         children: []
                     },
                     {
                         path: 'applies',
-                        element: 'app',
+                        element: <Applies></Applies>,
                         children: []
                     },
                     {
                         path: 'posts',
-                        element: 'post',
+                        element: <Posts></Posts>,
                         children: []
                     },
                     {
                         path: 'messages',
-                        element: 'mes',
+                        element: <Messages></Messages>,
                         children: []
                     },
                     {
                         path: 'settings',
-                        element: 'set',
+                        element: <Settings></Settings>,
                         children: []
                     }
                 ]
@@ -78,6 +84,11 @@ const routes = [
             {
                 path: 'post/:id',
                 element: <PostDetailed/>,
+                children: []
+            },
+            {
+                path: 'user/:id',
+                element: <User/>,
                 children: []
             }
         ]
