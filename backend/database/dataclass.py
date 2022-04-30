@@ -116,7 +116,7 @@ class JobPost(Base):
     job_start_date = Column(DateTime())
     job_end_time = Column(DateTime())
     apply_start_date = Column(DateTime())
-    apply_end_time = Column(DateTime(),nullable=False)
+    apply_end_date = Column(DateTime(),nullable=False)
     company_name = Column(String(100),nullable=False)
     post_title = Column(String(100),nullable=False)
     estimate_salary = Column(Integer())
@@ -126,9 +126,9 @@ class JobPost(Base):
     jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost')
 
     def __repr__(self):
-        return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title} publisher email={self.publisher_email} Date={self.Datetime} description ={self.description} requirements={self.job_requirements} " \
+        return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title}  Date={self.Datetime} description ={self.job_description} requirements={self.job_requirements} " \
                f"job start date={self.job_start_date} job end date={self.job_end_time} apply start date={self.apply_start_date}>" \
-               f"apply end date={self.apply_end_time} estimate salary ={self.estimate_salary}"
+               f"apply end date={self.apply_end_date} estimate salary ={self.estimate_salary}"
 
 
 class Hashtag(Base):
@@ -182,9 +182,7 @@ class Comment(Base):
     comment_id = Column(Integer(), ForeignKey("comments.id"))
     content = Column(String(500), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
-    target_id = Column(Integer(), nullable=False)
-    From = Column(Integer(), nullable=False)
-    Likes = Column(Integer(), nullable=False)
+    Likes = Column(Integer())
 
     student_comment = relationship("Student", back_populates='comment_relationship')
     company_comment = relationship("Company", back_populates='comment_relationship')
@@ -193,6 +191,8 @@ class Comment(Base):
     comment_comment = relationship("Comment", remote_side=[id])
 
     def __repr__(self):
-        return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} " \
-               f"target={self.target_id} From={self.From} Likes={self.Likes}>"
+        return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} \
+                Likes={self.Likes}>"
+
+
 

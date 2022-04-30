@@ -103,19 +103,43 @@ i.e the returned columns should look like:
 id, company_email, student_email, jpost_id, comment_id,
 content,Datetime, Likes, student_name, student_color
 
+result = local_session.query(Comment,Student.name,Student.color).filter(Comment.jpost_id == 2).filter(
+Comment.student_email == Student.email).all()
+
 
 7. given content, jpost_id, student_email, write the comment into comment table
+
+data=[
+    {
+        "content":"heyheyhey",
+        "jpost_id":"2",
+        "student_email":"yl7002@nyu.edu"
+    }
+]
+
+for a in data:
+    new_data = Comment(content=a["content"],jpost_id=a["jpost_id"], student_email=a["student_email"])
+    local_session.add(new_data)
+    local_session.commit()
 
 
 8. also for the filter hashtag billy updated in our wechat group,
 could you add them to the hashtag table ?
 
 
+
+
 9. given profile id, change profile stauts: private-> public or public -> private
 
+user = local_session.query(Profile).filter(Profile.id == 1).first()
+user.public = 1 or 0 depend on if you want it to be public or private
+local_session.commit()
 
 10. given a student email and retrieve all his post
 
+job_post = local_session.query(JobPost).filter(JobPost.student_email == "yl7002@nyu.edu").all()
+
+general_post = local_session.query(GeneralPost).filter(GeneralPost.student_email == "yl7002@nyu.edu").all()
 
 11. given post_id, view all applicants of a job
 
