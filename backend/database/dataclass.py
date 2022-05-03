@@ -193,7 +193,7 @@ class Comment(Base):
 
     def __repr__(self):
         return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} \
-                Likes={self.Likes}>"
+                Likes={self.Likes} comment_id = {self.comment_id}>"
 
 
 

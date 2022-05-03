@@ -4,6 +4,7 @@ from database.dataclass import *
 
 local_session = sessions()
 
-user_to_delete = local_session.query(JobPost).filter(JobPost.id == 2).first()
-local_session.delete(user_to_delete)
-local_session.commit()
+result = local_session.query(Comment,Student.name,Student.color).filter(Comment.jpost_id == 3).filter(
+Comment.student_email == Student.email).all()
+
+print(result)
