@@ -8,3 +8,6 @@ result = local_session.query(Comment,Student.name,Student.color).filter(Comment.
 Comment.student_email == Student.email).all()
 
 print(result)
+
+print(result[0][0].comment_id)
+

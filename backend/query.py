@@ -145,7 +145,7 @@ general_post = local_session.query(GeneralPost).filter(GeneralPost.student_email
 #like you mean student email? I will return student email and if you want something else
 please tell me
 
-students = local_session.query(Application.student_email).filter(Application.post_id == 2).all()
+students = local_session.query(Application).filter(Application.post_id == 2).all()
 
 12. given post id and post_id, change application status
 
