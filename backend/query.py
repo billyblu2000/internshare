@@ -107,7 +107,7 @@ result = local_session.query(Comment,Student.name,Student.color).filter(Comment.
 Comment.student_email == Student.email).all()
 
 
-7. given content, jpost_id, student_email, write the comment into comment table
++ 7. given content, jpost_id, student_email, write the comment into comment table
 
 data=[
     {
@@ -127,15 +127,13 @@ for a in data:
 could you add them to the hashtag table ?
 
 
-
-
-9. given profile id, change profile stauts: private-> public or public -> private
++ 9. given profile id, change profile stauts: private-> public or public -> private
 
 user = local_session.query(Profile).filter(Profile.id == 1).first()
 user.public = 1 or 0 depend on if you want it to be public or private
 local_session.commit()
 
-10. given a student email and retrieve all his post
++ 10. given a student email and retrieve all his post
 
 job_post = local_session.query(JobPost).filter(JobPost.student_email == "yl7002@nyu.edu").all()
 
@@ -147,28 +145,50 @@ please tell me
 
 students = local_session.query(Application.student_email).filter(Application.post_id == 2).all()
 
-12. given post id and post_id, change application status
++ 12. given post id and post_id, change application status
 
     user = local_session.query(Application).filter(Application.id == 1).first()
     user.status = "Pending"
     local_session.commit()
 
-13. given a job post id, delete that from table
-
++ 13. given a job post id, delete that from table
     user_to_delete = local_session.query(JobPost).filter(JobPost.id == 2).first()
     local_session.delete(user_to_delete)
     local_session.commit()
 
-14. given comment id, increase the like number by one
++ 14. given comment id, increase the like number by one
 
     comment = local_session.query(Comment).filter(Comment.id == 1).first()
     comment.Likes += 1
     local_session.commit()
 
-
-
-
-
-
 You can test if these are correct by using local_session and then i can directly copy post them to app.py.
 """
+
+'''
+// POST PAGE
+15. create job post,
+btw is the Datetime column refers to the time when the date is written into the database?
+
+
+16. given jobpost id. Update a job post: e.g. update the end date column
+
+// APPLIES
+17. given jobpost id and student email, delete their application from the application table
+
+
+
+//PROFILE PAGE
+18. get profile
+given user-email, get the profile
+
+19. update profile
+given user-email, update this profile
+
+
+20. create profile
+given username and all related info, writing the data to the databases
+
+'''
+
+
