@@ -198,7 +198,7 @@ def recommendPostjobs():
             "student_email": job.student_email,
             "requirement": job.job_requirements,
         }
-    return res
+    return json.dumps(res)
 
 @app.route("/api/recommendpost/generals")
 def recommendPostGenerals():
@@ -214,8 +214,7 @@ def recommendPostGenerals():
             "title": general.post_title,
             "date": general.Datetime
         }
-    return res
-
+    return json.dumps(res)
 
 @app.route("/api/applystatus")
 def check_status():
@@ -239,7 +238,7 @@ def check_status():
             "start":job_info.start_date,
             "end":job_info.end_time
             }
-    return res
+    return json.dumps(res)
 
 @app.route("/api/homepage/searchsuggestions",methods = ['GET'])
 def hp_search_suggestion():
@@ -255,10 +254,9 @@ def hp_search_suggestion():
     # extract words from the company and job title
     return json.dumps(suggestions)
 
-
 @app.route("/api/homepage/searchone/jobpost",methods = ['GET','POST'])
 def search_particular_post_job():
-    filter = request.args["s"]
+    filter = request.args["filter"]
     res = {}
     # search inside the content to get results
     post = local_session.query(JobPost).all()
@@ -301,13 +299,172 @@ def search_particular_post_general():
     return res
 
 
-@app.route("/getpostcomment")
+@app.route("/api/getpostcomment",methods = ['GET','POST'])
 def comment():
     content = request.get_json()
     id = content["jobpostid"]
-    result = local_session
-    # what is comment_id/ target_id/ from/ likes
-    return json.dumps()
+    result = local_session.query(Comment, Student.name, Student.color).filter(Comment.jpost_id == id).filter(
+        Comment.student_email == Student.email).all()
+    try:
+        result = local_session.query(Comment, Student.name, Student.color).filter(Comment.jpost_id == id).filter(
+        Comment.student_email == Student.email).all()
+        res = {}
+        res["status"] = "ok"
+        res["comment"] = []
+        for i in range(len(result)):
+            comment = result[i]
+            # check if it is first layer
+            if comment.comment_id == id:
+                res.comment.append({
+                    "id": comment[0].id,
+                    "content": comment[0].content,
+                    "datetime": comment[0].Datetime,
+                    "userId": comment[0].Datetime,
+                    "avatar": comment.color,
+                    "name": comment.name,
+                    "descendent":[]
+                })
+            # if it is the second layer
+            else:
+                target = comment.comment_id
+                for each in res.comment:
+                    if each["id"] == target:
+                        each["descendent"].append({
+                            "id": comment[0].id,
+                            "content": comment[0].content,
+                            "datetime": comment[0].Datetime,
+                            "userId": comment[0].Datetime,
+                            "avatar": comment.color,
+                            "name": comment.name,
+                        })
+                    else:
+                        continue
+        return json.dumps(res)
+    except:
+        return json.dumps(
+            {
+              "status":"post id DNE",
+              "comments":[]
+            })
+
+
+@app.route("/api/create/comment/job",methods=["GET","POST"])
+def creat_comment():
+    content = request.get_json()
+    comment_content = content["content"]
+    id = content["id"]
+    email = content["email"]
+    target = content["target_id"]
+    try:
+        new_data = Comment(content=comment_content,jpost_id=id, comment_id = target,student_email=email)
+        local_session.add(new_data)
+        local_session.commit()
+        return json.dumps({"status":"ok"})
+    except:
+        return json.dumps({"status":"fail"})
+
+@app.route("/api/change/status",methods=["GET","POST"])
+def change_appication_status():
+    content = request.get_json()
+    student_email = content["email"]
+    job_id = content["job_id"]
+    status = content["status"]
+    try:
+        user = local_session.query(Application).filter(Application.id == 1).first()
+        user.status = status
+        local_session.commit()
+        return json.dumps({"status": "ok"})
+    except:
+        return json.dumps({"status": "fail"})
+
+@app.route("/api/view/applicants",methods=["GET","POST"])
+def view_applicants():
+    content = request.get_json()
+    try:
+        res = {}
+        res["status"]="ok"
+        res["applicants"]=[]
+        job_id = content["job_id"]
+        result = []
+        for i in range(len(result)):
+            applicant = result[i]
+            res["applicants"].append({
+
+            })
+        return json.dumps(res)
+    except:
+        return json.dumps({"status": "fail"})
+
+@app.route('/api/delete/jobpost',methods=["GET","POST"])
+def delete_job_post():
+    try:
+        content = request.get_json()
+        job_id = content["job_id"]
+        user_to_delete = local_session.query(JobPost).filter(JobPost.id == job_id).first()
+        local_session.delete(user_to_delete)
+        local_session.commit()
+        return json.dumps({"status":"ok"})
+    except:
+        return json.dumps({"status":"fail"})
+
+
+@app.route('/api/like/jobpost',methods=["GET","POST"])
+def like_jobpost():
+    try:
+        content = request.get_json()
+        comment_id = content["comment_id"]
+        comment = local_session.query(Comment).filter(Comment.id == comment_id).first()
+        comment.Likes += 1
+        local_session.commit()
+        return json.dumps({"status": "ok"})
+    except:
+        return json.dumps({"status": "fail"})
+
+
+@app.route('/api/change/profile/stauts',methods=["GET","POST"])
+def change_profile_status():
+    try:
+        content = request.get_json()
+        new_status = content["status"]
+        user = local_session.query(Profile).filter(Profile.id == 1).first()
+        user.public = new_status
+        local_session.commit()
+        return json.dumps({"status": "ok"})
+    except:
+        return json.dumps({"status": "fail"})
+
+@app.route('/api/check/post/jobs',methods=['GET','POST'])
+def check_post_job():
+    try:
+        email = session["email"]
+        job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
+        res = {}
+        return json.dumps(res)
+    except:
+        return json.dumps({"status": "fail"})
+
+
+@app.route('/api/create/post/jobs')
+def create_job_post():
+
+
+@app.route('/api/update/post/jobs')
+def update_job_post():
+
+
+
+
+@app.route('/api/check/post/generals',methods=['GET','POST'])
+def check_post_general():
+    try:
+        email = session["email"]
+        general_post = local_session.query(GeneralPost).\
+            filter(GeneralPost.student_email == email).all()
+        res = {}
+        return json.dumps(res)
+    except:
+        return json.dumps({"status": "fail"})
+
 
 @app.errorhandler(404)
 def index(error):
