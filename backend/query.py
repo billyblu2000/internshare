@@ -142,15 +142,31 @@ job_post = local_session.query(JobPost).filter(JobPost.student_email == "yl7002@
 general_post = local_session.query(GeneralPost).filter(GeneralPost.student_email == "yl7002@nyu.edu").all()
 
 11. given post_id, view all applicants of a job
+#like you mean student email? I will return student email and if you want something else
+please tell me
 
+students = local_session.query(Application.student_email).filter(Application.post_id == 2).all()
 
 12. given post id and post_id, change application status
 
+    user = local_session.query(Application).filter(Application.id == 1).first()
+    user.status = "Pending"
+    local_session.commit()
 
 13. given a job post id, delete that from table
 
+    user_to_delete = local_session.query(JobPost).filter(JobPost.id == 2).first()
+    local_session.delete(user_to_delete)
+    local_session.commit()
 
 14. given comment id, increase the like number by one
+
+    comment = local_session.query(Comment).filter(Comment.id == 1).first()
+    comment.Likes += 1
+    local_session.commit()
+
+
+
 
 
 

@@ -31,11 +31,11 @@ class Student(Base):
     profile_id = Column(Integer(), ForeignKey("profiles.id"))
     color = Column(String(100),nullable=False)
 
-    pro_relationship = relationship('Profile', back_populates='stu_relationship')
-    memberships_a = relationship("Application", back_populates='student_rela')
-    jobpost_relationship = relationship("JobPost")
-    generalpost_relationship = relationship("GeneralPost")
-    comment_relationship = relationship("Comment", back_populates='student_comment')
+    pro_relationship = relationship('Profile', back_populates='stu_relationship',passive_deletes=True)
+    memberships_a = relationship("Application", back_populates='student_rela',passive_deletes=True)
+    jobpost_relationship = relationship("JobPost",passive_deletes=True)
+    generalpost_relationship = relationship("GeneralPost",passive_deletes=True)
+    comment_relationship = relationship("Comment", back_populates='student_comment',passive_deletes=True)
 
     def __repr__(self):
         return f"<Student id={self.id} name={self.name} email={self.email} major={self.major} graduation time={self.graduation_time} " \
@@ -51,7 +51,7 @@ class Company(Base):
 
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
-    comment_relationship = relationship("Comment", back_populates='company_comment')
+    comment_relationship = relationship("Comment", back_populates='company_comment',passive_deletes=True)
 
     def __repr__(self):
         return f"<Company id={self.id} name={self.name} email={self.email}>"
@@ -75,8 +75,8 @@ class Application(Base):
     Datetime = Column(DateTime(), default=datetime.utcnow)
     status = Column(String(100))
 
-    student_rela = relationship('Student', back_populates='memberships_a')
-    jobpost_rela = relationship('JobPost', back_populates='memberships_c')
+    student_rela = relationship('Student', back_populates='memberships_a',passive_deletes=True)
+    jobpost_rela = relationship('JobPost', back_populates='memberships_c',passive_deletes=True)
 
     def __repr__(self):
         return f"<Application id={self.id} student email={self.student_email} post id={self.post_id} " \
@@ -93,16 +93,17 @@ class GeneralPost(Base):
     Datetime = Column(DateTime(), default=datetime.utcnow)
     post_title = Column(String(100),nullable=False)
 
-    comment_relationship = relationship("Comment", back_populates='generalpost_comment')
+    comment_relationship = relationship("Comment", back_populates='generalpost_comment',passive_deletes=True)
 
     def __repr__(self):
         return f"<General Post id={self.id} post title={self.post_title} Date={self.Datetime} content ={self.content}>"
 
 class PostHashtag(Base):
     __tablename__ = 'postHashtags'
+
     id = Column(Integer, primary_key=True, index=True)
-    hashtag = Column(String(100),ForeignKey('hashtags.hashtag'))
-    jobpost_id = Column(Integer, ForeignKey('jobPosts.id'))
+    hashtag = Column(String(100),ForeignKey('hashtags.hashtag',ondelete='CASCADE',onupdate='CASCADE'))
+    jobpost_id = Column(Integer, ForeignKey('jobPosts.id',ondelete='CASCADE',onupdate='CASCADE'))
 
 class JobPost(Base):
     __tablename__ = 'jobPosts'
@@ -121,9 +122,9 @@ class JobPost(Base):
     post_title = Column(String(100),nullable=False)
     estimate_salary = Column(Integer())
 
-    memberships_c = relationship("Application", back_populates='jobpost_rela')
-    comment_relationship = relationship("Comment", back_populates='jobpost_comment')
-    jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost')
+    memberships_c = relationship("Application", back_populates='jobpost_rela',passive_deletes=True)
+    comment_relationship = relationship("Comment", back_populates='jobpost_comment',passive_deletes=True)
+    jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost',passive_deletes=True)
 
     def __repr__(self):
         return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title}  Date={self.Datetime} description ={self.job_description} requirements={self.job_requirements} " \
@@ -135,7 +136,7 @@ class Hashtag(Base):
     __tablename__ = 'hashtags'
     hashtag = Column(String(500), primary_key=True)
 
-    hashtag_relationship = relationship("JobPost", secondary=PostHashtag.__table__, backref='Hashtag')
+    hashtag_relationship = relationship("JobPost", secondary=PostHashtag.__table__, backref='Hashtag',passive_deletes=True)
 
 
 
@@ -163,7 +164,7 @@ class Profile(Base):
     skills = Column(String(500), nullable=False)
     public = Column(Boolean(), nullable=False)
 
-    stu_relationship = relationship("Student", back_populates='pro_relationship')
+    stu_relationship = relationship("Student", back_populates='pro_relationship',passive_deletes=True)
 
     def __repr__(self):
         return f"<Profile id={self.id} email ={self.email} name={self.name} " \
@@ -184,11 +185,11 @@ class Comment(Base):
     Datetime = Column(DateTime(), default=datetime.utcnow)
     Likes = Column(Integer())
 
-    student_comment = relationship("Student", back_populates='comment_relationship')
-    company_comment = relationship("Company", back_populates='comment_relationship')
-    jobpost_comment = relationship("JobPost", back_populates='comment_relationship')
-    generalpost_comment = relationship("GeneralPost", back_populates='comment_relationship')
-    comment_comment = relationship("Comment", remote_side=[id])
+    student_comment = relationship("Student", back_populates='comment_relationship',passive_deletes=True)
+    company_comment = relationship("Company", back_populates='comment_relationship',passive_deletes=True)
+    jobpost_comment = relationship("JobPost", back_populates='comment_relationship',passive_deletes=True)
+    generalpost_comment = relationship("GeneralPost", back_populates='comment_relationship',passive_deletes=True)
+    comment_comment = relationship("Comment", remote_side=[id],passive_deletes=True)
 
     def __repr__(self):
         return f"<Comment id={self.id} content ={self.content} publish date={self.Datetime} \
