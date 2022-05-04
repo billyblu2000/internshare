@@ -8,24 +8,24 @@ const rules = [
     //         'status|1':['success', 'failed']
     //     }
     // },
-    // {
-    //     name:'registerStudentStep1',
-    //     template:{
-    //         'status|1':['success', 'failed']
-    //     }
-    // },
-    // {
-    //     name:'registerStudentStep2',
-    //     template:{
-    //         'status|1':['success', 'failed']
-    //     }
-    // },
-    // {
-    //     name:'registerStudentStep3',
-    //     template:{
-    //         'status|1':['success', 'failed']
-    //     }
-    // },
+    {
+        name:'registerStudentStep1',
+        template:{
+            'status|1':['success', 'failed']
+        }
+    },
+    {
+        name:'registerStudentStep2',
+        template:{
+            'status|1':['success', 'failed']
+        }
+    },
+    {
+        name:'registerStudentStep3',
+        template:{
+            'status|1':['success', 'failed']
+        }
+    },
     // {
     //     name:'searchSuggestions',
     //     template: () => {

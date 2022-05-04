@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Divider, message, Steps } from 'antd'
 import { UserOutlined, SolutionOutlined, MailOutlined, FileDoneOutlined } from '@ant-design/icons';
 import Api from '../../../utils/Api';
+import { apis } from '../../../utils/Api';
 import { Navigate } from "react-router-dom";
 import RegisterFormChooseAccountType from './RegisterFormChooseAccountType'
 import RegisterFormEmail from './RegisterFormEmail'
@@ -119,10 +120,16 @@ export default class RegisterForm extends Component {
         document.documentElement.scrollTop = 0;
     }
 
-    handleResponse = (res) => {
+    handleResponse = (res, r) => {
         if (res.status === 'success'){
             message.loading({ content: 'Please wait...', key: 'message', duration:0.01 });
-            this.setState({ step: this.state.step + 1 })
+            if ((apis['registerStudentStep1'].path === r.config.url && this.state.step === 1) || 
+                (apis['registerStudentStep2'].path === r.config.url && this.state.step === 2) || 
+                (apis['registerStudentStep3'].path === r.config.url && this.state.step === 3) || 
+                (apis[''].path === r.config.url && this.state.step === 0)){
+                this.setState({ step: this.state.step + 1 });
+            }
+            
         }
         else{
             message.error({ content: res.status, key: 'message' });

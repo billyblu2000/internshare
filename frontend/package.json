@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "BUILD_PATH='../backend/static' craco build",
+    "build": "craco build BUILD_PATH='../backend/static'",
     "test": "craco test",
     "eject": "craco eject"
   },
