@@ -127,8 +127,12 @@ class JobPost(Base):
     jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost',passive_deletes=True)
 
     def __repr__(self):
-        return f"<Job Post id={self.id} company name={self.company_name} post title={self.post_title}  Date={self.Datetime} description ={self.job_description} requirements={self.job_requirements} " \
-               f"job start date={self.job_start_date} job end date={self.job_end_time} apply start date={self.apply_start_date}>" \
+        return f"<Job Post id={self.id} company name={self.company_name} is company={self.is_Company} " \
+               f"company_email ={self.company_email}" \
+               f" post title={self.post_title} student_email = {self.student_email} " \
+               f"Date={self.Datetime} description ={self.job_description} requirements={self.job_requirements} " \
+               f"job start date={self.job_start_date} job end date={self.job_end_time} " \
+               f"apply start date={self.apply_start_date}>" \
                f"apply end date={self.apply_end_date} estimate salary ={self.estimate_salary}"
 
 

@@ -170,11 +170,43 @@ You can test if these are correct by using local_session and then i can directly
 15. create job post,
 btw is the Datetime column refers to the time when the date is written into the database?
 
+-Yes Datetime column is the time when the post is posted
+
+jobpost=[
+{
+    "company_name" : "tiktok",
+    "is_Company" : True,
+    "company_email" : "tiktok@gmail.com",
+    "job_description" : "database engineer",
+    "job_requirements" : "database major",
+    "job_start_date" : "2022-05-01",
+    "apply_end_date" : "2022-06-29",
+    "estimate_salary" : 50000,
+    "post_title" : "Tiktok database engineer"
+    }
+]
+
+for j in jobpost:
+    new_jobpost = JobPost(company_name=j["company_name"],is_Company=j["is_Company"],company_email=j["company_email"],
+job_description=j["job_description"],job_requirements=j["job_requirements"],job_start_date=j["job_start_date"] \
+,apply_end_date=j["apply_end_date"],estimate_salary=j["estimate_salary"],post_title=j["post_title"])
+    local_session.add(new_jobpost)
+    local_session.commit()
+
 
 16. given jobpost id. Update a job post: e.g. update the end date column
 
+    user = local_session.query(JobPost).filter(JobPost.id == 3).first()
+    print(user)
+    user.apply_end_date = "2022-07-01"
+    local_session.commit()
+
 // APPLIES
 17. given jobpost id and student email, delete their application from the application table
+
+user = local_session.query(JobPost).filter(JobPost.id == 3).first()
+user.apply_end_date = "2022-07-01"
+local_session.commit()
 
 
 
@@ -182,13 +214,47 @@ btw is the Datetime column refers to the time when the date is written into the 
 18. get profile
 given user-email, get the profile
 
+user = local_session.query(Profile).filter(Profile.email == "anh422@nyu.edu").first()
+print(user)
+
 19. update profile
 given user-email, update this profile
+
+# I will update maybe project experience first and you just need to change
+the variable name if you want to update other things in the profile
+
+user = local_session.query(Profile).filter(Profile.email == "anh422@nyu.edu").first()
+user.project_experience = "WiCode, InternSHare Project"
+local_session.commit()
+
+
 
 
 20. create profile
 given username and all related info, writing the data to the databases
 
+profile=[
+{
+    "email" : "yl7002@nyu.edu",
+    "name" : "YuMeng",
+    "CV_id" : 2,
+    "project_experience" : "InternSHare",
+    "internship_experience" : "Google",
+    "education_background" : "NYU Shanghai",
+    "awards" : "First Prize Hackathon",
+    "activities" : "tutor",
+    "skills" : "Java, Python, C++",
+    "public" = True
+    }
+]
+
+
+for j in profile:
+    new_profile = Profile(email=j["email"],name=j["name"],CV_id=j["CV_id"],
+project_experience=j["project_experience"],internship_experience=j["internship_experience"],education_background=j["education_background"] \
+,awards=j["awards"],activities=j["activities"],skills=j["skills"],public=j["public"])
+    local_session.add(new_profile)
+    local_session.commit()
 '''
 
 
