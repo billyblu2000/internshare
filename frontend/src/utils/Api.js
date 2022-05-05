@@ -62,9 +62,9 @@ export default class Api{
         var myCallBack = this.callback;
         var log = this.log;
         axios.get(url, {params:params}).then(function (response) {
-            myCallBack(response.data);
+            myCallBack(response.data, response);
             if (log){
-                console.log('GET ' + url + ': ' + response.data);
+                console.log('GET ' + url);
             }
         })
         .catch(function (error) {
@@ -75,9 +75,9 @@ export default class Api{
         var myCallBack = this.callback;
         var log = this.log;
         axios.post(url, data).then(function (response) {
-            myCallBack(response.data);
+            myCallBack(response.data, response);
             if (log){
-                console.log('POST ' + url + ': ' + response.data);
+                console.log('POST ' + url);
             }
         })
         .catch(function (error) {

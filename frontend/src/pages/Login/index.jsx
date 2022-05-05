@@ -43,7 +43,7 @@ export default function Login() {
     message.loading({ content: 'Logging in...', key: 'message' });
     new Api('login', [values['email'], values['password']], handleLoginResponse);
   }
-  const handleLoginResponse = (res) => {
+  const handleLoginResponse = (res, r) => {
     console.log(res)
     if (res.status === 'success'){
       message.success({ content: 'Logged in!', key: 'message' });
