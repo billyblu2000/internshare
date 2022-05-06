@@ -1,6 +1,7 @@
-from flask import Blueprint,request,session,render_template
+from flask import Blueprint,request,session,send_file
 from ..database.dataclass import *
 import json
+from io import BytesIO
 
 profile = Blueprint('profile', __name__)
 
@@ -29,12 +30,9 @@ def update_profile():
 @profile.route('/upload', methods=["GET", "POST"])
 def upload_profile():
     try:
-        email = session["email"]
-        user = local_session.query(Profile).filter(Profile.email == email).first()
-        obj={
-
-        }
-        return json.dumsp(obj)
+        f = request.files["profile"]
+        f.filename,f.read()
+        return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
 
@@ -79,12 +77,8 @@ def getusername():
 @profile.route('/download', methods=["GET", "POST"])
 def download_profile():
     try:
-        email = session["email"]
-        user = local_session.query(Profile).filter(Profile.email == email).first()
-        obj={
-
-        }
-        return json.dumsp(obj)
+        f =
+        return send_file(BytesIO(f.data),attachment_filename=f.filename,as_attachment=True)
     except:
         return json.dumps({"status":"fail"})
 
