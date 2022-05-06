@@ -259,17 +259,45 @@ project_experience=j["project_experience"],internship_experience=j["internship_e
 
 
 '''
-//apply
-24. given application id, cancel application
+
 
 //jobpost
 21. given student id and job post id, the student apply for the job, 
     set default job status
+    
+studentemail = local_session.query(Student.email).filter(Student.id == 12).first()
+studentemail = studentemail[0]
+student = [
+    {
+        "student_email" : studentemail,
+        "post_id" : 6
+}
+]
+for s in student:
+    new_apply = Application(student_email=s["student_email"], post_id=s["post_id"])
+    local_session.add(new_apply)
+    local_session.commit()
+
 
 22. given comment_id delete a comment
 
-23. given comment_id update a comment
+    comment_to_delete = local_session.query(Comment).filter(Comment.id == 10).first()
+    local_session.delete(comment_to_delete)
+    local_session.commit()
 
+23. given comment_id update a comment
+    
+    comment_to_update = local_session.query(Comment).filter(Comment.id == 1).first()
+    comment_to_update.content = "Change successfully"
+    local_session.commit()
+
+
+//apply
+24. given application id, cancel application
+
+    cancel_appli = local_session.query(Application).filter(Application.id == 6).first()
+    cancel_appli.status = "Cancel"
+    local_session.commit()
 
 '''
 
