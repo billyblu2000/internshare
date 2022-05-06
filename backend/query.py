@@ -167,7 +167,7 @@ You can test if these are correct by using local_session and then i can directly
 
 '''
 // POST PAGE
-15. create job post,
++ 15. create job post,
 btw is the Datetime column refers to the time when the date is written into the database?
 
 -Yes Datetime column is the time when the post is posted
@@ -194,7 +194,7 @@ job_description=j["job_description"],job_requirements=j["job_requirements"],job_
     local_session.commit()
 
 
-16. given jobpost id. Update a job post: e.g. update the end date column
++ 16. given jobpost id. Update a job post: e.g. update the end date column
 
     user = local_session.query(JobPost).filter(JobPost.id == 3).first()
     print(user)
@@ -211,7 +211,7 @@ local_session.commit()
 
 
 //PROFILE PAGE
-18. get profile
++ 18. get profile
 given user-email, get the profile
 
 user = local_session.query(Profile).filter(Profile.email == "anh422@nyu.edu").first()
@@ -230,7 +230,7 @@ local_session.commit()
 
 
 
-20. create profile
++ 20. create profile
 given username and all related info, writing the data to the databases
 
 profile=[
@@ -257,4 +257,19 @@ project_experience=j["project_experience"],internship_experience=j["internship_e
     local_session.commit()
 '''
 
+
+'''
+//apply
+24. given application id, cancel application
+
+//jobpost
+21. given student id and job post id, the student apply for the job, 
+    set default job status
+
+22. given comment_id delete a comment
+
+23. given comment_id update a comment
+
+
+'''
 
