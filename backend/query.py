@@ -290,17 +290,23 @@ for s in student:
     comment_to_update = local_session.query(Comment).filter(Comment.id == 1).first()
     comment_to_update.content = "Change successfully"
     local_session.commit()
-
-//profie
-25. given student email, cv file name, cv file, update their cv
-
 //apply
 24. given application id, cancel application
 
     cancel_appli = local_session.query(Application).filter(Application.id == 6).first()
     cancel_appli.status = "Cancel"
     local_session.commit()
+    
+    
+//profie
+25. given student email, cv file name, cv file, update their cv
+
+
 
 26. given student email, get their cv file.
 '''
 
+
+query 11:
+given a post_id, retrieve all application information from the application table
+for students who applied for this job
