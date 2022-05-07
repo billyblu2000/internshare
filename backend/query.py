@@ -293,10 +293,10 @@ for s in student:
 //apply
 + 24. given application id, cancel application
 
-    cancel_appli = local_session.query(Application).filter(Application.id == 6).first()
-    cancel_appli.status = "Cancel"
-    local_session.commit()
-    
+cancel_appli = local_session.query(Application).filter(Application.id == 6).first()
+local_session.delete(cancel_appli)
+local_session.commit()
+
     
 //profie
 25. given student email, cv file name, cv file, update their cv
@@ -321,7 +321,17 @@ given a post_id, retrieve all application information from the application table
 for students who applied for this job
 
 appli = local_session.query(Application).filter(Application.post_id == 2).filter(Application.student_email == Student.email).all()
-print(appli)
+
+
+
+27. Given a job post id, retrieve all comment related to that job post, if it is a
+student, join the table with company to get company name and color as well:
+i.e the returned columns should look like:
+
+result = local_session.query(Comment,Company.color,Company.name).filter(Comment.jpost_id == 5).filter(
+Comment.company_email == Company.email).all()
+
+
 
 '''
 

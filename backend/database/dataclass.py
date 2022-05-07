@@ -49,13 +49,14 @@ class Company(Base):
     name = Column(String(100), nullable=False)
     email = Column(String(80), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
+    color = Column(String(100), nullable=False)
 
     jobpost_relationship = relationship("JobPost")
     generalpost_relationship = relationship("GeneralPost")
     comment_relationship = relationship("Comment", back_populates='company_comment',passive_deletes=True)
 
     def __repr__(self):
-        return f"<Company id={self.id} name={self.name} email={self.email}>"
+        return f"<Company id={self.id} name={self.name} email={self.email} color={self.color}>"
 
 
 class Admin(Base):
@@ -74,7 +75,7 @@ class Application(Base):
     post_id = Column(Integer(), ForeignKey('jobPosts.id'))
     isOnline = Column(Boolean())
     Datetime = Column(DateTime(), default=datetime.utcnow)
-    status = Column(String(100))
+    status = Column(String(100),default = "Pending")
 
     student_rela = relationship('Student', back_populates='memberships_a',passive_deletes=True)
     jobpost_rela = relationship('JobPost', back_populates='memberships_c',passive_deletes=True)
