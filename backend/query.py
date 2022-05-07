@@ -300,13 +300,29 @@ for s in student:
     
 //profie
 25. given student email, cv file name, cv file, update their cv
+    
+cv = local_session.query(CV).filter(Profile.email == 'yl7002@nyu.edu').filter(Profile.CV_id == CV.id).first()
+cv.pdf_path = "abc.pdf"
+local_session.commit()
 
 
 
 26. given student email, get their cv file.
-'''
 
+cv = local_session.query(CV.data).filter(Profile.email == 'yl7002@nyu.edu').filter(Profile.CV_id == CV.id).first()
+print(cv[0])
+
+
+'''
+'''
 
 query 11:
 given a post_id, retrieve all application information from the application table
 for students who applied for this job
+
+appli = local_session.query(Application).filter(Application.post_id == 2).filter(Application.student_email == Student.email).all()
+print(appli)
+
+'''
+
+

@@ -1,6 +1,7 @@
 import pymysql
 from mysqlx import Table
-from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, delete, PickleType
+from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, delete, PickleType, \
+    LargeBinary
 from datetime import datetime
 import os
 import sqlalchemy
@@ -149,7 +150,7 @@ class CV(Base):
     id = Column(Integer(), primary_key=True,index=True)
     last_update_time = Column(DateTime(), default=datetime.utcnow)
     pdf_path = Column(String(5000), nullable=False)
-    data = Column(PickleType(),nullable=False)
+    data = Column(LargeBinary(),nullable=False)
 
     def __repr__(self):
         return f"<CV id={self.id} last update time={self.last_update_time} pdf path={self.pdf_path} data={self.data}>"
