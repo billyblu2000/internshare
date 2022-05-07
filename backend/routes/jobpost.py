@@ -16,6 +16,8 @@ def job_detailed_info():
         content = request.get_json()
         jobpost_id = content["jobpost_id"]
         job = local_session.query(JobPost).filter(JobPost.id == id).first()
+        res = {}
+        res["status"]="ok"
 
         obj = {
             "id": job.id,
@@ -32,7 +34,8 @@ def job_detailed_info():
             "end_date": stringfy(job.apply_end_date),
             "salary": job.estimate_salary,
         }
-        return json.dumps(obj)
+        res["result"]=obj
+        return json.dumps(res)
     except:
         return json.dumps({"status": "fail"})
 
@@ -90,7 +93,9 @@ def apply_jobpost():
         content = request.get_json()
         id = content["jobpost_id"]
         email = session["email"]
-
+        new_apply = Application(student_email=email, post_id=id)
+        local_session.add(new_apply)
+        local_session.commit()
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -127,7 +132,8 @@ def delete_comment():
     try:
         content = request.get_json()
         comment_id = content["comment_id"]
-
+        comment_to_delete = local_session.query(Comment).filter(Comment.id == comment_id).first()
+        local_session.delete(comment_to_delete)
         local_session.commit()
         return json.dumps({"status":"ok"})
     except:
@@ -138,7 +144,9 @@ def update_comment():
     try:
         content = request.get_json()
         comment_id = content["comment_id"]
-
+        new_content = content["new_content"]
+        comment_to_update = local_session.query(Comment).filter(Comment.id == comment_id).first()
+        comment_to_update.content = new_content
         local_session.commit()
         return json.dumps({"status":"ok"})
     except:

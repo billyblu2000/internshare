@@ -59,6 +59,9 @@ app.register_blueprint(jobpost,url_prefix ="/api/apply")
 from backend.routes.mypost import mypost
 app.register_blueprint(jobpost,url_prefix ="/api/mypost")
 
+from backend.routes.searchPage import search
+app.register_blueprint(jobpost,url_prefix ="/api/search")
+
 @app.route("/api/homepage/searchsuggestions",methods = ['GET'])
 def hp_search_suggestion():
     content = request.args["content"]
@@ -73,99 +76,6 @@ def hp_search_suggestion():
     # extract words from the company and job title
     return json.dumps(suggestions)
 
-@app.route("/api/homepage/searchone/jobpost",methods = ['GET','POST'])
-def search_particular_post_job():
-    filter = request.args["filter"]
-    res = {}
-    # search inside the content to get results
-    post = local_session.query(JobPost).all()
-    content_list = []
-    for i in post:
-        content_list.append(post[i].job_description)
-    # same with the general post
-    post = local_session.query(GeneralPost).all()
-    content_list = []
-    page_num = request.args["pagenumber"]
-    for i in post:
-        content_list.append(post[i].content)
-    # for job in jobs:
-    #     res["job"][job.id] = {
-    #         "title": job.title,
-    #         "date": job.Datetime,
-    #         "description": job.job_description,
-    #         "company": job.company_name,
-    #         "student_email": job.student_email,
-    #         "requirement": job.jon_requirements,
-    #     }
-    return res
-
-@app.route("/api/homepage/searchone/general",methods = ['GET','POST'])
-def search_particular_post_general():
-    filter = request.args["filter"]
-    page_num = request.args["pagenumber"]
-    res = {}
-    # search inside the content to get results
-    # generals = local_session.query()
-
-    # for general in generals:
-    #     res["general"][general.id] = {
-    #         "studennt_email": general.student_email,
-    #         "company": general.company_email,
-    #         "content": general.content,
-    #         "title": general.title,
-    #         "date": general.Datetime
-    #     }
-    return res
-
-
-
-@app.route("/api/change/status",methods=["GET","POST"])
-def change_appication_status():
-    content = request.get_json()
-    student_email = content["email"]
-    job_id = content["job_id"]
-    status = content["status"]
-    try:
-        user = local_session.query(Application).filter(Application.id == 1).first()
-        user.status = status
-        local_session.commit()
-        return json.dumps({"status": "ok"})
-    except:
-        return json.dumps({"status": "fail"})
-
-@app.route("/api/view/applicants",methods=["GET","POST"])
-def view_applicants():
-    content = request.get_json()
-    try:
-        res = {}
-        res["status"]="ok"
-        res["applicants"]=[]
-        job_id = content["job_id"]
-        result = []
-        for i in range(len(result)):
-            applicant = result[i]
-            res["applicants"].append({
-
-            })
-        return json.dumps(res)
-    except:
-        return json.dumps({"status": "fail"})
-
-
-@app.route('/api/change/profile/stauts',methods=["GET","POST"])
-def change_profile_status():
-    try:
-        content = request.get_json()
-        new_status = content["status"]
-        profile_id = content["profile_id"]
-        user = local_session.query(Profile).filter(Profile.id == 1).first()
-        user.public = new_status
-        local_session.commit()
-        return json.dumps({"status": "ok"})
-    except:
-        return json.dumps({"status": "fail"})
-
-
 @app.route('/api/check/post/generals',methods=['GET','POST'])
 def check_post_general():
     try:
@@ -176,7 +86,6 @@ def check_post_general():
         return json.dumps(res)
     except:
         return json.dumps({"status": "fail"})
-
 
 @app.errorhandler(404)
 def index(error):

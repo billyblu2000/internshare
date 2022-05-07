@@ -17,6 +17,10 @@ apply = Blueprint('apply', __name__)
 def cancel():
     try:
         content = request.get_json()
+        id = content["application_id"]
+        cancel_appli = local_session.query(Application).filter(Application.id == id).first()
+        cancel_appli.status = "Cancel"
+        local_session.commit()
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})

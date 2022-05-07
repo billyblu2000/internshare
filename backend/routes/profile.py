@@ -8,11 +8,24 @@ profile = Blueprint('profile', __name__)
 @profile.route('/get', methods=["GET", "POST"])
 def get_profile():
     try:
-        email = session["email"]
+        content = request.get_json()
+        email = content["email"]
         user = local_session.query(Profile).filter(Profile.email == email).first()
+        res = {"status":"ok"}
         obj={
-
+        "id":user.id,
+        "email":user.email,
+        "name":user.name,
+        "cv_id":user.CV_id,
+        "project":user.project_experience,
+        "internship":user.internship_experience,
+        "education":user.education_background,
+        "awards":user.awards,
+        "activity":user.activities,
+        "skills":user.skills,
+        "public":user.public,
         }
+        res["result"] = obj
         return json.dumsp(obj)
     except:
         return json.dumps({"status":"fail"})
@@ -70,14 +83,15 @@ def getusername():
     try:
         email = session["email"]
         name = session["name"]
-        return json.dumps({"status":"fail","name":name})
+        return json.dumps({"status":"ok","name":name})
     except:
         return json.dumps({"status":"fail"})
 
 @profile.route('/download', methods=["GET", "POST"])
 def download_profile():
     try:
-        f =
+        email = session["email"]
+        f = local_session.query(CV).filter(CV.email == email).first()
         return send_file(BytesIO(f.data),attachment_filename=f.filename,as_attachment=True)
     except:
         return json.dumps({"status":"fail"})

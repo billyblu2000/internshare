@@ -14,7 +14,9 @@ def stringfy(date):
 def get_mypost():
     try:
         email = session["email"]
-        res = []
+        res = {}
+        res["status"]="ok"
+        res["result"] = []
         job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
         for job in job_post:
             obj = {
@@ -32,7 +34,7 @@ def get_mypost():
                 "end_date": stringfy(job.apply_end_date),
                 "salary": job.estimate_salary,
             }
-            res.append(obj)
+            res["result"].append(obj)
         return json.dumps(res)
     except:
         return json.dumps({"status": "fail"})
@@ -99,9 +101,15 @@ def viewall_myapplicants():
         result = []
         for i in range(len(result)):
             applicant = result[i]
-            res["applicants"].append({
-
-            })
+            obj = {
+            "id":applicant.id,
+            "student_email":applicant.student_emaill,
+            "post_id":applicant.post_id,
+            "is_online":applicant.is_online,
+            "create_time":stringfy(applicant.Datetime),
+            "status":applicant.stauts,
+            }
+            res["applicants"].append(obj)
         return json.dumps(res)
     except:
         return json.dumps({"status": "fail"})
