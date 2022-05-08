@@ -68,18 +68,11 @@ as well as all general posts info related to the content
 the jobpost content and then try to find if the filter word or phrase exist in the content
 by using python? haha then if it exist then save that jobpost in a list or sth like that.
 
-#query to return the content of post
+#query to return the title LIKE tags of post
 
-post = local_session.query(jobPosts).all()
-content_list = []
-for i in post:
-content_list.append(post[i].job_description)
+search = "%{}%".format("sale")
+posts = local_session.query(JobPost).filter(JobPost.post_title.like(search)).all()
 
-#same with the general post
-post = local_session.query(generalPosts).all()
-content_list = []
-for i in post:
-content_list.append(post[i].content)
 
 5. check_status
 varaible name: email

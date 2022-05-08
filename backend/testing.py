@@ -2,7 +2,6 @@
 
 from database.dataclass import *
 
-cancel_appli = local_session.query(Application).filter(Application.id == 6).first()
-local_session.delete(cancel_appli)
-local_session.commit()
+search = "%{}%".format("sale")
+posts = local_session.query(JobPost).filter(JobPost.post_title.like(search)).all()
 
