@@ -15,6 +15,7 @@ def stringfy(date):
 def get_mypost():
     try:
         email = session["email"]
+        print(email)
         res = {}
         res["status"]="ok"
         res["result"] = []
@@ -39,9 +40,12 @@ def get_mypost():
                 "salary": job.estimate_salary,
                 "student_color":student_color,
                 "company_color":company_color,
+                "publisher_name":"abc",
+                "publisher_color":"#bf3f84"
             }
             res["result"].append(obj)
-        return json.dumps(res)
+        print(res)
+        return res
     except:
         return json.dumps({"status": "fail"})
 
@@ -70,7 +74,7 @@ def create_mypost():
                               , apply_end_date=j["apply_end_date"], estimate_salary=j["estimate_salary"],
                               post_title=j["post_title"])
         local_session.add(new_jobpost)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -80,7 +84,7 @@ def update_mypost():
     try:
         user = local_session.query(JobPost).filter(JobPost.id == 3).first()
         user.apply_end_date = "2022-07-01"
-        local_session.commit()
+
     except:
         return json.dumps({"status": "fail"})
 
@@ -91,7 +95,7 @@ def delete_mypost():
         job_id = content["job_id"]
         user_to_delete = local_session.query(JobPost).filter(JobPost.id == job_id).first()
         local_session.delete(user_to_delete)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -132,7 +136,7 @@ def accpet_status():
         id = content["application_id"]
         user = local_session.query(Application).filter(Application.id == id).first()
         user.status = "Accept"
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -144,7 +148,7 @@ def reject_status():
         id = content["application_id"]
         user = local_session.query(Application).filter(Application.id == id).first()
         user.status = "Reject"
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})

@@ -143,7 +143,7 @@ def apply_jobpost():
             mail.send(msg)
         new_apply = Application(student_email=email, post_id=id)
         local_session.add(new_apply)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -155,7 +155,7 @@ def like_comment():
         comment_id = content["comment_id"]
         comment = local_session.query(Comment).filter(Comment.id == comment_id).first()
         comment.Likes += 1
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -170,7 +170,7 @@ def create_comment():
         root = content["root"]
         new_data = Comment(content=comment_content,jpost_id=id, comment_id = target,student_email=email)
         local_session.add(new_data)
-        local_session.commit()
+
         return json.dumps({"status":"ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -182,7 +182,7 @@ def delete_comment():
         comment_id = content["comment_id"]
         comment_to_delete = local_session.query(Comment).filter(Comment.id == comment_id).first()
         local_session.delete(comment_to_delete)
-        local_session.commit()
+
         return json.dumps({"status":"ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -195,7 +195,6 @@ def update_comment():
         new_content = content["new_content"]
         comment_to_update = local_session.query(Comment).filter(Comment.id == comment_id).first()
         comment_to_update.content = new_content
-        local_session.commit()
         return json.dumps({"status":"ok"})
     except:
         return json.dumps({"status":"fail"})

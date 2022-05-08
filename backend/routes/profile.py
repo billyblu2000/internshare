@@ -11,12 +11,20 @@ def get_profile():
     try:
         content = request.get_json()
         if content["email"]:
-            email =content["email"]
+            email = content["email"]
         else:
             email = session["email"]
+
         # retireive all job appllicants of a person
 
         all = [session["email"]]
+
+        appli = local_session.query(Application.student_email).filter(JobPost.student_email == session["email"])\
+            .filter(Application.post_id == JobPost.id).filter(Application.student_email == Student.email).all()
+
+        for i in appli:
+            all.append(i)
+
         # all = 1
         user = local_session.query(Profile).filter(Profile.email == email).first()
 

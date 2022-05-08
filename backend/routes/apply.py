@@ -21,7 +21,7 @@ def cancel():
         id = content["application_id"]
         cancel_appli = local_session.query(Application).filter(Application.id == id).first()
         local_session.delete(cancel_appli)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
