@@ -22,8 +22,6 @@ def login():
     print(pw,email)
     if "@nyu.edu" in email:
         user = local_session.query(Student).filter(Student.email == email).first()
-        local_session.commit()
-        local_session.close()
         print(user)
         # if it is a student, not none
         if user:
@@ -97,6 +95,7 @@ def student_register():
     if pw != pw2:
         return json.dumps({"status":"password does not match"})
     std = local_session.query(Student).filter(Student.email == email).first()
+    local_session.commit()
     if std:
         return json.dumps({"status":"user already exists"})
     major = content["major"]
@@ -106,7 +105,6 @@ def student_register():
     new_student = Student(name= name, email= email, password= hashpw, major=major,
                           graduation_time=year,personalityTestResults="", color=hashcolor)
     local_session.add(new_student)
-    local_session.commit()
     return json.dumps({"status":"success"})
 
 # company
@@ -121,6 +119,7 @@ def company_register():
     if pw != pw2:
         return json.dumps({"status":"password does not match"})
     cmpy = local_session.query(Student).filter(Student.email == email).first()
+
 
     # if cmpy:
     #     cursor.close()

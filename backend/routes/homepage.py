@@ -35,8 +35,6 @@ def recommendPostjobs():
         for i in range(len(result)):
             list_id.append(result[i].jobpost_id)
         print(list_id) #[3,4]
-        local_session.commit()
-        local_session.close()
         # cur job post
         for id in list_id:
             job = local_session.query(JobPost).filter(JobPost.id == id).first()
@@ -52,8 +50,7 @@ def recommendPostjobs():
                 "publisher_color":"#bf3f84",
                 "publisher_name":"Daisy",
             })
-            local_session.commit()
-            local_session.close()
+
         print(res)
         return json.dumps(res)
     except:
@@ -64,8 +61,7 @@ def recommendPostGenerals():
     try:
         res = {"status":"ok","result":[]}
         generalposts = local_session.query(GeneralPost).order_by(GeneralPost.Datetime.desc()).limit(5).all()
-        local_session.commit()
-        local_session.close()
+
         content_list = []
         for i in range(min(5,len(generalposts))):
             general =generalposts[i]
@@ -93,8 +89,7 @@ def check_status():
         print(result)
         res = {"status": "ok","result":[]}
         print(res)
-        local_session.commit()
-        local_session.close()
+
         # retrieve all info abt the job
         for i in range(len(result)):
             cur = result[i]
@@ -113,8 +108,7 @@ def check_status():
                 "publisher_color":"#bf3f84",
                 "publisher_name":"Daisy",
             })
-            local_session.commit()
-            local_session.close()
+
         print(res)
         return res
     except:

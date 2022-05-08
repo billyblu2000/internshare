@@ -6,15 +6,14 @@ from datetime import datetime
 import os
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker,declarative_base,relationship,scoped_session
-
-
+from sqlalchemy.pool import NullPool
 
 DB_NAME = 'internshare'
 connect_string = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format('admin', 'Alibaba123..', 'internshare.ctoh8sqi2mdr.ap-southeast-1.rds.amazonaws.com', 3306, 'internshare')
 engine = create_engine(connect_string, convert_unicode=True, echo=True,pool_pre_ping=True)
 sessions = scoped_session(sessionmaker(
         bind=engine,
-        autocommit=False,
+        autocommit=True,
         autoflush=False,
         expire_on_commit = False
     ))
