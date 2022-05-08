@@ -10,8 +10,8 @@ export default function PostCard({ official, data }) {
       {official ?
         <Badge.Ribbon text="Official" color="volcano">
           <div style={{ minWidth: '100%', maxWidth: '100%', height: '80px', padding: '15px', marginBottom: '10px', marginTop: '10px' }} className='theme-box-hoverable'>
-            <div style={{ backgroundColor: '#602929' }} className='postcard-avatar'>
-              LY
+            <div style={{ backgroundColor: data.color }} className='postcard-avatar'>
+              {data.name}
             </div>
             <div style={{ float: 'left', marginLeft: '15px' }}>
               <div><Title style={{ marginBottom: '0px' }} level={5}>{data.companyName}<Divider type="vertical" style={{ backgroundColor: 'gray' }} />{data.jobName}</Title></div>
@@ -20,8 +20,8 @@ export default function PostCard({ official, data }) {
           </div>
         </Badge.Ribbon> :
         <div style={{ minWidth: '100%', maxWidth: '100%', height: '80px', padding: '15px', marginBottom: '10px', marginTop: '10px' }} className='theme-box-hoverable'>
-          <div style={{ backgroundColor: '#602929' }} className='postcard-avatar'>
-            LY
+          <div style={{ backgroundColor: data.color }} className='postcard-avatar'>
+            {data.name}
           </div>
           <div style={{ float: 'left', marginLeft: '15px' }}>
             <div><Title style={{ marginBottom: '0px' }} level={5}>{data.companyName}<Divider type="vertical" style={{ backgroundColor: 'gray' }} />{data.jobName}</Title></div>

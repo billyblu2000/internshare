@@ -36,6 +36,11 @@ const routes = [
                 children: []
             },
             {
+                path: 'search/:keyword',
+                element: <Search />,
+                children: []
+            },
+            {
                 path: 'search',
                 element: <Search />,
                 children: []
@@ -87,7 +92,7 @@ const routes = [
                 children: []
             },
             {
-                path: 'user/:id',
+                path: 'user/:email',
                 element: <User/>,
                 children: []
             }

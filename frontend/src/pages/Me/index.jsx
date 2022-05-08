@@ -3,11 +3,21 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Typography } from 'antd';
 import { UserOutlined, SettingOutlined, MailOutlined, CloudUploadOutlined, SendOutlined } from '@ant-design/icons';
 import './index.css'
+import Api from '../../utils/Api';
 
 export default function Me() {
 
     const [selected, setSelected] = React.useState('');
     const nav = useNavigate();
+    React.useEffect(() => {
+        new Api('getUser', [], handleLogin)
+    })
+
+    const handleLogin = (res) => {
+        if (res.status !== 'ok'){
+            nav('/login')
+        }
+    }
 
     return (
         <div style={{ marginTop: '50px', verticalAlign:'top', marginBottom: '50px' }}>

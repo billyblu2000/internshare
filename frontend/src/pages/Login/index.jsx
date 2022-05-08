@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import './index.css';
 import RegisterForm from './RegisterForm';
 import ForgetPasswordForm from './ForgetPasswordForm';
-import { checkLogin, setCookie } from '../../utils/user'
+import { checkLogin } from '../../utils/user'
 import Api from '../../utils/Api'
 
 const { TabPane } = Tabs;

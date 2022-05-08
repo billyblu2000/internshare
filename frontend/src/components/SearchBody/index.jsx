@@ -1,32 +1,71 @@
 import React, { Component } from 'react';
-import { AutoComplete, Input, Tree, Divider, Typography, Checkbox, Radio } from 'antd';
+import { createBrowserHistory } from 'history'
+import { AutoComplete, Input, Tree, Divider, Typography, Checkbox, Radio, message, Button, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './index.css'
 import Api from '../../utils/Api';
 import ResultItem from './ResultItem';
-import filterTreeData from  '../../static/english_categories.json';
+import filterTreeData from '../../static/english_categories.json';
 
 const treeData = loadTreeData(filterTreeData)
-const searchData = [
-  {}, {}, {}, {}
-]
 export default class SearchBody extends Component {
 
   state = {
-    sugOptions:[],
-    filterChecked:treeData.map(item => item.key)
+    sugOptions: [],
+    filterChecked: treeData.map(item => item.key),
+    keyword: '',
+    pagenum: 0,
+    searchResult: [],
+    searching: false
+  }
+
+  history = createBrowserHistory();
+
+  componentDidMount = () => {
+    var path = window.location.pathname;
+    var keyword = null;
+    if (path.slice(-7, -1) !== 'search' || path.slice(-7, -1) !== 'earch/') {
+      keyword = decodeURI(path.trim().split('/')[3]);
+    }
+    if (keyword) {
+      this.setState({ keyword: keyword })
+      new Api('search', [keyword, this.state.pagenum + 1], this.setResult)
+      this.setState({ searching: true })
+    }
+    else {
+      new Api('search', [' ', this.state.pagenum + 1], this.setResult)
+      this.setState({ searching: true })
+    }
+  }
+
+  setResult = (res) => {
+
+    if (res.status === 'ok') {
+      this.setState({
+        searchResult: this.state.searchResult.concat(res.result),
+        pagenum: this.state.pagenum + 1,
+        searching: false
+      })
+      if (res.result.length === 0){
+        message.info({content:'no more results!', key:'message'})
+      }
+    }
+    else {
+      message.error({ content: res.status, key: 'message' })
+      this.setState({ searching: false })
+    }
   }
 
   onFilterCheck = (checkedKeys, e) => {
-    this.setState({filterChecked:e.checkedNodes.map(item => item.key)})
+    this.setState({ filterChecked: e.checkedNodes.map(item => item.key) })
   }
 
   onClearFilterCheck = () => {
-    this.setState({filterChecked:[]})
+    this.setState({ filterChecked: [] })
   }
 
   onSelectAllFilterCheck = () => {
-    this.setState({filterChecked:treeData.map(item => item.key)})
+    this.setState({ filterChecked: treeData.map(item => item.key) })
   }
 
   onSearch = (value) => {
@@ -42,6 +81,24 @@ export default class SearchBody extends Component {
     new Api('searchSuggestions', [value], setSugOptions);
   }
 
+  search = (e) => {
+    if (typeof (e) === 'object') {
+      this.setState({ keyword: e.target.value, searching: true, pagenum: 0, searchResult: [] })
+      new Api('search', [e.target.value, 1], this.setResult)
+      this.history.push(`/main/search/${e.target.value}`)
+    }
+    if (typeof (e) === 'string') {
+      this.setState({ keyword: e, searching: true, pagenum: 0, searchResult: [] })
+      new Api('search', [e, 1], this.setResult)
+      this.history.push(`/main/search/${e}`)
+    }
+  }
+
+  loadNextPage = () => {
+    new Api('search', [this.state.keyword, this.state.pagenum + 1], this.setResult)
+    this.setState({searching:true})
+  }
+
   render() {
     return (
       <div style={{ marginTop: '80px', paddingLeft: '5%', paddingRight: '5%' }}>
@@ -49,8 +106,9 @@ export default class SearchBody extends Component {
           <AutoComplete
             style={{ width: '100%', fontSize: '20px', zIndex: 1 }}
             className='searchpage-search-ref'
-          onSearch={this.onSearch}
-          options={this.state.sugOptions}
+            onSearch={this.onSearch}
+            onSelect={this.search}
+            options={this.state.sugOptions}
           >
             <Input bordered={false}
               style={{ border: '1px solid rgba(128, 128, 128, 0.336)', borderRadius: '25px', backgroundColor: 'white', height: '40px', fontSize: '28px', paddingLeft: '15px' }}
@@ -95,22 +153,26 @@ export default class SearchBody extends Component {
             </div>
           </div>
         </div>
-        <div style={{ display: 'inline-block', width: '67%', marginLeft: '30%', verticalAlign: 'top', minWidth: '200px' }}>
-          <div className='theme-box' style={{ minHeight: '1000px', padding: '10px 20px 10px 20px' }}>
-            {searchData.map(() => <><ResultItem></ResultItem><Divider style={{marginTop:'0px',marginBottom:'0px'}}></Divider></>)}
+        <div style={{ display: 'inline-block', width: '67%', marginLeft: '30%', verticalAlign: 'top', minWidth: '200px'}}>
+          <div className='theme-box' style={{ minHeight: '1000px', padding: '10px 35px 30px 35px' }}>
+            {this.state.searchResult.map((item) => <><ResultItem data={item}></ResultItem><Divider style={{ marginTop: '0px', marginBottom: '0px' }}></Divider></>)}
+            {this.state.searching ? <><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /></> : <></>}
+          </div>
+          <div style={{ textAlign: 'center', marginTop:'30px' }}>          
+          <Button onClick={this.loadNextPage} shape='round'>Load More</Button>
           </div>
         </div>
       </div>
     )
   }
 }
-function loadTreeData(originalData){
+function loadTreeData(originalData) {
   var newData = originalData.children.map(item => {
-    var category = {title:item.name, key: 'filter-data-first-'+item.name, children:[]};
+    var category = { title: item.name, key: 'filter-data-first-' + item.name, children: [] };
     category.children = item.children.map(subItem => {
-      var subCategory = {title:subItem.name, key:'filter-data-second-'+subItem.name, children:[]};
+      var subCategory = { title: subItem.name, key: 'filter-data-second-' + subItem.name, children: [] };
       subCategory.children = subItem.children.map(subSubItem => {
-        return {title: subSubItem, key: 'filter-data-third-' + subSubItem}
+        return { title: subSubItem, key: 'filter-data-third-' + subSubItem }
       })
       return subCategory;
     })
