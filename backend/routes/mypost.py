@@ -17,11 +17,14 @@ def get_mypost():
         res = {}
         res["status"]="ok"
         res["result"] = []
+        student_color = local_session.query(Student).filter(Student.email == email).first().color
         job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
         for job in job_post:
+            company_color = local_session.query(Company).filter(Company.email == job.company_email).first().color
             obj = {
                 "id": job.id,
-                "is_company": job.company_email,
+                "is_company": job.is_company,
+                "company_email":job.company_email,
                 "student_email": job.student_email,
                 "Datetime": stringfy(job.Datetime),
                 "des": job.job_description,
@@ -31,8 +34,10 @@ def get_mypost():
                 "company_name": job.company_name,
                 "title": job.post_title,
                 "apply_start": stringfy(job.apply_start_date),
-                "end_date": stringfy(job.apply_end_date),
+                "apply_end": stringfy(job.apply_end_date),
                 "salary": job.estimate_salary,
+                "student_color":student_color,
+                "company_color":company_color,
             }
             res["result"].append(obj)
         return json.dumps(res)
@@ -98,16 +103,21 @@ def viewall_myapplicants():
         res["status"] = "ok"
         res["applicants"] = []
         job_id = content["job_id"]
-        result = []
+        result = local_session.query(Application).filter(Application.post_id == job_id).all()
         for i in range(len(result)):
             applicant = result[i]
+            student = local_session.query(Student).filter(Student.email == applicant.student_email).first()
+            student_name = student.name
+            student_color = student.color
             obj = {
             "id":applicant.id,
-            "student_email":applicant.student_emaill,
+            "student_email":applicant.student_email,
             "post_id":applicant.post_id,
             "is_online":applicant.is_online,
             "create_time":stringfy(applicant.Datetime),
             "status":applicant.stauts,
+            "name":student_name,
+            "student_color":student_color,
             }
             res["applicants"].append(obj)
         return json.dumps(res)

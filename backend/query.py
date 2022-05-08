@@ -90,7 +90,7 @@ result[i].status #return the status
 
 
 
-6. Given a job post id, retrieve all comment related to that job post, if it is a
++ 6. Given a job post id, retrieve all comment related to that job post, if it is a
 student, join the table with student to get student name and color as well:
 i.e the returned columns should look like:
 
@@ -293,7 +293,7 @@ local_session.commit()
 
     
 //profie
-25. given student email, cv file name, cv file, update their cv
++ 25. given student email, cv file name, cv file, update their cv
     
 cv = local_session.query(CV).filter(Profile.email == 'yl7002@nyu.edu').filter(Profile.CV_id == CV.id).first()
 cv.pdf_path = "abc.pdf"
@@ -310,15 +310,16 @@ print(cv[0])
 '''
 '''
 
-query 11:
-given a post_id, retrieve all application information from the application table
-for students who applied for this job
+# query 11:
+# given a post_id, retrieve all application information from the application table
+# for students who applied for this job
 
 appli = local_session.query(Application).filter(Application.post_id == 2).filter(Application.student_email == Student.email).all()
 
 
 
-27. Given a job post id, retrieve all comment related to that job post, if it is a
+
++ 27. Given a job post id, retrieve all comment related to that job post, if it is a
 student, join the table with company to get company name and color as well:
 i.e the returned columns should look like:
 

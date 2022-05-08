@@ -51,20 +51,22 @@ from backend.routes.jobpost import jobpost
 app.register_blueprint(jobpost,url_prefix ="/api/job")
 
 from backend.routes.profile import profile
-app.register_blueprint(jobpost,url_prefix ="/api/proflie")
+app.register_blueprint(profile,url_prefix ="/api/profile")
 
 from backend.routes.apply import apply
-app.register_blueprint(jobpost,url_prefix ="/api/apply")
+app.register_blueprint(apply,url_prefix ="/api/apply")
 
 from backend.routes.mypost import mypost
-app.register_blueprint(jobpost,url_prefix ="/api/mypost")
+app.register_blueprint(mypost,url_prefix ="/api/mypost")
 
 from backend.routes.searchPage import search
-app.register_blueprint(jobpost,url_prefix ="/api/search")
+app.register_blueprint(search,url_prefix ="/api/search")
 
-@app.route("/api/homepage/searchsuggestions",methods = ['GET'])
+@app.route("/api/homepage/searchsuggestions",methods = ['POST'])
 def hp_search_suggestion():
-    content = request.args["content"]
+    content = request.get_json()["content"]
+    print(request.get_json())
+    print(content)
     # search in the hashtag??
     suggestions = []
     for i in global_position:

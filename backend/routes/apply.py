@@ -19,7 +19,7 @@ def cancel():
         content = request.get_json()
         id = content["application_id"]
         cancel_appli = local_session.query(Application).filter(Application.id == id).first()
-        cancel_appli.status = "Cancel"
+        local_session.delete(cancel_appli)
         local_session.commit()
         return json.dumps({"status": "ok"})
     except:

@@ -9,26 +9,22 @@ def search_particular_post_job():
     try:
         filter = request.args["filter"]
         res = {"status":"ok","result":[]}
+        page_num = request.args["pagenumber"]
         # search inside the content to get results
         post = local_session.query(JobPost).all()
         content_list = []
         for i in post:
             content_list.append(post[i].job_description)
-        # same with the general post
-        post = local_session.query(GeneralPost).all()
-        content_list = []
-        page_num = request.args["pagenumber"]
-        for i in post:
-            content_list.append(post[i].content)
-        # for job in jobs:
-        #     res["job"][job.id] = {
-        #         "title": job.title,
-        #         "date": job.Datetime,
-        #         "description": job.job_description,
-        #         "company": job.company_name,
-        #         "student_email": job.student_email,
-        #         "requirement": job.jon_requirements,
-        #     }
+        for job in post:
+            res["result"] = {
+                "id":job.id,
+                "title": job.title,
+                "date": job.Datetime,
+                "description": job.job_description,
+                "company": job.company_name,
+                "student_email": job.student_email,
+                "requirement": job.jon_requirements,
+            }
         return json.dumps(res)
     except:
         return json.dumps({"status":"fail"})
