@@ -3,6 +3,7 @@ import { Typography, Divider, Button, Tooltip, Collapse, Space, Table, Form, Inp
 import { EditOutlined, CloseOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import Api from '../../../utils/Api';
 import { Link, useNavigate } from 'react-router-dom';
+import positions from '../../../static/positions.json'
 
 import './index.css'
 import { nameToShort } from '../../../utils/utils';
@@ -76,21 +77,30 @@ const CreateModifyForm = ({form}) => (
       <DatePicker bordered={false} />
     </Form.Item>
     <Form.Item
+      label="Estimated Salary"
+      name="estimated salary"
+    >
+      <Input prefix="￥" suffix="RMB" type='number'/>
+    </Form.Item>
+    <Form.Item
       label="Tags"
       name="tags"
     >
       <Select
         mode="multiple"
         showArrow
-        defaultValue={['gold', 'cyan']}
         style={{ width: '100%' }}
-        options={[{ value: 'gold' }, { value: 'cyan' }, { value: '1' }, { value: '2' }, { value: '3' }, { value: '4' }, { value: '5' }]}
+        options={loadTags()}
       />
     </Form.Item>
   </Form>
 )
 
-const SinglePost = ({ data, nav, deletePost, approve, reject }) => {
+const loadTags = () => {
+  return positions.map((item) => {return {value:item}})
+}
+
+const SinglePost = ({ data, nav, modify, deletePost, approve, reject }) => {
 
   const tableColumns = [
     {
@@ -147,7 +157,7 @@ const SinglePost = ({ data, nav, deletePost, approve, reject }) => {
       <Title style={{ marginBottom: '0px', marginTop: '0px' }} level={4}>{data.title}</Title>
     </div>
     <div style={{ float: 'right', marginTop: '13px' }}>
-      <Tooltip title='Modify Post'><Button shape='circle' className='comment-reply-button'><EditOutlined /></Button></Tooltip>
+      <Tooltip title='Modify Post'><Button shape='circle' className='comment-reply-button' onClick={() => modify(data.id)}><EditOutlined /></Button></Tooltip>
       <Tooltip title='Delete Post'><Button shape='circle' style={{ marginLeft: '10px' }} className='comment-reply-button'>
         <Popconfirm
         title="Are you sure to delete this post?"
@@ -173,7 +183,6 @@ const SinglePost = ({ data, nav, deletePost, approve, reject }) => {
 export default function Posts() {
 
   const [showForm, setShowForm] = React.useState(false);
-  const [formData, setFormData] = React.useState(null);
   const [form] = Form.useForm();
   const nav = useNavigate();
   const [allPosts, setAllPosts] = React.useState(null);
@@ -236,8 +245,20 @@ export default function Posts() {
 
     }
     else {
-      console.log(form.getFieldsValue()['job-end-date'].format('yyyy-MM-DD').toString())
-      new Api('createPost', [], handleCreateCallback)
+      var values = form.getFieldsValue()
+      new Api('createPost', [
+        values['job-title'],
+        values['company-name'],
+        false,
+        '',
+        values['job-description'],
+        values['job-requirements'],
+        values['job-start-date'].format('yyyy-MM-DD').toString(),
+        values['job-end-date'].format('yyyy-MM-DD').toString(),
+        values['estimated-salary'],
+        values['apply-start-time'].format('yyyy-MM-DD').toString(),
+        values['apply-deadline'].format('yyyy-MM-DD').toString()
+      ], handleCreateCallback)
       message.loading({content:'Please wait...', key:"message"})
     }
   };
@@ -279,6 +300,7 @@ export default function Posts() {
 
   const requestModify = (id) => {
     setCurrentModifyId(id)
+    setShowForm(true);
   }
 
 
@@ -319,7 +341,7 @@ export default function Posts() {
       {allPostWithApplicants === null ? <><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /></> : <>
         <div className='theme-box' style={{ width: '100%', padding: '15px 30px 15px 30px' }}>
           {allPostWithApplicants.map((item) => {
-            return <><SinglePost data={item} nav={nav} deletePost={deletePost} approve={approve} reject={reject}></SinglePost><Divider style={{ marginTop: '0px' }}></Divider></>
+            return <><SinglePost data={item} nav={nav} modify={requestModify} deletePost={deletePost} approve={approve} reject={reject}></SinglePost><Divider style={{ marginTop: '0px' }}></Divider></>
           })}
         </div>
         <div style={{ textAlign: 'center', marginTop: '30px' }}>
