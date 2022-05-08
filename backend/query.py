@@ -70,8 +70,9 @@ by using python? haha then if it exist then save that jobpost in a list or sth l
 
 #query to return the title LIKE tags of post
 
-search = "%{}%".format("sale")
-posts = local_session.query(JobPost).filter(JobPost.post_title.like(search)).all()
+search = "%{}%".format("intern")
+posts = local_session.query(JobPost).filter(JobPost.post_title.like(search)).order_by(JobPost.Datetime.desc()).all()
+
 
 
 5. check_status
