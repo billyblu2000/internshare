@@ -191,13 +191,12 @@ class Comment(Base):
     content = Column(String(500), nullable=False)
     Datetime = Column(DateTime(), default=datetime.utcnow)
     Likes = Column(Integer())
-
+    root = Column(Integer(), ForeignKey("comments.id"))
 
     student_comment = relationship("Student", back_populates='comment_relationship',passive_deletes=True)
     company_comment = relationship("Company", back_populates='comment_relationship',passive_deletes=True)
     jobpost_comment = relationship("JobPost", back_populates='comment_relationship',passive_deletes=True)
     generalpost_comment = relationship("GeneralPost", back_populates='comment_relationship',passive_deletes=True)
-    comment_comment = relationship("Comment", remote_side=[id],passive_deletes=True)
 
 
     def __repr__(self):
