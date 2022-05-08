@@ -41,12 +41,12 @@ def job_detailed_info():
         }
         if job.is_Company == 1:
             company =  local_session.query(Company).filter(Company.email ==job.company_email).first()
-            obj["color"]=company.color
-            obj["student_name"] =""
+            obj["publisher_color"]=company.color
+            obj["publisher_name"] =""
         else:
             student = local_session.query(Student).filter(Student.email == job.student_email).first()
-            obj["color"] = student.color
-            obj["student_name"] = student.name
+            obj["publisher_color"] = student.color
+            obj["publisher_name"] = student.name
         res["result"]=obj
         return res
     except:

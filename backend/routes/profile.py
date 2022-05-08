@@ -19,11 +19,8 @@ def get_profile():
         all = [session["email"]]
         # all = 1
         user = local_session.query(Profile).filter(Profile.email == email).first()
-        local_session.commit()
-        local_session.close()
+
         user_detailed = local_session.query(Student).filter(Student.email == email).first()
-        local_session.commit()
-        local_session.close()
 
         if (user.email not in all) and (user.public == 0):
             return json.dumps({"status":"Not available"})
@@ -46,6 +43,7 @@ def get_profile():
         }
         res["result"] = obj
         return res
+
     except:
         return json.dumps({"status":"fail"})
 
@@ -54,8 +52,7 @@ def update_profile():
     try:
         session["email"] = "yl7002@nyu.edu"
         user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
-        local_session.commit()
-        local_session.close()
+
         if not user:
             return json.dumps({"status":"user DNE"})
         j = request.json()
@@ -69,7 +66,7 @@ def update_profile():
         user.activities = j["activities"]
         user.skills = j["skills"]
         user.public = j["public"]
-        local_session.commit()
+
         return json.dumps({"status":"ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -79,11 +76,10 @@ def upload_cv():
     try:
         f = request.files["profile"]
         cv = local_session.query(CV).filter(Profile.email == session["email"]).first()
-        local_session.commit()
-        local_session.close()
+
         cv.pdf_path = f.filename
         cv.data= f.read()
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -113,8 +109,7 @@ def create_profile():
                               , awards=j["awards"], activities=j["activities"], skills=j["skills"],
                               public=j["public"])
         local_session.add(new_profile)
-        local_session.commit()
-        local_session.close()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -134,8 +129,7 @@ def download_profile():
     try:
         email = session["email"]
         f = local_session.query(CV).filter(CV.email == email).first()
-        local_session.commit()
-        local_session.close()
+
         return send_file(BytesIO(f.data),attachment_filename=f.filename,as_attachment=True)
     except:
         return json.dumps({"status":"fail"})
@@ -148,8 +142,7 @@ def change_visibility():
         profile_id = content["profile_id"]
         user = local_session.query(Profile).filter(Profile.id == profile_id).first()
         user.public = new_status
-        local_session.commit()
-        local_session.close()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
