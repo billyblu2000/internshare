@@ -2,6 +2,8 @@ from flask import Blueprint,request,session,render_template
 from ..database.dataclass import *
 import json
 
+
+
 homepage = Blueprint('homepage', __name__)
 
 
@@ -33,6 +35,7 @@ def recommendPostjobs():
         for i in range(len(result)):
             list_id.append(result[i].jobpost_id)
         print(list_id) #[3,4]
+        local_session.commit()
         local_session.close()
         # cur job post
         for id in list_id:
@@ -49,17 +52,20 @@ def recommendPostjobs():
                 "publisher_color":"#bf3f84",
                 "publisher_name":"Daisy",
             })
+            local_session.commit()
             local_session.close()
         print(res)
         return json.dumps(res)
     except:
-        return json.dumps({"stauts":"fail"})
+        return json.dumps({"status":"fail"})
 
 @homepage.route("/recommendpost/generals",methods=["GET","POST"])
 def recommendPostGenerals():
     try:
         res = {"status":"ok","result":[]}
         generalposts = local_session.query(GeneralPost).order_by(GeneralPost.Datetime.desc()).limit(5).all()
+        local_session.commit()
+        local_session.close()
         content_list = []
         for i in range(min(5,len(generalposts))):
             general =generalposts[i]
@@ -82,15 +88,17 @@ def check_status():
     # of this user, the status should contain the position name and
     # the company name (if any), and the current status.
     try:
-        # email = session["email"]
-        email = "yl7002@nyu.edu"
+        email = session["email"]
         result = local_session.query(Application).filter(Application.student_email == email).all()
+        print(result)
         res = {"status": "ok","result":[]}
         print(res)
+        local_session.commit()
         local_session.close()
         # retrieve all info abt the job
         for i in range(len(result)):
             cur = result[i]
+            print(cur)
             post_id = cur.post_id
             status = cur.status
             print(status, post_id)
@@ -105,8 +113,9 @@ def check_status():
                 "publisher_color":"#bf3f84",
                 "publisher_name":"Daisy",
             })
+            local_session.commit()
             local_session.close()
         print(res)
         return res
     except:
-        return json.dumps({"stauts":"fail"})
+        return json.dumps({"status":"fail"})

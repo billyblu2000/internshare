@@ -2,6 +2,7 @@ from flask import Blueprint,request,session,render_template
 from ..database.dataclass import *
 import json
 
+
 apply = Blueprint('apply', __name__)
 
 # @apply.route('/get_status', methods=["GET", "POST"])

@@ -9,6 +9,7 @@ from ..__init__ import mail
 
 loginRegister = Blueprint('loginRegister', __name__)
 
+
 # login page
 
 @loginRegister.route('',methods = ['GET','POST'])
@@ -21,6 +22,7 @@ def login():
     print(pw,email)
     if "@nyu.edu" in email:
         user = local_session.query(Student).filter(Student.email == email).first()
+        local_session.commit()
         local_session.close()
         print(user)
         # if it is a student, not none
@@ -61,7 +63,7 @@ def send_verification_email():
     # r.set(username,code,60*15)
     codeDict[username] = code
     print(code)
-    msg = Message(subject = 'Thank you for registering for NYUSH Internshare platform!', sender = "kyxtky@gmail.com",\
+    msg = Message(subject = 'Thank you for registering for NYUSH Internshare platform!', sender = "anh422@nyu.edu",\
                   recipients=[username])
     msg.html = render_template("email_template.html",name= username,code=code)
     mail.send(msg)

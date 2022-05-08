@@ -6,6 +6,7 @@ from __init__ import app
 
 from database.dataclass import *
 
+local_session = sessions()
 
 
 # app = Flask(__name__, static_url_path='')

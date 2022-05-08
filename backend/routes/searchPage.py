@@ -2,6 +2,7 @@ from flask import Blueprint,request,session
 from ..database.dataclass import *
 import json
 
+
 search = Blueprint('search', __name__)
 
 @search.route("/jobpost",methods = ['GET','POST'])

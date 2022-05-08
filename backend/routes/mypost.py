@@ -2,6 +2,7 @@ from flask import Blueprint,request,session,render_template
 from ..database.dataclass import *
 import json
 
+
 mypost = Blueprint('mypost', __name__)
 
 def stringfy(date):

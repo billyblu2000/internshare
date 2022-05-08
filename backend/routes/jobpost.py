@@ -5,6 +5,8 @@ from flask_mail import Mail, Message
 from ..__init__ import mail
 from io import BytesIO
 
+
+
 jobpost = Blueprint('jobpost', __name__)
 
 def stringfy(date):
@@ -134,7 +136,7 @@ def apply_jobpost():
         if method=="cv":
             # download cv
             msg = Message(subject="%s is applying for job %s".format(name,id),
-                          sender="kyxtky@gmail.com", \
+                          sender="anh422@nyu.edu", \
                           recipients=[email])
             f = local_session.query(CV).filter(CV.email == email).first()
             msg.attach(f.filename, "image/png", BytesIO(f.data))
