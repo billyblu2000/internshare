@@ -65,13 +65,15 @@ def create_mypost():
         #         "post_title": "Tiktok database engineer"
         #     }
         # ]
-        new_jobpost = JobPost(company_name=j["company_name"], is_Company=j["is_Company"],
-                              company_email=j["company_email"],
-                              job_description=j["job_description"], job_requirements=j["job_requirements"],
-                              job_start_date=j["job_start_date"] \
-                              , apply_end_date=j["apply_end_date"], estimate_salary=j["estimate_salary"],
-                              post_title=j["post_title"])
-        local_session.add(new_jobpost)
+        # new_jobpost = JobPost(company_name=j["company_name"], is_Company=j["is_Company"],
+        #                       company_email=j["company_email"],
+        #                       job_description=j["job_description"], job_requirements=j["job_requirements"],
+        #                       job_start_date=j["job_start_date"] \
+        #                       , apply_end_date=j["apply_end_date"], estimate_salary=j["estimate_salary"],
+        #                       post_title=j["post_title"])
+        # local_session.add(new_jobpost)
+        local_session.execute(text("INSERT INTO jobPosts(company_name,is_Company,company_email,job_description,job_requirements,job_start_date,apply_end_date,estimate_salary,post_title) VALUES('{}',{},'{}','{}','{}','{}','{}',{},'{}')"
+                                   .format(j["company_name"], j["is_Company"], j["company_email"], j["job_description"], j["job_requirements"],j["job_start_date"],j["apply_end_date"],j["estimate_salary"],j["post_title"])))
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})

@@ -139,8 +139,9 @@ def apply_jobpost():
             f = local_session.query(CV).filter(CV.email == email).first()
             msg.attach(f.filename, "image/png", BytesIO(f.data))
             mail.send(msg)
-        new_apply = Application(student_email=email, post_id=id)
-        local_session.add(new_apply)
+
+        local_session.execute(text("INSERT INTO applications(student_email,post_id) VALUES('{}',{})".format(email, id)))
+
 
         return json.dumps({"status": "ok"})
     except:
@@ -162,13 +163,16 @@ def like_comment():
 def create_comment():
     # try:
     content = request.get_json()
+    id = content["jobpost_id"]
     comment_content = content["content"]
     email = session["email"]
-    target = content["target_id"]
-    root = content["root"]
+    target = int(content["target_id"])
+    root = int(content["root"])
+    id = int(content['jobpost_id'])
+    print(content)
+    print(id)
     print(comment_content, target, root,email)
-    local_session.execute(text("""INSERT INTO comments(content,jpost_id,comment_id,student_email,Likes) 
-    VALUES(comment_content,id,root,target,mail,0)"""))
+    local_session.execute(text("INSERT INTO comments(content,jpost_id,comment_id,root,student_email,Likes) VALUES('{}',{},{},{},'{}',0)".format(comment_content, id, target, root, email)))
     return json.dumps({"status":"ok"})
     # except:
     #     return json.dumps({"status":"fail"})

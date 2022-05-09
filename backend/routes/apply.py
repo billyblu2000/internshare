@@ -18,9 +18,11 @@ apply = Blueprint('apply', __name__)
 def cancel():
     try:
         content = request.get_json()
-        id = content["application_id"]
-        cancel_appli = local_session.query(Application).filter(Application.id == id).first()
-        local_session.delete(cancel_appli)
+        # id = content["application_id"]
+        # cancel_appli = local_session.query(Application).filter(Application.id == id).first()
+        # local_session.delete(cancel_appli)
+        local_session.execute(text("DELETE FROM applications WHERE id = {}".format(id)))
+
 
         return json.dumps({"status": "ok"})
     except:
