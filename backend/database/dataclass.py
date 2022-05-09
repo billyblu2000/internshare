@@ -159,8 +159,8 @@ class CV(Base):
     __tablename__ = 'cvs'
     id = Column(Integer(), primary_key=True,index=True)
     last_update_time = Column(DateTime(), default=datetime.utcnow)
-    pdf_path = Column(String(5000), nullable=False)
-    data = Column(LargeBinary(),nullable=False)
+    pdf_path = Column(String(5000))
+    data = Column(LargeBinary())
 
     def __repr__(self):
         return f"<CV id={self.id} last update time={self.last_update_time} pdf path={self.pdf_path} data={self.data}>"
@@ -171,7 +171,7 @@ class Profile(Base):
     id = Column(Integer(), primary_key=True,index=True)
     email = Column(String(100), nullable=False)
     name = Column(String(100), nullable=False)
-    CV_id = Column(Integer(), nullable=False)
+    CV_id = Column(Integer())
     project_experience = Column(String(500), nullable=False)
     internship_experience = Column(String(500), nullable=False)
     education_background = Column(String(500), nullable=False)
