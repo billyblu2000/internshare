@@ -14,18 +14,12 @@ def get_profile():
             email = content["email"]
         else:
             email = session["email"]
-
         # retireive all job appllicants of a person
-
         all = [session["email"]]
-
         appli = local_session.query(Application.student_email).filter(JobPost.student_email == session["email"])\
             .filter(Application.post_id == JobPost.id).filter(Application.student_email == Student.email).all()
-
         for i in appli:
             all.append(i)
-
-        # all = 1
         user = local_session.query(Profile).filter(Profile.email == email).first()
 
         user_detailed = local_session.query(Student).filter(Student.email == email).first()
@@ -50,6 +44,7 @@ def get_profile():
             "color":user_detailed.color
         }
         res["result"] = obj
+        print(res)
         return res
 
     except:
@@ -57,40 +52,42 @@ def get_profile():
 
 @profile.route('/update', methods=["GET", "POST"])
 def update_profile():
-    try:
-        session["email"] = "yl7002@nyu.edu"
-        user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
-
-        if not user:
-            return json.dumps({"status":"user DNE"})
-        j = request.json()
-        user.email = session["email"]
-        user.name = session["name"]
-        # user.project_experience = "No project expereince"
-        j["project_experience"]
-        user.internship_experience = j["internship_experience"]
-        user.education_background = j["education_background"]
-        user.awards = j["awards"]
-        user.activities = j["activities"]
-        user.skills = j["skills"]
-        user.public = j["public"]
-
-        return json.dumps({"status":"ok"})
-    except:
-        return json.dumps({"status":"fail"})
+    # try:
+    user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
+    if not user:
+        return json.dumps({"status":"user DNE"})
+    print("user exist!")
+    j = request.get_json()
+    print(j)
+    user.email = session["email"]
+    user.name = session["name"]
+    # user.project_experience = "No project expereince"
+    user.project_experience = j["project_experience"]
+    user.internship_experience = j["internship_experience"]
+    user.education_background = j["education_background"]
+    user.awards = j["awards"]
+    user.activities = j["activities"]
+    user.skills = j["skills"]
+    user.public = j["public"]
+    return json.dumps({"status":"ok"})
+    # except:
+    #     return json.dumps({"status":"fail"})
 
 @profile.route('/upload', methods=["GET", "POST"])
 def upload_cv():
-    try:
-        f = request.files["profile"]
-        cv = local_session.query(CV).filter(Profile.email == session["email"]).first()
-
+    # try:
+    f = request.files["file"]
+    print(f)
+    cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id).first()
+    if cv:
+        cv.data = f.read()
         cv.pdf_path = f.filename
-        cv.data= f.read()
+    # else:
+    #     pass
 
-        return json.dumps({"status": "ok"})
-    except:
-        return json.dumps({"status":"fail"})
+    return json.dumps({"status": "ok"})
+    # except:
+    #     return json.dumps({"status":"fail"})
 
 @profile.route('/create', methods=["GET", "POST"])
 def create_profile():
@@ -127,17 +124,18 @@ def create_profile():
 def getusername():
     try:
         name = session["name"]
-        res = {"status":"ok","name":name}
+        color = session["color"]
+        res = {"status":"ok","name":name,"color":color}
         return res
     except:
         return json.dumps({"status":"fail"})
 
-@profile.route('/download', methods=["GET", "POST"])
+@profile.route('/download', methods=["GET"])
 def download_profile():
     try:
         email = session["email"]
-        f = local_session.query(CV).filter(CV.email == email).first()
-
+        # cv_id =
+        f = local_session.query(CV).filter(CV.cv_id == "cv_id").first()
         return send_file(BytesIO(f.data),attachment_filename=f.filename,as_attachment=True)
     except:
         return json.dumps({"status":"fail"})

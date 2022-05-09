@@ -38,8 +38,7 @@ def recommendPostjobs():
         # cur job post
         for id in list_id:
             job = local_session.query(JobPost).filter(JobPost.id == id).first()
-            print(job)
-            res["result"].append({
+            obj = {
                 "id":job.id,
                 "title": job.post_title,
                 "date": stringfy(job.Datetime),
@@ -47,9 +46,18 @@ def recommendPostjobs():
                 "company": job.company_name,
                 "student_email": job.student_email,
                 "requirement": job.job_requirements,
-                "publisher_color":"#bf3f84",
-                "publisher_name":"Daisy",
-            })
+                "publisher_color":"",
+                "publisher_name":"",
+            }
+            if job.is_Company == 1:
+                company = local_session.query(Company).filter(Company.email == job.company_email).first()
+                obj["publisher_color"] = company.color
+                obj["publisher_name"] = company.name
+            else:
+                student = local_session.query(Student).filter(Student.email == job.student_email).first()
+                obj["publisher_color"] = student.color
+                obj["publisher_name"] = student.name
+            res["result"].append(obj)
 
         print(res)
         return json.dumps(res)
@@ -98,18 +106,27 @@ def check_status():
             status = cur.status
             print(status, post_id)
             job_info = local_session.query(JobPost).filter(JobPost.id == post_id).first()
-            res["result"].append({
+            obj = {
                 "id": job_info.id,
                 "status": status,
+                "post_id":post_id,
                 "title": job_info.post_title,
                 "company_name": job_info.company_name,
                 "start": stringfy(job_info.job_start_date),
                 "end": stringfy(job_info.job_end_time),
-                "publisher_color":"#bf3f84",
-                "publisher_name":"Daisy",
-            })
+                "publisher_color":"",
+                "publisher_name":"",
+            }
+            if job_info.is_Company == 1:
+                company = local_session.query(Company).filter(Company.email == job_info.company_email).first()
+                obj["publisher_color"] = company.color
+                obj["publisher_name"] = company.name
+            else:
+                student = local_session.query(Student).filter(Student.email == job_info.student_email).first()
+                obj["publisher_color"] = student.color
+                obj["publisher_name"] = student.name
+            res["result"].append(obj)
 
-        print(res)
         return res
     except:
         return json.dumps({"status":"fail"})

@@ -49,7 +49,7 @@ def login():
 
 codeDict = {}
 # register
-@loginRegister.route('student/sendemail',methods = ['GET','POST'])
+@loginRegister.route('/student/sendemail',methods = ['GET','POST'])
 def send_verification_email():
     code = generateOTP() # preserve in database??
     try:
@@ -69,7 +69,7 @@ def send_verification_email():
 
 # verify
 # student
-@loginRegister.route('student/verify',methods = ['GET','POST'])
+@loginRegister.route('/student/verify',methods = ['GET','POST'])
 def verify_code():
     email = request.args["email"]
     code = request.args["code"]
@@ -95,7 +95,6 @@ def student_register():
     if pw != pw2:
         return json.dumps({"status":"password does not match"})
     std = local_session.query(Student).filter(Student.email == email).first()
-    local_session.commit()
     if std:
         return json.dumps({"status":"user already exists"})
     major = content["major"]
