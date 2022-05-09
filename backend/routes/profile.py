@@ -87,8 +87,7 @@ def upload_cv():
         f = request.files["file"]
         cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id).first()
         if not cv:
-            new_cv = CV(pdf_path='new.pdf')
-            local_session.add(new_cv)
+            local_session.execute(text("""INSERT INTO cvs(pdf_path) VALUES("new.pdf")"""))
 
             cv_id = local_session.query(CV.id).filter(CV.pdf_path == 'new_pdf').first()
             cv_id = cv_id[0]

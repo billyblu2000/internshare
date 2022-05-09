@@ -167,8 +167,8 @@ def create_comment():
     target = content["target_id"]
     root = content["root"]
     print(comment_content, target, root,email)
-    new_data = Comment(content=comment_content,jpost_id=id, root=root,comment_id = target,student_email=email,Likes=0)
-    local_session.add(new_data)
+    local_session.execute(text("""INSERT INTO comments(content,jpost_id,comment_id,student_email,Likes) 
+    VALUES(comment_content,id,root,target,mail,0)"""))
     return json.dumps({"status":"ok"})
     # except:
     #     return json.dumps({"status":"fail"})

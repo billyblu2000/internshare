@@ -1,7 +1,7 @@
 import pymysql
 from mysqlx import Table
 from sqlalchemy import Column, String, DateTime, Integer, create_engine, ForeignKey, Boolean, delete, PickleType, \
-    LargeBinary
+    LargeBinary,insert,text
 from datetime import datetime
 import os
 import sqlalchemy
@@ -135,7 +135,7 @@ class JobPost(Base):
 
     memberships_c = relationship("Application", back_populates='jobpost_rela',passive_deletes=True)
     comment_relationship = relationship("Comment", back_populates='jobpost_comment',passive_deletes=True)
-    jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost',passive_deletes=True)
+    jobpost_hashtag = relationship("Hashtag", secondary=PostHashtag.__table__, backref='JobPost',passive_deletes=True,overlaps="JobPost,jobpost_hashtag")
 
     def __repr__(self):
         return f"<Job Post id={self.id} company name={self.company_name} is company={self.is_Company} " \
@@ -151,7 +151,7 @@ class Hashtag(Base):
     __tablename__ = 'hashtags'
     hashtag = Column(String(500), primary_key=True)
 
-    hashtag_relationship = relationship("JobPost", secondary=PostHashtag.__table__, backref='Hashtag',passive_deletes=True)
+    hashtag_relationship = relationship("JobPost", secondary=PostHashtag.__table__, backref='Hashtag',passive_deletes=True,overlaps="JobPost,jobpost_hashtag")
 
 
 
