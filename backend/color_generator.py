@@ -35,7 +35,7 @@ def rgb2hex(rgb):
     return h
 
 def generate_background_color():
-    return rgb2hex(hsl2rgb(random.uniform(0,1),0.5,0.5))
+    return "#"+rgb2hex(hsl2rgb(random.uniform(0,1),0.5,0.5))
 
 if __name__ == '__main__':
     print(generate_background_color())

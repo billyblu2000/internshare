@@ -18,6 +18,7 @@ def stringfy(date):
 @jobpost.route('/detailedinfo',methods=["GET","POST"])
 def job_detailed_info():
     try:
+        local_session = sessions()
         content = request.get_json()
         jobpost_id = content["jobpost_id"]
         job = local_session.query(JobPost).filter(JobPost.id == jobpost_id).first()
@@ -40,23 +41,24 @@ def job_detailed_info():
             "salary": job.estimate_salary,
         }
         if job.is_Company == 1:
-            company =  local_session.query(Company).filter(Company.email ==job.company_email).first()
+            company = local_session.query(Company).filter(Company.email ==job.company_email).first()
             obj["publisher_color"]=company.color
-            obj["publisher_name"] =""
+            obj["publisher_name"] =company.name
         else:
             student = local_session.query(Student).filter(Student.email == job.student_email).first()
             obj["publisher_color"] = student.color
             obj["publisher_name"] = student.name
         res["result"]=obj
+        local_session.close()
         return res
     except:
         return json.dumps({"status": "fail"})
 
 @jobpost.route("/getpostcomment",methods = ['GET','POST'])
 def comment():
-    content = request.get_json()
-    id = content["jobpostid"]
-    # id = 3
+    # content = request.get_json()
+    # id = content["jobpostid"]
+    id = 3
     try:
         result =  local_session.query(Comment).filter(Comment.jpost_id == id).all()
         res = {}
@@ -73,25 +75,24 @@ def comment():
                     "content": comment.content,
                     "datetime": stringfy(comment.Datetime),
                     "like":comment.Likes,
-                    "student_name":"",
-                    "company_name":"",
+                    "root":comment.root,
+                    "name":"",
                     "color":"",
                     "descendent":[]
                 }
                 if (comment.company_email != None):
                     company = local_session.query(Company).filter(Company.email == comment.company_email).first()
-                    obj["company_name"]=company.name
+                    obj["name"]=company.name
                     obj["color"]=company.color
                 else:
                     student = local_session.query(Student).filter(Student.email == comment.student_email).first()
-                    obj["student_name"] = student.name
+                    obj["name"] = student.name
                     obj["color"] = student.color
                 res["comment"].append(obj)
         for i in range(len(result)):
             comment  =result[i]
             if comment.comment_id != None:
-                print(comment.id)
-                root = 1
+                root = comment.root
                 for root_comment in res["comment"]:
                     if root == root_comment["id"]:
                         obj = {
@@ -102,18 +103,18 @@ def comment():
                             "content": comment.content,
                             "datetime": stringfy(comment.Datetime),
                             "like":comment.Likes,
-                            "student_name":"",
-                            "company_name":"",
+                            "name":"",
                             "color":"",
+                            "root":comment.root,
                             "descendent":[]
                         }
                         if (comment.company_email != None):
                             company = local_session.query(Company).filter(Company.email == comment.company_email).first()
-                            obj["company_name"]=company.name
+                            obj["name"]=company.name
                             obj["color"]=company.color
                         else:
                             student = local_session.query(Student).filter(Student.email == comment.student_email).first()
-                            obj["student_name"] = student.name
+                            obj["name"] = student.name
                             obj["color"] = student.color
                         root_comment["descendent"].append(obj)
         return res

@@ -5,30 +5,60 @@ import json
 
 search = Blueprint('search', __name__)
 
+
+def stringfy(date):
+    if date == None:
+        return ""
+    else:
+        return date.strftime("%Y-%m-%d")
+
+
+
 @search.route("/jobpost",methods = ['GET','POST'])
 def search_particular_post_job():
-    try:
-        filter = request.args["filter"]
-        res = {"status":"ok","result":[]}
-        page_num = request.args["pagenumber"]
-        # search inside the content to get results
-        post = local_session.query(JobPost).all()
-        content_list = []
-        for i in post:
-            content_list.append(post[i].job_description)
-        for job in post:
-            res["result"] = {
-                "id":job.id,
-                "title": job.title,
-                "date": job.Datetime,
-                "description": job.job_description,
-                "company": job.company_name,
-                "student_email": job.student_email,
-                "requirement": job.jon_requirements,
-            }
-        return json.dumps(res)
-    except:
-        return json.dumps({"status":"fail"})
+    # try:
+        # filter = request.args["filter"]
+        #
+        # page_num = request.args["pagenumber"]
+    res = {"status": "ok", "result": []}
+    page_num =1
+    filter = ""
+    # search inside the content to get results
+    search = "%{}%".format(filter)
+    post = local_session.query(JobPost).filter(JobPost.post_title.like(search)).order_by(
+        JobPost.Datetime.desc()).all()
+    content_list = post[page_num*10-9:(page_num)*10]
+    for job in post:
+        obj = {
+            "id": job.id,
+            "is_company": job.is_Company,
+            "company_email": job.company_email,
+            "student_email": job.student_email,
+            "Datetime": stringfy(job.Datetime),
+            "des": job.job_description,
+            "requirement": job.job_requirements,
+            "start_date": stringfy(job.job_start_date),
+            "end_date": stringfy(job.job_end_time),
+            "company_name": job.company_name,
+            "title": job.post_title,
+            "apply_start": stringfy(job.apply_start_date),
+            "apply_end": stringfy(job.apply_end_date),
+            "salary": job.estimate_salary,
+            "color": "",
+            "name": "",
+        }
+        if job.is_Company == 1:
+            company = local_session.query(Company).filter(Company.email == job.company_email).first()
+            obj["color"] = company.color
+            obj["name"] = company.name
+        else:
+            student = local_session.query(Student).filter(Student.email == job.student_email).first()
+            obj["color"] = student.color
+            obj["name"] = student.name
+        res["result"].append(obj)
+    return res
+    # except:
+    #     return json.dumps({"status":"fail"})
 
 @search.route("/general",methods = ['GET','POST'])
 def search_particular_post_general():

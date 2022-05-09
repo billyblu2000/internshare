@@ -8,6 +8,12 @@ from database.dataclass import *
 
 local_session = sessions()
 
+def stringfy(date):
+    if date == None:
+        return ""
+    else:
+        return date.strftime("%m/%d/%Y, %H:%M:%S")
+
 
 # app = Flask(__name__, static_url_path='')
 # # session config
