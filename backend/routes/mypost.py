@@ -79,8 +79,16 @@ def create_mypost():
 @mypost.route('/upadte', methods=["GET", "POST"])
 def update_mypost():
     try:
-        user = local_session.query(JobPost).filter(JobPost.id == 3)\
-            .update({JobPost.apply_end_date: "2022-07-01"},synchronize_session='fetch')
+        j = request.get_json()
+        # company_name = j["company_name"], is_Company = j["is_Company"],
+        # company_email = j["company_email"],
+        # job_description = j["job_description"], job_requirements = j["job_requirements"],
+        # job_start_date = j["job_start_date"] \
+        #     , apply_end_date = j["apply_end_date"], estimate_salary = j["estimate_salary"],
+        # post_title = j["post_title"]
+        # user = local_session.query(JobPost).filter(JobPost.id == id)\
+        #     .update({JobPost.apply_end_date: content[""]},synchronize_session='fetch')
+        json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
 
@@ -100,7 +108,7 @@ def viewall_myapplicants():
     # try:
     res = {}
     res["status"] = "ok"
-    res["applicants"] = []
+    res["result"] = []
     result = local_session.query(Application).filter(JobPost.student_email == session["email"]) \
         .filter(Application.post_id == JobPost.id).filter(Application.student_email == Student.email).all()
     for i in range(len(result)):
@@ -117,7 +125,8 @@ def viewall_myapplicants():
         "year":student.graduation_time,
         "major":student.major,
         }
-        res["applicants"].append(obj)
+        res["result"].append(obj)
+    print(res)
     return res
     # except:
     #     return json.dumps({"status": "fail"})
