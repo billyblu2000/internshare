@@ -57,7 +57,7 @@ export const apis = {
     'createComment': {
         path: '/api/job/create/comment',
         method: 'post',
-        params: ['content', 'id', 'target_id']
+        params: ['content', 'jobpost_id', 'jobpost_id', 'root']
     },
     'updateComment': {
         path: '/api/job/update/comment',

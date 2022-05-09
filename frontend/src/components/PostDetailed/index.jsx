@@ -89,6 +89,7 @@ export default function PostDetailed() {
             isFather: false,
             username: originalSecondLayer.name,
             userId: null,
+            email: originalSecondLayer.student_email,
             publishedDate: originalSecondLayer.datetime,
             avatarBackgroundColor: originalSecondLayer.color,
             avatarText: nameToShort(originalSecondLayer.name),
