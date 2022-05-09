@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography, Divider, Upload, Tooltip, message, Skeleton } from 'antd'
-import { FilePdfOutlined, EditOutlined } from '@ant-design/icons';
+import { FilePdfOutlined } from '@ant-design/icons';
 import Api from '../../../utils/Api';
 
 import './index.css'

@@ -121,7 +121,7 @@ const rules = [
                 "company_name": "@string(5, 10)",
                 "title": "@string(5, 10)",
                 "apply_start": "@date",
-                "end_date": "@date",
+                "apply_end": "@date",
                 "salary": "@natural(1000, 5000)",
             }
         }
@@ -203,7 +203,7 @@ const rules = [
                 "post_id|+1": 1,
                 "status": "@pick(Pending, Accept, Reject)",
                 "student_email": "@email",
-                "year": '@natrual(2022,2025)',
+                "year": '@natural(2022,2025)',
             }]
         }
     },
@@ -229,6 +229,48 @@ const rules = [
         name: 'createPost',
         template: {
             status: 'ok'
+        }
+    },
+    {
+        name: 'jobComment',
+        template: {
+            status: 'ok',
+            'comment|8-10': [{
+                "color": "@color",
+                "company_email": null,
+                "company_name": null,
+                "content": "@paragraph(1,3)",
+                "datetime": "@date",
+                "descendent|0-8": [{
+                    "color": "@color",
+                    "company_email": null,
+                    "company_name": null,
+                    "content": "@paragraph(1,3)",
+                    "datetime": "@date",
+                    "id|+1": 1,
+                    "job_post_id": 3,
+                    "like": '@natural(0, 100)',
+                    "student_email": "@email",
+                    "student_name": "@name",
+                }],
+                "id|+1": 1,
+                "job_post_id": 3,
+                "like": '@natural(0, 100)',
+                "student_email": "@email",
+                "student_name": "@name",
+            }]
+        }
+    },
+    {
+        name:'likeComment',
+        template:{
+            status:'ok'
+        }
+    },
+    {
+        name:'createComment',
+        template:{
+            status:'ok'
         }
     }
 ]

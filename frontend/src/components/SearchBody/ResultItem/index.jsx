@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Typography } from 'antd';
+import { Typography } from 'antd';
 import './index.css'
 import { Link } from 'react-router-dom';
 import { nameToShort } from '../../../utils/utils';

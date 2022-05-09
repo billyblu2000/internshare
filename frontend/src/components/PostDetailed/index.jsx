@@ -8,78 +8,6 @@ import Api from '../../utils/Api';
 import './index.css';
 import { nameToShort } from '../../utils/utils';
 
-const commentData = [
-  {
-    id: '1',
-    targetId: '1',
-    username: '',
-    userId: '',
-    isFather: true, // whether is commenting to post directly or not
-    avatarBackgroundColor: '',
-    avatarText: '',
-    avatarImgUrl: '',
-    content: '',
-    publishedDate: '',
-    likes: 0,
-    children: [
-      {
-        id: '2',
-        targetId: '1',
-        isFather: false,
-        username: '',
-        userId: '',
-        publishedDate: '',
-        avatarBackgroundColor: '',
-        avatarText: '',
-        avatarImgUrl: '',
-        content: '',
-        likes: 0,
-      },
-      {
-        id: '5',
-        targetId: '1',
-        isFather: false,
-        username: '',
-        userId: '',
-        publishedDate: '',
-        avatarBackgroundColor: '',
-        avatarText: '',
-        avatarImgUrl: '',
-        content: '',
-        likes: 0,
-      }
-    ]
-  },
-  {
-    id: '3',
-    targetId: '1',
-    username: '',
-    userId: '',
-    isFather: true, // whether is commenting to post directly or not
-    avatarBackgroundColor: '',
-    avatarText: '',
-    avatarImgUrl: '',
-    content: '',
-    publishedDate: '',
-    likes: 0,
-    children: [
-      {
-        id: '4',
-        targetId: '3',
-        isFather: false,
-        username: '',
-        userId: '',
-        publishedDate: '',
-        avatarBackgroundColor: '',
-        avatarText: '',
-        avatarImgUrl: '',
-        content: '',
-        likes: 0,
-      }
-    ]
-  }
-];
-
 
 
 export default function PostDetailed() {
@@ -88,25 +16,30 @@ export default function PostDetailed() {
   const [replyActive, setReplyActive] = React.useState(-1);
   const [postData, setPostData] = React.useState(null);
   const [recommendData, setRecommendData] = React.useState(null);
+  const [commentData, setCommentdata] = React.useState(null);
   const [showModal, setShowModal] = React.useState(false);
   var starting = React.useRef(true);
   const [showReply, setShowReply] = React.useState(false);
+  const [replyContent, setReplyContent] = React.useState('')
   let nav = useNavigate();
 
   React.useEffect(() => {
     if (starting.current) {
       new Api('jobInfo', [id], convertPostData);
-      new Api('recommendJobPost', [], convertRecommendData)
+      new Api('recommendJobPost', [], convertRecommendData);
+      new Api('jobComment', [id], convertCommentData);
       starting.current = false;
     }
   })
 
   React.useEffect(() => {
-    if (!starting.current){
+    if (!starting.current) {
       new Api('jobInfo', [id], convertPostData);
       new Api('recommendJobPost', [], convertRecommendData);
+      new Api('jobComment', [id], convertCommentData);
       setPostData(null);
       setRecommendData(null);
+      setCommentdata(null);
     }
   }, [id])
 
@@ -128,6 +61,52 @@ export default function PostDetailed() {
     }
   }
 
+  const convertCommentData = (res) => {
+    if (res.status === 'ok') {
+      var original = res.comment;
+      var converted = [];
+      for (let i = 0; i < original.length; i++) {
+        var currentFirstLayer = {
+          id: original[i].id,
+          targetId: null,
+          username: original[i].student_name ? original[i].student_name : original[i].company_name,
+          email: original[i].student_email,
+          userId: null,
+          isFather: true,
+          avatarBackgroundColor: original[i].color,
+          avatarText: nameToShort(original[i].student_name ? original[i].student_name : original[i].company_name),
+          avatarImgUrl: null,
+          content: original[i].content,
+          publishedDate: original[i].datetime,
+          like: original[i].like,
+        }
+        currentFirstLayer.children = []
+        for (let j = 0; j < original[i].descendent.length; j++) {
+          var originalSecondLayer = original[i].descendent[j];
+          var currentSecondLayer = {
+            id: originalSecondLayer.id,
+            targetId: null,
+            isFather: false,
+            username: originalSecondLayer.student_name? originalSecondLayer.student_name:originalSecondLayer.company_name,
+            userId: null,
+            publishedDate: originalSecondLayer.datetime,
+            avatarBackgroundColor: originalSecondLayer.color,
+            avatarText: nameToShort(originalSecondLayer.student_name? originalSecondLayer.student_name:originalSecondLayer.company_name),
+            avatarImgUrl: null,
+            content: originalSecondLayer.content,
+            like: originalSecondLayer.like,
+          }
+          currentFirstLayer.children.push(currentSecondLayer)
+        }
+        converted.push(currentFirstLayer)
+      }
+      setCommentdata(converted)
+    }
+    else {
+      message.error({ content: res.status, ket: 'message' })
+    }
+  }
+
   const handleSendOnline = () => {
     message.loading({ content: 'Please wait...', key: 'message' })
     new Api('apply', [postData.id, 'profile', postData.student_email], applyCallback);
@@ -139,16 +118,16 @@ export default function PostDetailed() {
   }
 
   const prepareApply = () => {
-    message.loading({ content: 'Preparing', key: 'message', duration:1 });
+    message.loading({ content: 'Preparing', key: 'message', duration: 1 });
     new Api('getUser', [], prepareApplyCallback);
   }
 
   const prepareApplyCallback = (res) => {
-    if (res.status === 'ok'){
-      message.loading({ content: 'Preparing', key: 'message', duration:0.01 });
+    if (res.status === 'ok') {
+      message.loading({ content: 'Preparing', key: 'message', duration: 0.01 });
       setShowModal(true)
     }
-    else{
+    else {
       nav('/login');
     }
   }
@@ -163,8 +142,29 @@ export default function PostDetailed() {
     }
   }
 
-  const reply = () => {
-    setShowReply(false);
+  const reply = (content, rootId, commentId) => {
+    console.log(content, rootId, commentId)
+    if (content !== ''){
+      new Api('createComment', [content, id, commentId, rootId], replyCallback)
+      message.loading({content:'Please wait...', key:'message'})
+    }
+    else{
+      message.error({content:'Reply content cannot be empty!', key:"message"})
+    }
+    
+  }
+
+  const replyCallback = (res) => {
+    if (res.status === 'ok'){
+      setShowReply(false);
+      setReplyActive(-1);
+      setCommentdata(null);
+      message.success({content:'Comment Created!', key:'message'})
+      new Api('jobComment', [id], convertCommentData);
+    }
+    else{
+      message.error({content:res.status, key:'message'})
+    }
   }
 
   return (
@@ -198,7 +198,7 @@ export default function PostDetailed() {
                   <div style={{ color: 'gray', fontSize: '12px' }}>Expected Salary</div>
                   <div style={{ marginTop: '0px', marginBottom: '5px', fontSize: '18px' }}>{postData.salary}</div>
                   <div style={{ color: 'gray', fontSize: '12px', marginTop: '10px' }}>Apply Deadline</div>
-                  <div style={{ marginTop: '0px', marginBottom: '5px', fontSize: '18px' }}>{postData.end_date}</div>
+                  <div style={{ marginTop: '0px', marginBottom: '5px', fontSize: '18px' }}>{postData.apply_end}</div>
                   <div></div>
                 </div>
               </div>
@@ -219,17 +219,18 @@ export default function PostDetailed() {
 
 
         </div>
-        {showReply?
-        <Input.Group compact style={{marginTop:'30px'}}>
-          <Input.TextArea rows={2} placeholder="Comment to Post" />
-          <Button style={{ marginTop: '5px', float: 'right' }} onClick={reply}>Comment</Button>
-        </Input.Group> : null}
+        {showReply ?
+          <Input.Group compact style={{ marginTop: '30px' }}>
+            <Input.TextArea rows={2} placeholder="Comment to Post" onChange={(e) => setReplyContent(e.target.value)} />
+            <Button style={{ marginTop: '5px', float: 'right' }} onClick={() =>reply(replyContent, null, null)}>Comment</Button>
+          </Input.Group> : null}
 
         <Typography.Title level={5} style={{ marginTop: '30px', color: '#666666' }}>Comments</Typography.Title>
         <div style={{ width: '100%', marginTop: '10px', paddingTop: '10px', marginBottom: '100px' }} className='theme-box'>
+          {commentData === null? <div style={{padding:'30px'}}><Skeleton active/><Skeleton active/><Skeleton active/></div>:<>
           {commentData.map((item) => {
-            return <Comment data={item} replyActive={replyActive} setReplyActive={setReplyActive} />
-          })}
+            return <Comment data={item} replyActive={replyActive} setReplyActive={setReplyActive} replyFunc={reply} rootId={null}/>
+          })}</>}
         </div>
       </div>
       <div style={{ float: 'left', width: '28%', marginLeft: '2%', }}>
