@@ -5,7 +5,7 @@ from flask_mail import Mail, Message
 from ..__init__ import mail
 from io import BytesIO
 from ..stringfy import stringfy
-
+from ..stringToDate import toDate
 
 
 jobpost = Blueprint('jobpost', __name__)
@@ -126,19 +126,20 @@ def comment():
 def apply_jobpost():
     try:
         content = request.get_json()
+        print(content)
         id = content["jobpost_id"]
         email = session["email"]
-        name = session["name"]
-        method= content["method"]
-        publisher = content["publisher"]
-        if method=="cv":
-            # download cv
-            msg = Message(subject="%s is applying for job %s".format(name,id),
-                          sender="anh422@nyu.edu", \
-                          recipients=[email])
-            f = local_session.query(CV).filter(CV.email == email).first()
-            msg.attach(f.filename, "image/png", BytesIO(f.data))
-            mail.send(msg)
+        # name = session["name"]
+        # method= content["method"]
+        # publisher = content["publisher"]
+        # if method=="cv":
+        #     # download cv
+        #     msg = Message(subject="%s is applying for job %s".format(name,id),
+        #                   sender="anh422@nyu.edu", \
+        #                   recipients=[email])
+        #     f = local_session.query(CV).filter(CV.email == email).first()
+        #     msg.attach(f.filename, "image/png", BytesIO(f.data))
+        #     mail.send(msg)
 
         local_session.execute(text("INSERT INTO applications(student_email,post_id) VALUES('{}',{})".format(email, id)))
 

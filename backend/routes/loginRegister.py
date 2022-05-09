@@ -51,7 +51,8 @@ codeDict = {}
 # register
 @loginRegister.route('/student/sendemail',methods = ['GET','POST'])
 def send_verification_email():
-    code = generateOTP() # preserve in database??
+    code = generateOTP()
+    print("code is here",code)
     try:
         content = request.get_json()
         username = content["email"]
@@ -61,7 +62,7 @@ def send_verification_email():
     # r.set(username,code,60*15)
     codeDict[username] = code
     print(code)
-    msg = Message(subject = 'Thank you for registering for NYUSH Internshare platform!', sender = "anh422@nyu.edu",\
+    msg = Message(subject = 'Thank you for registering for NYUSH Internshare platform!', sender = "kyxtky@gmail.com",\
                   recipients=[username])
     msg.html = render_template("email_template.html",name= username,code=code)
     mail.send(msg)

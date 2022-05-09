@@ -103,7 +103,7 @@ def check_status():
             print(status, post_id)
             job_info = local_session.query(JobPost).filter(JobPost.id == post_id).first()
             obj = {
-                "id": job_info.id,
+                "id": cur.id,# application id,
                 "status": status,
                 "post_id":post_id,
                 "title": job_info.post_title,

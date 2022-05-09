@@ -43,9 +43,9 @@ def get_profile():
             "color":user_detailed.color
         }
         if user.public:
-            obj["public"] == 1
+            obj["public"] = 1
         else:
-            obj["public"] == 0
+            obj["public"] = 0
         res["result"] = obj
         print(res)
         return res
@@ -58,6 +58,7 @@ def update_profile():
     print("update")
     try:
         user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
+
         if not user:
             return json.dumps({"status":"user DNE"})
         j = request.get_json()
