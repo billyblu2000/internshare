@@ -5,7 +5,7 @@ from flask_mail import Mail, Message
 from ..__init__ import mail
 from io import BytesIO
 from ..stringfy import stringfy
-
+from ..stringToDate import toDate
 
 
 jobpost = Blueprint('jobpost', __name__)
