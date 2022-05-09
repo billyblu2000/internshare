@@ -84,7 +84,7 @@ class Application(Base):
     post_id = Column(Integer(), ForeignKey('jobPosts.id'))
     isOnline = Column(Boolean())
     Datetime = Column(DateTime(), default=datetime.utcnow)
-    status = Column(String(100),default = "Pending")
+    status = Column(String(100), default = "Pending")
 
     student_rela = relationship('Student', back_populates='memberships_a',passive_deletes=True)
     jobpost_rela = relationship('JobPost', back_populates='memberships_c',passive_deletes=True)

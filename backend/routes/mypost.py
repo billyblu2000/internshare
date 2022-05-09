@@ -9,7 +9,7 @@ from ..stringfy import stringfy
 
 @mypost.route('/get', methods=["GET", "POST"])
 def get_mypost():
-    try:
+    # try:
         email = session["email"]
         res = {}
         res["status"]="ok"
@@ -35,7 +35,7 @@ def get_mypost():
                 "color":"",
                 "name":"",
             }
-            if job.is_Company == 1:
+            if job.is_Company == True:
                 company = local_session.query(Company).filter(Company.email == job.company_email).first()
                 obj["color"] = company.color
                 obj["name"] = company.name
@@ -45,13 +45,14 @@ def get_mypost():
                 obj["name"] = student.name
             res["result"].append(obj)
         return res
-    except:
-        return json.dumps({"status": "fail"})
+    # except:
+    #     return json.dumps({"status": "fail"})
 
 @mypost.route('/create', methods=["GET", "POST"])
 def create_mypost():
-    try:
+    # try:
         j = request.get_json()
+        print(j)
         # jobpost = [
         #     {
         #         "company_name": "tiktok",
@@ -72,11 +73,11 @@ def create_mypost():
         #                       , apply_end_date=j["apply_end_date"], estimate_salary=j["estimate_salary"],
         #                       post_title=j["post_title"])
         # local_session.add(new_jobpost)
-        local_session.execute(text("INSERT INTO jobPosts(company_name,is_Company,company_email,job_description,job_requirements,job_start_date,apply_end_date,estimate_salary,post_title) VALUES('{}',{},'{}','{}','{}','{}','{}',{},'{}')"
-                                   .format(j["company_name"], j["is_Company"], j["company_email"], j["job_description"], j["job_requirements"],j["job_start_date"],j["apply_end_date"],j["estimate_salary"],j["post_title"])))
+        local_session.execute(text("INSERT INTO jobPosts(student_email,company_name,is_Company,job_description,job_requirements,job_start_date,apply_end_date,estimate_salary,post_title) VALUES('{}','{}',{},'{}','{}',{},{},{},'{}')"
+                                   .format(session["email"],j["company_name"], j["is_Company"], j["job_description"], j["job_requirements"],j["job_start_date"],j["apply_end_date"],int(j["estimate_salary"]),j["post_title"])))
         return json.dumps({"status": "ok"})
-    except:
-        return json.dumps({"status": "fail"})
+    # except:
+    #     return json.dumps({"status": "fail"})
 
 @mypost.route('/upadte', methods=["GET", "POST"])
 def update_mypost():
