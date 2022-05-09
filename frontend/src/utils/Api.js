@@ -140,9 +140,22 @@ export const apis = {
         params:['job_id']
     },
     'updatePost':{
-        path:'',
-        method:'',
-        params:[]
+        path:'/api/mypost/update',
+        method:'post',
+        params:[
+            'id',
+            'post_title',
+            'company_name',
+            'is_Company',
+            'company_email',
+            'job_description',
+            'job_requirements',
+            'job_start_date',
+            'job_end_date',
+            'estimate_salary',
+            'apply_start_date',
+            'apply_end_date'
+        ]
     },
     'acceptApplicant':{
         path:'/api/mypost/accept/application',

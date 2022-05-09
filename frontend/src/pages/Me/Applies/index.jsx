@@ -47,7 +47,7 @@ const SinglePost = ({ data, handleApplyInfo }) => {
             <Button shape='circle' size='small' className='comment-reply-button'><CloseOutlined /></Button>
           </Popconfirm></Tooltip>
 
-        <Tooltip title='Go to Post'><Button shape='circle' style={{ marginLeft: '10px' }} size='small' className='comment-reply-button'><ArrowRightOutlined /></Button></Tooltip>
+        <Tooltip title='Go to Post'><Button shape='circle' style={{ marginLeft: '10px' }} size='small' className='comment-reply-button' ><Link to={`/main/post/${data.post_id}`}><ArrowRightOutlined /></Link></Button></Tooltip>
       </div>
       <div style={{ marginLeft: '40%', maxWidth: '40%', marginTop: '10px' }}>
         <Steps>

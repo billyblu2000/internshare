@@ -73,7 +73,8 @@ const rules = [
                 "title": "@string(5,10)",
                 "company_name": "@string(5,10)",
                 "start": "@date",
-                "end": "@date"
+                "end": "@date",
+                "post_id":1
             }]
         }
     },
@@ -238,13 +239,13 @@ const rules = [
             'comment|8-10': [{
                 "color": "@color",
                 "company_email": null,
-                "name": null,
+                "name": "@name",
                 "content": "@paragraph(1,3)",
                 "datetime": "@date",
                 "descendent|0-8": [{
                     "color": "@color",
                     "company_email": null,
-                    "name": null,
+                    "name": "@name",
                     "content": "@paragraph(1,3)",
                     "datetime": "@date",
                     "id|+1": 1,
@@ -267,6 +268,12 @@ const rules = [
     },
     {
         name:'createComment',
+        template:{
+            status:'ok'
+        }
+    },
+    {
+        name:'updatePost',
         template:{
             status:'ok'
         }

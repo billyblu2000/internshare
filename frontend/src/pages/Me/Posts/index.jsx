@@ -225,6 +225,7 @@ export default function Posts() {
 
   const deriveAllPostWithApplicants = (posts, applicants) => {
     if (posts !== null && applicants !== null) {
+      console.log(posts, applicants)
       var postWithApplicants = []
       for (let i = 0; i < posts.length; i++) {
         var postObj = posts[i];
@@ -251,7 +252,8 @@ export default function Posts() {
         message.error({content:'Please fill in every required field!', key:"message"})
         return
       }
-      new Api('createPost', [
+      new Api('updatePost', [
+        currentModifyId,
         values['job-title'],
         values['company-name'],
         false,
