@@ -1,4 +1,4 @@
-import { Typography, Divider, Button, Skeleton, message, Modal, Input } from 'antd';
+import { Typography, Divider, Button, Skeleton, message, Modal, Input, Empty } from 'antd';
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import PostCardSmall from '../PostCardSmall';
@@ -229,9 +229,10 @@ export default function PostDetailed() {
         <Typography.Title level={5} style={{ marginTop: '30px', color: '#666666' }}>Comments</Typography.Title>
         <div style={{ width: '100%', marginTop: '10px', paddingTop: '10px', marginBottom: '100px' }} className='theme-box'>
           {commentData === null? <div style={{padding:'30px'}}><Skeleton active/><Skeleton active/><Skeleton active/></div>:<>
+          {commentData.length === 0?<div style={{padding:'50px'}}><Empty description='No comments yet!'/></div>:<>
           {commentData.map((item) => {
             return <Comment data={item} replyActive={replyActive} setReplyActive={setReplyActive} replyFunc={reply} rootId={null}/>
-          })}</>}
+          })}</>}</>}
         </div>
       </div>
       <div style={{ float: 'left', width: '28%', marginLeft: '2%', }}>
