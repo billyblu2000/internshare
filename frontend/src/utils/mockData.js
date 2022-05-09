@@ -238,26 +238,24 @@ const rules = [
             'comment|8-10': [{
                 "color": "@color",
                 "company_email": null,
-                "company_name": null,
+                "name": null,
                 "content": "@paragraph(1,3)",
                 "datetime": "@date",
                 "descendent|0-8": [{
                     "color": "@color",
                     "company_email": null,
-                    "company_name": null,
+                    "name": null,
                     "content": "@paragraph(1,3)",
                     "datetime": "@date",
                     "id|+1": 1,
                     "job_post_id": 3,
                     "like": '@natural(0, 100)',
                     "student_email": "@email",
-                    "student_name": "@name",
                 }],
                 "id|+1": 1,
                 "job_post_id": 3,
                 "like": '@natural(0, 100)',
                 "student_email": "@email",
-                "student_name": "@name",
             }]
         }
     },
