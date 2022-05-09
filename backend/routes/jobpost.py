@@ -191,8 +191,8 @@ def update_comment():
         content = request.get_json()
         comment_id = content["comment_id"]
         new_content = content["new_content"]
-        comment_to_update = local_session.query(Comment).filter(Comment.id == comment_id).first()
-        comment_to_update.content = new_content
+        comment_to_update = local_session.query(Comment).filter(Comment.id == comment_id)\
+            .update({Comment.content : new_content}, synchronize_session='fetch')
         return json.dumps({"status":"ok"})
     except:
         return json.dumps({"status":"fail"})
