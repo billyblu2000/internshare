@@ -58,7 +58,7 @@ const rules = [
         template: {
             status: 'ok',
             name: '@name',
-            color:'@color',
+            color: '@color',
         }
     },
     {
@@ -83,15 +83,22 @@ const rules = [
             "status": "ok",
             "result|10": [
                 {
-                    "job_post_id|+1": 1,
-                    "publisher_name": '@name',
-                    "publisher_color": '@color',
-                    "title": "@string(5,10)",
-                    "date": "@date",
-                    "description": "@paragraph(10)",
-                    "company": "@string(5,10)",
-                    "student_email": '@email',
+                    "Datetime": "@date",
+                    "apply_end": "@date",
+                    "apply_start": "@date",
+                    "color": "@color",
+                    "company_email": null,
+                    "company_name": "@string(5,10)",
+                    "des": "@paragraph(10)",
+                    "end_date": "@date",
+                    "id|+1": 1,
+                    "is_company": '@boolean',
+                    "name": "@string(5,10)",
                     "requirement": "@paragraph(10)",
+                    "salary": "@natrual",
+                    "start_date": "@date",
+                    "student_email": "@email",
+                    "title": "@string(5,10)",
                 }
             ]
         }
@@ -114,115 +121,156 @@ const rules = [
                 "company_name": "@string(5, 10)",
                 "title": "@string(5, 10)",
                 "apply_start": "@date",
-                "end_date": "@date",
+                "apply_end": "@date",
                 "salary": "@natural(1000, 5000)",
             }
         }
     },
     {
-        name:'apply',
+        name: 'apply',
         template: {
-            status:'ok'
+            status: 'ok'
         }
     },
     {
-        name:'getProfile',
-        template:{
-            status:'ok',
-            "result":{
-                "id":"@natural",
-                "email":"@email",
-                "name":"@name",
-                "cv_id":"@natural",
-                "color":"@color",
-                "year":"@natural(2021,2025)",
-                "major":"@string(5,10)",
-                "project":"@paragraph(10)",
-                "internship":"@paragraph(10)",
-                "education":"@paragraph(10)",
-                "awards":"@paragraph(10)",
-                "activity":"@paragraph(10)",
-                "skills":"@paragraph(10)",
-                "public":"@natural(0,1)",
+        name: 'getProfile',
+        template: {
+            status: 'ok',
+            "result": {
+                "id": "@natural",
+                "email": "@email",
+                "name": "@name",
+                "cv_id": "@natural",
+                "color": "@color",
+                "year": "@natural(2021,2025)",
+                "major": "@string(5,10)",
+                "project": "@paragraph(10)",
+                "internship": "@paragraph(10)",
+                "education": "@paragraph(10)",
+                "awards": "@paragraph(10)",
+                "activity": "@paragraph(10)",
+                "skills": "@paragraph(10)",
+                "public": "@natural(0,1)",
             }
         }
     },
     {
-        name:'deleteApplication',
-        template:{
-            status:"ok"
+        name: 'deleteApplication',
+        template: {
+            status: "ok"
         }
     },
     {
-        name:'updateProfile',
-        template:{
-            status:"ok"
+        name: 'updateProfile',
+        template: {
+            status: "ok"
         }
     },
     {
-        name:'getAllMyPosts',
-        template:{
-            status:'ok',
+        name: 'getAllMyPosts',
+        template: {
+            status: 'ok',
             'result|0-10': [{
                 "id|+1": 1,
                 "is_company": 0,
-                "company_email":"",
+                "company_email": "",
                 "student_email": "@email",
                 "Datetime": "@date",
                 "des": "@paragraph",
                 "requirement": "@paragraph",
-                "start_date":"@date",
+                "start_date": "@date",
                 "end_date": "@date",
                 "company_name": "@string(5, 10)",
                 "title": "@string(5, 10)",
                 "apply_start": "@date",
                 "apply_end": "@date",
                 "salary": "@natural(2000,5000)",
-                "color":"@color",
-                "name":"@name"
+                "color": "@color",
+                "name": "@name"
             }]
         }
     },
     {
-        name:'getAllMyApplicants',
+        name: 'getAllMyApplicants',
         template: {
-            status:'ok',
-            "result|8-10":[{
-                "id|+1":1,
-                "student_email":"@email",
-                "post_id|+1":1,
-                "is_online":'@pick([0,1])',
-                "create_time":"@date",
-                "status":'@pick(Pending, Accept, Reject)',
-                "name":'@name',
-                "student_color":'@color',
-                'year':'@natural(2022,2025)',
-                'major':'@string(5, 10)'
+            status: 'ok',
+            "result|8-10": [{
+                "create_time": "@date",
+                "id|+1": 1,
+                "is_online": null,
+                "major": "@string(5, 10)",
+                "name": "@string(5, 10)",
+                "post_id|+1": 1,
+                "status": "@pick(Pending, Accept, Reject)",
+                "student_email": "@email",
+                "year": '@natural(2022,2025)',
             }]
         }
     },
     {
-        name:'deletePost',
-        template:{
-            status:'ok'
-        }
-    },
-    {
-        name:'acceptApplicant',
-        template:{
-            status:'ok'
-        }
-    },
-    {
-        name:'rejectApplicant',
-        template:{
-            status:'ok'
-        }
-    },
-    {
-        name:'createPost',
-        template:{
+        name: 'deletePost',
+        template: {
             status: 'ok'
+        }
+    },
+    {
+        name: 'acceptApplicant',
+        template: {
+            status: 'ok'
+        }
+    },
+    {
+        name: 'rejectApplicant',
+        template: {
+            status: 'ok'
+        }
+    },
+    {
+        name: 'createPost',
+        template: {
+            status: 'ok'
+        }
+    },
+    {
+        name: 'jobComment',
+        template: {
+            status: 'ok',
+            'comment|8-10': [{
+                "color": "@color",
+                "company_email": null,
+                "company_name": null,
+                "content": "@paragraph(1,3)",
+                "datetime": "@date",
+                "descendent|0-8": [{
+                    "color": "@color",
+                    "company_email": null,
+                    "company_name": null,
+                    "content": "@paragraph(1,3)",
+                    "datetime": "@date",
+                    "id|+1": 1,
+                    "job_post_id": 3,
+                    "like": '@natural(0, 100)',
+                    "student_email": "@email",
+                    "student_name": "@name",
+                }],
+                "id|+1": 1,
+                "job_post_id": 3,
+                "like": '@natural(0, 100)',
+                "student_email": "@email",
+                "student_name": "@name",
+            }]
+        }
+    },
+    {
+        name:'likeComment',
+        template:{
+            status:'ok'
+        }
+    },
+    {
+        name:'createComment',
+        template:{
+            status:'ok'
         }
     }
 ]

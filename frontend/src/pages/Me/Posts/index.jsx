@@ -267,7 +267,7 @@ export default function Posts() {
       message.loading({content:'Please wait...', key:"message"})
     }
     else {
-      var values = form.getFieldsValue();
+      values = form.getFieldsValue();
       if (!values['job-title'] || !values['company-name']  || !values['job-description'] || !values['job-requirements'] || !values['apply-deadline']){
         message.error({content:'Please fill in every required field!', key:"message"})
         return

@@ -8,13 +8,6 @@ import Api from '../../utils/Api';
 import { nameToShort } from '../../utils/utils'
 import { Navigate } from 'react-router-dom';
 
-const postData = {
-  'postId': 1,
-  'companyName': 'InternSHare',
-  'jobName': 'Frontend Developer',
-  'jobDes': 'Hello everyone, InternSHare is now hireing frontend developers! Feel free to apply this position.'
-}
-
 export default class HomeBody extends Component {
 
   state = {

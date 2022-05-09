@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Typography } from 'antd';
+import { Typography } from 'antd';
 import './index.css'
 import { Link } from 'react-router-dom';
 import { nameToShort } from '../../../utils/utils';
@@ -11,11 +11,11 @@ export default function ResultItem({data}) {
       <div style={{ paddingLeft: '10px', paddingRight: '10px' }}>
         <div style={{ verticalAlign: 'top', justifyContent: 'space-between', display: 'flex', paddingRight: '20px' }}>
           <div style={{ display: 'inline-block' }}>
-            <div style={{ backgroundColor: data.publisher_color }} className='search-result-avatar'>
-              {nameToShort(data.publisher_name)}
+            <div style={{ backgroundColor: data.color }} className='search-result-avatar'>
+              {nameToShort(data.name)}
             </div>
             <div style={{ display: 'inline-block', marginLeft: '15px' }}>
-              <Typography.Title level={5} style={{ marginBottom: '0px' }}>{data.company}
+              <Typography.Title level={5} style={{ marginBottom: '0px' }}>{data.company_name}
               {data.student_email?<></>:<span className='postdetail-tag' style={{ backgroundColor: '#fa8c16' }}>Official</span>}</Typography.Title>
               <Typography.Title level={4} style={{ marginTop: '0px', marginBottom: '0px' }}>{data.title}</Typography.Title>
             </div>
@@ -23,12 +23,12 @@ export default function ResultItem({data}) {
           {/* <Divider type='vertical' style={{ display: 'inline-block', height: '50px', backgroundColor: '#DFDFDF' }}></Divider> */}
           <div style={{textAlign:'center', marginTop:'5px'}}>
             <div style={{fontSize:'10px', color:'black'}}>Apply Deadline</div>
-            <div style={{fontSize:'16px', color:'black'}}>{data.date}</div>
+            <div style={{fontSize:'16px', color:'black'}}>{data.apply_end}</div>
 
           </div>
           <div style={{textAlign:'center', marginTop:'5px'}}>
             <div style={{fontSize:'10px', color:'black'}}>Expected Salary</div>
-            <div style={{fontSize:'16px', color:'black'}}>unknown</div>
+            <div style={{fontSize:'16px', color:'black'}}>{data.salary}</div>
 
           </div>
           {/* <Divider type='vertical' style={{ display: 'inline-block', height: '50px', backgroundColor: '#DFDFDF' }}></Divider> */}
@@ -39,7 +39,7 @@ export default function ResultItem({data}) {
         </div>
       </div>
       <div style={{ paddingLeft: '10px', paddingRight: '10px', marginTop: '10px' }}>
-        <Typography.Paragraph ellipsis={{ rows: 3 }}>Job Description: {data.description} </Typography.Paragraph>
+        <Typography.Paragraph ellipsis={{ rows: 3 }}>Job Description: {data.des} </Typography.Paragraph>
       </div>
     </div>
     </Link>
