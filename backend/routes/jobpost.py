@@ -4,16 +4,13 @@ import json
 from flask_mail import Mail, Message
 from ..__init__ import mail
 from io import BytesIO
+from ..stringfy import stringfy
 
 
 
 jobpost = Blueprint('jobpost', __name__)
 
-def stringfy(date):
-    if date == None:
-        return ""
-    else:
-        return date.strftime("%m/%d/%Y, %H:%M:%S")
+
 
 @jobpost.route('/detailedinfo',methods=["GET","POST"])
 def job_detailed_info():
@@ -56,9 +53,8 @@ def job_detailed_info():
 
 @jobpost.route("/getpostcomment",methods = ['GET','POST'])
 def comment():
-    # content = request.get_json()
-    # id = content["jobpostid"]
-    id = 3
+    content = request.get_json()
+    id = content["jobpostid"]
     try:
         result =  local_session.query(Comment).filter(Comment.jpost_id == id).all()
         res = {}
@@ -69,7 +65,7 @@ def comment():
             if comment.comment_id == None:
                 obj = {
                     "id": comment.id,
-                    "company_email": comment.company_email,
+                    # "company_email": comment.company_email,
                     "student_email": comment.student_email,
                     "job_post_id":comment.jpost_id,
                     "content": comment.content,
@@ -117,6 +113,7 @@ def comment():
                             obj["name"] = student.name
                             obj["color"] = student.color
                         root_comment["descendent"].append(obj)
+        print("get comment:\n",res)
         return res
     except:
         return json.dumps(
@@ -163,18 +160,18 @@ def like_comment():
 
 @jobpost.route("/create/comment",methods=["GET","POST"])
 def create_comment():
-    try:
-        content = request.get_json()
-        comment_content = content["content"]
-        email = session["email"]
-        target = content["target_id"]
-        root = content["root"]
-        new_data = Comment(content=comment_content,jpost_id=id, comment_id = target,student_email=email)
-        local_session.add(new_data)
-
-        return json.dumps({"status":"ok"})
-    except:
-        return json.dumps({"status":"fail"})
+    # try:
+    content = request.get_json()
+    comment_content = content["content"]
+    email = session["email"]
+    target = content["target_id"]
+    root = content["root"]
+    print(comment_content, target, root,email)
+    new_data = Comment(content=comment_content,jpost_id=id, root=root,comment_id = target,student_email=email,Likes=0)
+    local_session.add(new_data)
+    return json.dumps({"status":"ok"})
+    # except:
+    #     return json.dumps({"status":"fail"})
 
 @jobpost.route("/delete/comment",methods=["GET","POST"])
 def delete_comment():

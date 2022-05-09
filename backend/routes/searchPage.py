@@ -10,8 +10,8 @@ search = Blueprint('search', __name__)
 def search_particular_post_job():
     # try:
     res={"status":"ok","result":[]}
-    filter = request.args["filter"]
-    page_num = request.args["pagenumber"]
+    filter = request.get_json()["filter"]
+    page_num = request.get_json()["pagenumber"]
     # search inside the content to get results
     search = "%{}%".format(filter)
     post = local_session.query(JobPost).filter(JobPost.post_title.like(search)).order_by(
@@ -19,7 +19,7 @@ def search_particular_post_job():
     content_list = post[page_num*10-9:(page_num)*10]
     for job in post:
         obj = {
-            "id": job.id,
+            "job_post_id": job.id,
             "is_company": job.is_Company,
             "company_email": job.company_email,
             "student_email": job.student_email,
