@@ -49,8 +49,32 @@ export default function Profile() {
     }
   }
 
-  const updateProfile = () => {
-    new Api('updateProfile', [project, internship, education, awards, activity, skills, staticInfo.public], handleUpdateProfileCallback)
+  const updateProfile = (name, value) => {
+    if (name === 'activity'){
+      new Api('updateProfile', [project, internship, education, awards, value, skills, staticInfo.public], handleUpdateProfileCallback)
+      setActivity(value);
+    }
+    if (name === 'project'){
+      new Api('updateProfile', [value, internship, education, awards, activity, skills, staticInfo.public], handleUpdateProfileCallback)
+      setProject(value);
+    }
+    if (name === 'internship'){
+      new Api('updateProfile', [project, value, education, awards, activity, skills, staticInfo.public], handleUpdateProfileCallback)
+      setInternship(value)
+    }
+    if (name === 'awards'){
+      new Api('updateProfile', [project, internship, education, value, activity, skills, staticInfo.public], handleUpdateProfileCallback)
+      setAwards(value)
+    }
+    if (name === 'skills'){
+      new Api('updateProfile', [project, internship, education, awards, activity, value, staticInfo.public], handleUpdateProfileCallback)
+      setSkills(value)
+    }
+    if (name === 'education'){
+      new Api('updateProfile', [project, internship, value, awards, activity, skills, staticInfo.public], handleUpdateProfileCallback)
+      setEducation(value);
+    }
+    
   }
 
   const handleUpdateProfileCallback = (res) => {
@@ -91,17 +115,17 @@ export default function Profile() {
         <Divider></Divider>
         <div style={{ marginBottom: '30px' }}></div>
         <span className='profile-field-title'>Education Background</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:setEducation, onEnd:updateProfile}}>{education === ''?'Click to Edit':education}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('education', s)}}}>{education === ''?'Click to Edit':education}</Typography.Paragraph></div></Tooltip>
         <span className='profile-field-title'>Internship Experience</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:setInternship, onEnd:updateProfile}}>{internship === ''?'Click to Edit':internship}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('internship', s)}}}>{internship === ''?'Click to Edit':internship}</Typography.Paragraph></div></Tooltip>
         <span className='profile-field-title'>Project Experience</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{tooltip:true, triggerType:'text', onChange:setProject, onEnd:updateProfile}}>{project === ''?'Click to Edit':project}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('project', s)}}}>{project === ''?'Click to Edit':project}</Typography.Paragraph></div></Tooltip>
         <span className='profile-field-title'>Activities</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:setActivity, onEnd:updateProfile}}>{activity === ''?'Click to Edit':activity}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('activity', s)}}}>{activity === ''?'Click to Edit':activity}</Typography.Paragraph></div></Tooltip>
         <span className='profile-field-title'>Awards</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:setAwards, onEnd:updateProfile}}>{awards === ''?'Click to Edit':awards}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('awards', s)}}}>{awards === ''?'Click to Edit':awards}</Typography.Paragraph></div></Tooltip>
         <span className='profile-field-title'>Skills</span>
-        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:setSkills, onEnd:updateProfile}}>{skills === ''?'Click to Edit':skills}</Typography.Paragraph></div></Tooltip>
+        <Tooltip title="Click to Edit" mouseEnterDelay={0.3}><div className='profile-field-content'><Typography.Paragraph editable={{triggerType:'text', onChange:(s) => {updateProfile('skills', s)}}}>{skills === ''?'Click to Edit':skills}</Typography.Paragraph></div></Tooltip>
       </div>
       <div style={{ marginTop: '50px' }}>&nbsp;</div>
     </>}
