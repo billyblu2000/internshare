@@ -157,7 +157,13 @@ export const apis = {
     'updateProfile':{
         path: '/api/profile/update',
         method:'post',
-        params:['project_experience', 'project_experience', 'education_background', 'awards', 'activities', 'skills', 'public']
+        params:['project_experience', 
+        'internship_experience', 
+        'education_background', 
+        'awards', 
+        'activities', 
+        'skills', 
+        'public']
     }
 }
 
