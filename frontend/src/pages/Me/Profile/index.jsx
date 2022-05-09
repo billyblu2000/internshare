@@ -63,7 +63,6 @@ export default function Profile() {
     <div style={{ marginLeft: '10%', marginRight: '10%' }}>{staticInfo === null ? <><Skeleton active/><Skeleton active/><Skeleton active/><Skeleton active/><Skeleton active/><Skeleton active/><Skeleton active/><Skeleton active/></> : <>
       <div className='theme-box' style={{ width: '100%', backgroundColor: staticInfo.color + '20' }}>
         <div style={{ textAlign: 'center', marginTop: '30px', marginBottom: '30px' }}>
-
           <div className='search-result-avatar' style={{ backgroundColor: staticInfo.color }}>{nameToShort(staticInfo.name)}</div>
           <Typography.Title level={3} style={{ marginTop: '10px', marginBottom: '10px' }}>{staticInfo.name}</Typography.Title>
           <Typography.Text style={{ marginTop: '0px', color: '#00000080' }}>{staticInfo.email}</Typography.Text>
@@ -74,17 +73,22 @@ export default function Profile() {
 
         </div>
       </div>
-      <div className='theme-box' style={{ width: '100%', marginTop: '10px', padding: '30px 40px 0px 40px' }}>
-        <div style={{ float: 'left', }}>
-          <Typography.Title level={4} style={{ marginTop: '40px', marginBottom: '0px' }}>Profile | Resume</Typography.Title>
-          <Typography.Title level={2} style={{ marginTop: '0px' }}>{staticInfo.name}</Typography.Title>
-        </div>
-        <Upload.Dragger name='file' multiple={false} action='' style={{ marginTop: '10px', width: '50%', float: 'right' }}>
+      <Upload.Dragger name='file' defaultFileList={staticInfo.cv_id?[{name:'CV.pdf', url:`/api/profile/download?cv_id=${staticInfo.cv_id}`}]:[]} multiple={false} action='/api/profile/update' maxCount={1} style={{ marginTop: '30px', width: '100%'}}>
           <p className="ant-upload-drag-icon">
             <FilePdfOutlined />
           </p>
           <p className="ant-upload-text">Click to upload your CV in PDF format</p>
         </Upload.Dragger>
+      <div className='theme-box' style={{ width: '100%', marginTop: '10px', padding: '30px 40px 0px 40px' }}>
+        <div style={{ justifyContent:'space-between', verticalAlign:"top"}}>
+        <div style={{ display: 'inline-block', justifyContent:'space-between'}}>
+          <Typography.Title level={4} style={{ marginTop: '40px', marginBottom: '0px' }}>Profile | Resume</Typography.Title>
+          <Typography.Title level={2} style={{ marginTop: '0px' }}>{staticInfo.name}</Typography.Title>
+        </div>
+        <div style={{display:"inline-block", width:'50%', justifyContent:'space-between', marginLeft:'25%'}}>
+        
+        </div>
+        </div>
         <Divider></Divider>
         <div style={{ marginBottom: '30px' }}></div>
         <span className='profile-field-title'>Education Background</span>

@@ -109,13 +109,13 @@ export default class HomeBody extends Component {
   }
 
   getStepEleAccordingToStatus = () => {
-    if (this.state.applies[0].status === 'pending'){
+    if (this.state.applies[0].status === 'Pending'){
       return <Steps.Step status="process" title="Pending" icon={<EllipsisOutlined />} />
     }
-    else if (this.state.applies[0].status === 'accept'){
+    else if (this.state.applies[0].status === 'Accept'){
       return <Steps.Step status="finish" title="Accepted" icon={<CheckOutlined style={{color:'green'}}/>} />
     }
-    else if (this.state.applies[0].status === 'reject'){
+    else if (this.state.applies[0].status === 'Reject'){
       return <Steps.Step status="finish" title="Rejected" icon={<CloseOutlined style={{color:'red'}}/>} />
     }
     else{

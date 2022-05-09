@@ -189,7 +189,7 @@ export default class Api {
     serverPost = (url, data) => {
         var myCallBack = this.callback;
         var log = this.log;
-        axios.post(url, data).then(function (response) {
+        axios.post(url, data, {headers:{'Content-Type': 'application/json;charset=UTF-8'}}).then(function (response) {
             myCallBack(response.data, response);
             if (log) {
                 console.log('POST ' + url);

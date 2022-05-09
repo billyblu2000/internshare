@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Steps, Divider, Button, Tooltip, message, Skeleton, Popconfirm } from 'antd'
+import { Typography, Steps, Divider, Button, Tooltip, message, Skeleton, Popconfirm, Empty } from 'antd'
 import { SendOutlined, EllipsisOutlined, CloseOutlined, ArrowRightOutlined, CheckOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Api from '../../../utils/Api';
@@ -60,13 +60,13 @@ const SinglePost = ({ data, handleApplyInfo }) => {
 }
 
 function getStepEleAccordingToStatus(status) {
-  if (status === 'pending') {
+  if (status === 'Pending') {
     return <Steps.Step status="process" title="Pending" icon={<EllipsisOutlined />} />
   }
-  else if (status === 'accept') {
+  else if (status === 'Accept') {
     return <Steps.Step status="finish" title="Accepted" icon={<CheckOutlined style={{ color: 'green' }} />} />
   }
-  else if (status === 'reject') {
+  else if (status === 'Reject') {
     return <Steps.Step status="finish" title="Rejected" icon={<CloseOutlined style={{ color: 'red' }} />} />
   }
   else {
@@ -98,9 +98,10 @@ export default function Applies() {
   return (
     <div style={{ marginLeft: '10%', marginRight: '10%', paddingBottom:'50px' }}>{applies === null ? <><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /></> : <>
       <div className='theme-box' style={{ width: '100%', padding: '15px 30px 15px 30px' }}>
+        {applies.length === 0?<><Empty style={{marginTop:'100px', marginBottom:'100px'}} description="You don't have any applications yet! Click on the lower button to search for jobs!"/></>:<>
         {applies.map((item) => {
           return <><SinglePost data={item} handleApplyInfo={handleApplyInfo}></SinglePost><Divider></Divider></>
-        })}
+        })}</>}
       </div>
       <div style={{ textAlign: 'center', marginTop: '30px' }}>
         <Link to='/main/search'><Button shape='round'>Apply more Positions</Button></Link>

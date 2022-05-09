@@ -1,6 +1,11 @@
 import React from 'react'
-import { Typography, Divider, Button, Tooltip, Collapse, Space, Table, Form, Input, DatePicker, Select, Modal, message, Skeleton, Popconfirm } from 'antd'
+import { Typography, Divider, Button, 
+  Tooltip, Collapse, Space, 
+  Table, Form, Input, DatePicker, 
+  Select, Modal, message, Skeleton, 
+  Popconfirm, Empty} from 'antd'
 import { EditOutlined, CloseOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import Api from '../../../utils/Api';
 import { Link, useNavigate } from 'react-router-dom';
 import positions from '../../../static/positions.json'
@@ -138,17 +143,17 @@ const SinglePost = ({ data, nav, modify, deletePost, approve, reject }) => {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
-        <Space size="middle">{record.status === 'pending'?<>
-          <a href={true} onClick={() => approve(record.id)}>Approve</a>
+        <Space size="middle">{record.status === 'Pending'?<>
+          <a href={true} onClick={() => approve(record.id)}>Accept</a>
           <a href={true} onClick={() => reject(record.id)}>Reject</a>
-          </>:<>{record.status}</>}
+          </>:<>{record.status+'ed'}</>}
         </Space>
       ),
     },
   ]
 
   return (
-  <div style={{ minWidth: '100%', maxWidth: '100%', padding: '15px', marginBottom: '10px', marginTop: '10px' }}>
+  <div style={{ minWidth: '100%', maxWidth: '100%', padding: '15px', marginBottom: '10px', marginTop: '10px', }}>
     <div style={{ backgroundColor: data.company_color ? data.company_color : data.student_color }} className='postcard-avatar'>
       {nameToShort(data.name)}
     </div>
@@ -205,7 +210,6 @@ export default function Posts() {
   }
 
   const handleApplicantsInfo = (res) => {
-    console.log(res.result)
     if (res.status === 'ok') {
       setAllApplicants(res.result)
     }
@@ -242,10 +246,11 @@ export default function Posts() {
 
   const handleOk = () => {
     if (currentModifyId !== null) {
-
-    }
-    else {
-      var values = form.getFieldsValue()
+      var values = form.getFieldsValue();
+      if (!values['job-title'] || !values['company-name']  || !values['job-description'] || !values['job-requirements'] || !values['apply-deadline']){
+        message.error({content:'Please fill in every required field!', key:"message"})
+        return
+      }
       new Api('createPost', [
         values['job-title'],
         values['company-name'],
@@ -253,11 +258,32 @@ export default function Posts() {
         '',
         values['job-description'],
         values['job-requirements'],
-        values['job-start-date'].format('yyyy-MM-DD').toString(),
-        values['job-end-date'].format('yyyy-MM-DD').toString(),
-        values['estimated-salary'],
-        values['apply-start-time'].format('yyyy-MM-DD').toString(),
-        values['apply-deadline'].format('yyyy-MM-DD').toString()
+        values['job-start-date']?values['job-start-date'].format('yyyy-MM-DD').toString():null,
+        values['job-end-date']?values['job-end-date'].format('yyyy-MM-DD').toString():null,
+        values['estimated salary'],
+        values['apply-start-time']?values['apply-start-time'].format('yyyy-MM-DD').toString():null,
+        values['apply-deadline']?values['apply-deadline'].format('yyyy-MM-DD').toString():null
+      ], handleDoModifyResult)
+      message.loading({content:'Please wait...', key:"message"})
+    }
+    else {
+      var values = form.getFieldsValue();
+      if (!values['job-title'] || !values['company-name']  || !values['job-description'] || !values['job-requirements'] || !values['apply-deadline']){
+        message.error({content:'Please fill in every required field!', key:"message"})
+        return
+      }
+      new Api('createPost', [
+        values['job-title'],
+        values['company-name'],
+        false,
+        '',
+        values['job-description'],
+        values['job-requirements'],
+        values['job-start-date']?values['job-start-date'].format('yyyy-MM-DD').toString():null,
+        values['job-end-date']?values['job-end-date'].format('yyyy-MM-DD').toString():null,
+        values['estimated salary'],
+        values['apply-start-time']?values['apply-start-time'].format('yyyy-MM-DD').toString():null,
+        values['apply-deadline']?values['apply-deadline'].format('yyyy-MM-DD').toString():null
       ], handleCreateCallback)
       message.loading({content:'Please wait...', key:"message"})
     }
@@ -298,17 +324,46 @@ export default function Posts() {
     }
   }
 
-  const requestModify = (id) => {
-    setCurrentModifyId(id)
+  const requestCreate = () => {
+    form.setFieldsValue({
+      'job-title':'',
+      'company-name':'',
+      'job-description':'',
+      'job-requirements':'',
+      'job-start-date':undefined,
+      'job-end-date':undefined,
+      'estimated salary':undefined,
+      'apply-start-time':undefined,
+      'apply-deadline':undefined
+    })
     setShowForm(true);
   }
 
+  const requestModify = (id) => {
+    var postData = allPosts.filter((item) => id === item.id)[0]
+    console.log(postData.salary, postData.end_date)
+    form.setFieldsValue({
+      'job-title':postData.title,
+      'company-name':postData.company_name,
+      'job-description':postData.des,
+      'job-requirements':postData.requirement,
+      'job-start-date':moment(postData.start_date),
+      'job-end-date':moment(postData.end_date),
+      'estimated salary':parseInt(postData.salary),
+      'apply-start-time':moment(postData.apply_start),
+      'apply-deadline':moment(postData.end_date)
+    })
+    setCurrentModifyId(id)
+    setShowForm(true);
+  }
 
   const handleDoModifyResult = (res) => {
     if (res.status === 'ok') {
       message.success({ content: 'Post modified!', key: "message" })
       setCurrentModifyId(null);
       setShowForm(false);
+      new Api('getAllMyApplicants', [], handleApplicantsInfo);
+      new Api('getAllMyPosts', [], handlePostInfo);
     }
     else {
       message.error({ content: res.status, key: 'message' })
@@ -337,15 +392,16 @@ export default function Posts() {
   }
 
   return (
-    <div style={{ marginLeft: '10%', marginRight: '10%' }}>
+    <div style={{ marginLeft: '10%', marginRight: '10%', paddingBottom:'50px' }}>
       {allPostWithApplicants === null ? <><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /><Skeleton active /></> : <>
         <div className='theme-box' style={{ width: '100%', padding: '15px 30px 15px 30px' }}>
+        {allPostWithApplicants.length === 0?<><Empty style={{marginTop:'100px', marginBottom:'100px'}} description="You don't have any post yet! Click on the lower button to create your first post!"/></>:<>
           {allPostWithApplicants.map((item) => {
             return <><SinglePost data={item} nav={nav} modify={requestModify} deletePost={deletePost} approve={approve} reject={reject}></SinglePost><Divider style={{ marginTop: '0px' }}></Divider></>
-          })}
+          })}</>}
         </div>
         <div style={{ textAlign: 'center', marginTop: '30px' }}>
-          <Button shape='round' onClick={() => setShowForm(true)}>Post New Position</Button>
+          <Button shape='round' onClick={requestCreate}>Post New Position</Button>
         </div>
         <Modal width={1000} title="Create/Update Post" visible={showForm} onOk={handleOk} onCancel={handleCancel}>
           <CreateModifyForm form={form} />
