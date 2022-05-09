@@ -120,13 +120,17 @@ def create_profile():
         # }
         # ]
         # for j in profile:
-        new_profile = Profile(email=session["email"], name=session["name"],
-                              project_experience=j["project_experience"],
-                              internship_experience=j["internship_experience"],
-                              education_background=j["education_background"] \
-                              , awards=j["awards"], activities=j["activities"], skills=j["skills"],
-                              public=j["public"])
-        local_session.add(new_profile)
+        # new_profile = Profile(email=session["email"], name=session["name"],
+        #                       project_experience=j["project_experience"],
+        #                       internship_experience=j["internship_experience"],
+        #                       education_background=j["education_background"] \
+        #                       , awards=j["awards"], activities=j["activities"], skills=j["skills"],
+        #                       public=j["public"])
+        # local_session.add(new_profile)
+
+        local_session.execute(text("INSERT INTO profiles(email,name,project_experience,internship_experience,education_background,awards,activities,skills,public) VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{})"
+                                   .format(session["email"], session["name"], j["project_experience"],j["internship_experience"], j["education_background"], j["awards"], j["activities"], j["skills"],j["public"])))
+
 
         return json.dumps({"status": "ok"})
     except:

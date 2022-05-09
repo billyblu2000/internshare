@@ -101,9 +101,8 @@ def student_register():
     year = content["year"]
     hashpw = generate_password_hash(pw)
     hashcolor = generate_background_color()
-    new_student = Student(name= name, email= email, password= hashpw, major=major,
-                          graduation_time=year,personalityTestResults="", color=hashcolor)
-    local_session.add(new_student)
+
+    local_session.execute(text("INSERT INTO students(name,email,password,major,graduation_time,personalityTestResults,color) VALUES('{}','{}',{},'{}',{},'{}','{}')".format(name, email, hashpw, major, year,"",hashcolor)))
     return json.dumps({"status":"success"})
 
 # company

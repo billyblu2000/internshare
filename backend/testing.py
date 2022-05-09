@@ -2,8 +2,6 @@
 
 from database.dataclass import *
 
+id=5
 
-
-
-
-local_session.execute(text("""INSERT INTO cvs(pdf_path) VALUES("new.pdf")"""))
+local_session.execute(text("DELETE FROM applications WHERE id = {}".format(id)))
