@@ -9,45 +9,44 @@ from ..stringfy import stringfy
 
 @mypost.route('/get', methods=["GET", "POST"])
 def get_mypost():
-    # try:
-    email = session["email"]
-    res = {}
-    res["status"]="ok"
-    res["result"] = []
-    student_color = local_session.query(Student).filter(Student.email == email).first().color
-    job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
-    for job in job_post:
-        obj = {
-            "id": job.id,
-            "is_company": job.is_Company,
-            "company_email":job.company_email,
-            "student_email": job.student_email,
-            "Datetime": stringfy(job.Datetime),
-            "des": job.job_description,
-            "requirement": job.job_requirements,
-            "start_date": stringfy(job.job_start_date),
-            "end_date": stringfy(job.job_end_time),
-            "company_name": job.company_name,
-            "title": job.post_title,
-            "apply_start": stringfy(job.apply_start_date),
-            "apply_end": stringfy(job.apply_end_date),
-            "salary": job.estimate_salary,
-            "color":"",
-            "name":"",
-        }
-        if job.is_Company == 1:
-            company = local_session.query(Company).filter(Company.email == job.company_email).first()
-            obj["color"] = company.color
-            obj["name"] = company.name
-        else:
-            student = local_session.query(Student).filter(Student.email == job.student_email).first()
-            obj["color"] = student.color
-            obj["name"] = student.name
-        res["result"].append(obj)
-    print(res)
-    return res
-    # except:
-    #     return json.dumps({"status": "fail"})
+    try:
+        email = session["email"]
+        res = {}
+        res["status"]="ok"
+        res["result"] = []
+        student_color = local_session.query(Student).filter(Student.email == email).first().color
+        job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
+        for job in job_post:
+            obj = {
+                "id": job.id,
+                "is_company": job.is_Company,
+                "company_email":job.company_email,
+                "student_email": job.student_email,
+                "Datetime": stringfy(job.Datetime),
+                "des": job.job_description,
+                "requirement": job.job_requirements,
+                "start_date": stringfy(job.job_start_date),
+                "end_date": stringfy(job.job_end_time),
+                "company_name": job.company_name,
+                "title": job.post_title,
+                "apply_start": stringfy(job.apply_start_date),
+                "apply_end": stringfy(job.apply_end_date),
+                "salary": job.estimate_salary,
+                "color":"",
+                "name":"",
+            }
+            if job.is_Company == 1:
+                company = local_session.query(Company).filter(Company.email == job.company_email).first()
+                obj["color"] = company.color
+                obj["name"] = company.name
+            else:
+                student = local_session.query(Student).filter(Student.email == job.student_email).first()
+                obj["color"] = student.color
+                obj["name"] = student.name
+            res["result"].append(obj)
+        return res
+    except:
+        return json.dumps({"status": "fail"})
 
 @mypost.route('/create', methods=["GET", "POST"])
 def create_mypost():
@@ -104,7 +103,6 @@ def viewall_myapplicants():
     res["applicants"] = []
     result = local_session.query(Application).filter(JobPost.student_email == session["email"]) \
         .filter(Application.post_id == JobPost.id).filter(Application.student_email == Student.email).all()
-    print(result)
     for i in range(len(result)):
         applicant = result[i]
         student = local_session.query(Student).filter(Student.email == applicant.student_email).first()

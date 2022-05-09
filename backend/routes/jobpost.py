@@ -160,18 +160,18 @@ def like_comment():
 
 @jobpost.route("/create/comment",methods=["GET","POST"])
 def create_comment():
-    try:
-        content = request.get_json()
-        comment_content = content["content"]
-        email = session["email"]
-        target = content["target_id"]
-        root = content["root"]
-        new_data = Comment(content=comment_content,jpost_id=id, comment_id = target,student_email=email)
-        local_session.add(new_data)
-
-        return json.dumps({"status":"ok"})
-    except:
-        return json.dumps({"status":"fail"})
+    # try:
+    content = request.get_json()
+    comment_content = content["content"]
+    email = session["email"]
+    target = content["target_id"]
+    root = content["root"]
+    print(comment_content, target, root,email)
+    new_data = Comment(content=comment_content,jpost_id=id, root=root,comment_id = target,student_email=email,Likes=0)
+    local_session.add(new_data)
+    return json.dumps({"status":"ok"})
+    # except:
+    #     return json.dumps({"status":"fail"})
 
 @jobpost.route("/delete/comment",methods=["GET","POST"])
 def delete_comment():

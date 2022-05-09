@@ -162,6 +162,7 @@ def change_visibility():
         content = request.get_json()
         new_status = content["status"]
         profile_id = content["profile_id"]
+        print(profile_id,new_status)
         user = local_session.query(Profile).filter(Profile.id == profile_id).first()
         user.public = new_status
 
