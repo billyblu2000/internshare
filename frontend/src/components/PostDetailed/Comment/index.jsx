@@ -59,7 +59,8 @@ export default function Comment({ data, replyActive, setReplyActive, replyFunc, 
             <div style={{ backgroundColor: data.avatarBackgroundColor }} className='comment-avatar'>
                 {data.avatarText}
             </div>
-            <div style={{ display: 'inline-block', verticalAlign: 'top', marginLeft: '15px', maxWidth: '87%' }}>
+            
+            <div style={{ display: 'inline-block', verticalAlign: 'top', marginLeft: '15px', width: '87%' }}>
                 <Typography.Title level={5}>
                     <Link to={`/main/user/${data.email}`}>{data.username}</Link>
                     {/* {data.isFather ? null : <><span style={{ marginLeft: '5px', marginRight: '5px', color: 'gray', fontSize: '15px', }}>replying to </span><Link to='/'>@User</Link></>} */}
