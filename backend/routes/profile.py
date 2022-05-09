@@ -77,11 +77,17 @@ def update_profile():
 def upload_cv():
     # try:
     f = request.files["file"]
-    print(f)
+
     cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id).first()
+    print(cv)
     if cv:
-        cv.data = f.read()
-        cv.pdf_path = f.filename
+        cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id) \
+            .update({CV.data: f.read()}, synchronize_session='fetch')
+        cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id) \
+            .update({CV.pdf_path: f.filename}, synchronize_session='fetch')
+
+
+
     # else:
     #     pass
 
