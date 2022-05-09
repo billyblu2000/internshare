@@ -2,6 +2,7 @@ from flask import Blueprint,request,session,render_template
 from ..database.dataclass import *
 import json
 
+
 mypost = Blueprint('mypost', __name__)
 
 def stringfy(date):
@@ -14,14 +15,18 @@ def stringfy(date):
 def get_mypost():
     try:
         email = session["email"]
+        print(email)
         res = {}
         res["status"]="ok"
         res["result"] = []
+        student_color = local_session.query(Student).filter(Student.email == email).first().color
         job_post = local_session.query(JobPost).filter(JobPost.student_email == email).all()
         for job in job_post:
+            company_color = local_session.query(Company).filter(Company.email == job.company_email).first().color
             obj = {
                 "id": job.id,
-                "is_company": job.company_email,
+                "is_company": job.is_company,
+                "company_email":job.company_email,
                 "student_email": job.student_email,
                 "Datetime": stringfy(job.Datetime),
                 "des": job.job_description,
@@ -31,11 +36,16 @@ def get_mypost():
                 "company_name": job.company_name,
                 "title": job.post_title,
                 "apply_start": stringfy(job.apply_start_date),
-                "end_date": stringfy(job.apply_end_date),
+                "apply_end": stringfy(job.apply_end_date),
                 "salary": job.estimate_salary,
+                "student_color":student_color,
+                "company_color":company_color,
+                "publisher_name":"abc",
+                "publisher_color":"#bf3f84"
             }
             res["result"].append(obj)
-        return json.dumps(res)
+        print(res)
+        return res
     except:
         return json.dumps({"status": "fail"})
 
@@ -64,7 +74,7 @@ def create_mypost():
                               , apply_end_date=j["apply_end_date"], estimate_salary=j["estimate_salary"],
                               post_title=j["post_title"])
         local_session.add(new_jobpost)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -74,7 +84,7 @@ def update_mypost():
     try:
         user = local_session.query(JobPost).filter(JobPost.id == 3).first()
         user.apply_end_date = "2022-07-01"
-        local_session.commit()
+
     except:
         return json.dumps({"status": "fail"})
 
@@ -85,7 +95,7 @@ def delete_mypost():
         job_id = content["job_id"]
         user_to_delete = local_session.query(JobPost).filter(JobPost.id == job_id).first()
         local_session.delete(user_to_delete)
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
@@ -98,16 +108,21 @@ def viewall_myapplicants():
         res["status"] = "ok"
         res["applicants"] = []
         job_id = content["job_id"]
-        result = []
+        result = local_session.query(Application).filter(Application.post_id == job_id).all()
         for i in range(len(result)):
             applicant = result[i]
+            student = local_session.query(Student).filter(Student.email == applicant.student_email).first()
+            student_name = student.name
+            student_color = student.color
             obj = {
             "id":applicant.id,
-            "student_email":applicant.student_emaill,
+            "student_email":applicant.student_email,
             "post_id":applicant.post_id,
             "is_online":applicant.is_online,
             "create_time":stringfy(applicant.Datetime),
             "status":applicant.stauts,
+            "name":student_name,
+            "student_color":student_color,
             }
             res["applicants"].append(obj)
         return json.dumps(res)
@@ -121,7 +136,7 @@ def accpet_status():
         id = content["application_id"]
         user = local_session.query(Application).filter(Application.id == id).first()
         user.status = "Accept"
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -133,7 +148,7 @@ def reject_status():
         id = content["application_id"]
         user = local_session.query(Application).filter(Application.id == id).first()
         user.status = "Reject"
-        local_session.commit()
+
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})
