@@ -176,10 +176,9 @@ const rules = [
                 "company_name": "@string(5, 10)",
                 "title": "@string(5, 10)",
                 "apply_start": "@date",
-                "end_date": "@date",
+                "apply_end": "@date",
                 "salary": "@natural(2000,5000)",
-                "student_color":"@color",
-                "company_color":"@color",
+                "color":"@color",
                 "name":"@name"
             }]
         }

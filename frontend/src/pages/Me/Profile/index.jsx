@@ -73,7 +73,7 @@ export default function Profile() {
 
         </div>
       </div>
-      <Upload.Dragger name='file' defaultFileList={staticInfo.cv_id?[{name:'CV.pdf', url:`/api/profile/download?cv_id=${staticInfo.cv_id}`}]:[]} multiple={false} action='/api/profile/update' maxCount={1} style={{ marginTop: '30px', width: '100%'}}>
+      <Upload.Dragger name='file' defaultFileList={staticInfo.cv_id?[{name:'CV.pdf', url:`/api/profile/download?cv_id=${staticInfo.cv_id}`}]:[]} multiple={false} action='/api/profile/upload' maxCount={1} style={{ marginTop: '30px', width: '100%'}}>
           <p className="ant-upload-drag-icon">
             <FilePdfOutlined />
           </p>
@@ -86,7 +86,6 @@ export default function Profile() {
           <Typography.Title level={2} style={{ marginTop: '0px' }}>{staticInfo.name}</Typography.Title>
         </div>
         <div style={{display:"inline-block", width:'50%', justifyContent:'space-between', marginLeft:'25%'}}>
-        
         </div>
         </div>
         <Divider></Divider>

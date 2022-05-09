@@ -154,7 +154,7 @@ const SinglePost = ({ data, nav, modify, deletePost, approve, reject }) => {
 
   return (
   <div style={{ minWidth: '100%', maxWidth: '100%', padding: '15px', marginBottom: '10px', marginTop: '10px', }}>
-    <div style={{ backgroundColor: data.company_color ? data.company_color : data.student_color }} className='postcard-avatar'>
+    <div style={{ backgroundColor: data.color }} className='postcard-avatar'>
       {nameToShort(data.name)}
     </div>
     <div style={{ float: 'left', marginLeft: '15px' }}>
