@@ -46,7 +46,6 @@ def get_profile():
         res["result"] = obj
         print(res)
         return res
-
     except:
         return json.dumps({"status":"fail"})
 
@@ -78,13 +77,13 @@ def upload_cv():
     # try:
     f = request.files["file"]
     cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id).first()
-    print(cv)
     if cv:
         cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id) \
             .update({CV.data: f.read()}, synchronize_session='fetch')
         cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id) \
             .update({CV.pdf_path: f.filename}, synchronize_session='fetch')
     else:
+        # create a new cv here
         pass
 
     return json.dumps({"status": "ok"})
