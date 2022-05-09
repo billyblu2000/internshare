@@ -77,7 +77,7 @@ export const apis = {
     'apply': {
         path: '/api/job/apply',
         method: 'post',
-        params: ['jobpost_id']
+        params: ['jobpost_id', 'method', 'publisher']
     },
     'deleteApplication': {
         path: '/api/apply/cancel',
