@@ -38,11 +38,14 @@ def get_profile():
             "awards":user.awards,
             "activity":user.activities,
             "skills":user.skills,
-            "public":user.public,
             "year":user_detailed.graduation_time,
             "major":user_detailed.major,
             "color":user_detailed.color
         }
+        if user.public:
+            obj["public"] == 1
+        else:
+            obj["public"] == 0
         res["result"] = obj
         print(res)
         return res
@@ -52,34 +55,33 @@ def get_profile():
 
 @profile.route('/update', methods=["GET", "POST"])
 def update_profile():
-    # try:
-    user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
-    if not user:
-        return json.dumps({"status":"user DNE"})
-    j = request.get_json()
-    print(j["skills"])
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.email: session["email"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.name: session["name"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.project_experience: j["project_experience"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.internship_experience: j["internship_experience"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.education_background: j["education_background"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.awards: j["awards"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"])\
-    #     .update({Profile.activities: j["activities"]}, synchronize_session='fetch')
-    user = local_session.query(Profile).filter(Profile.email == session["email"])\
-        .update({Profile.skills: j["skills"]}, synchronize_session='fetch')
-    # user = local_session.query(Profile).filter(Profile.email == session["email"]) \
-    #     .update({Profile.public: j["public"]}, synchronize_session='fetch')
-
-    return json.dumps({"status":"ok"})
-    # except:
-    #     return json.dumps({"status":"fail"})
+    print("update")
+    try:
+        user = local_session.query(Profile).filter(Profile.email == session["email"]).first()
+        if not user:
+            return json.dumps({"status":"user DNE"})
+        j = request.get_json()
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.email: session["email"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.name: session["name"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.project_experience: j["project_experience"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.internship_experience: j["internship_experience"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.education_background: j["education_background"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.awards: j["awards"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.activities: j["activities"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"])\
+            .update({Profile.skills: j["skills"]}, synchronize_session='fetch')
+        user = local_session.query(Profile).filter(Profile.email == session["email"]) \
+            .update({Profile.public: j["public"]}, synchronize_session='fetch')
+        return json.dumps({"status":"ok"})
+    except:
+        return json.dumps({"status":"fail"})
 
 @profile.route('/upload', methods=["GET", "POST"])
 def upload_cv():
@@ -164,7 +166,6 @@ def change_visibility():
         print(profile_id,new_status)
         user = local_session.query(Profile).filter(Profile.id == profile_id).first()
         user.public = new_status
-
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})

@@ -163,6 +163,7 @@ def like_comment():
 def create_comment():
     # try:
     content = request.get_json()
+    id = content["jobpost_id"]
     comment_content = content["content"]
     email = session["email"]
     target = int(content["target_id"])
