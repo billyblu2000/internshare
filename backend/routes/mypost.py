@@ -5,11 +5,7 @@ import json
 
 mypost = Blueprint('mypost', __name__)
 
-def stringfy(date):
-    if date == None:
-        return ""
-    else:
-        return date.strftime("%m/%d/%Y, %H:%M:%S")
+from ..stringfy import stringfy
 
 @mypost.route('/get', methods=["GET", "POST"])
 def get_mypost():

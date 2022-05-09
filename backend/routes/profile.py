@@ -77,7 +77,6 @@ def update_profile():
 def upload_cv():
     # try:
     f = request.files["file"]
-
     cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id).first()
     print(cv)
     if cv:
@@ -85,11 +84,8 @@ def upload_cv():
             .update({CV.data: f.read()}, synchronize_session='fetch')
         cv = local_session.query(CV).filter(Profile.email == session["email"]).filter(CV.id == Profile.CV_id) \
             .update({CV.pdf_path: f.filename}, synchronize_session='fetch')
-
-
-
-    # else:
-    #     pass
+    else:
+        pass
 
     return json.dumps({"status": "ok"})
     # except:
@@ -124,7 +120,6 @@ def create_profile():
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
-
 
 @profile.route('/getname', methods=["GET", "POST"])
 def getusername():
