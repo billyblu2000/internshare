@@ -1,28 +1,17 @@
 from flask import Blueprint,request,session
 from ..database.dataclass import *
 import json
-
+from ..stringfy import stringfy
 
 search = Blueprint('search', __name__)
-
-
-def stringfy(date):
-    if date == None:
-        return ""
-    else:
-        return date.strftime("%Y-%m-%d")
-
 
 
 @search.route("/jobpost",methods = ['GET','POST'])
 def search_particular_post_job():
     # try:
-        # filter = request.args["filter"]
-        #
-        # page_num = request.args["pagenumber"]
-    res = {"status": "ok", "result": []}
-    page_num =1
-    filter = ""
+    res={"status":"ok","result":[]}
+    filter = request.args["filter"]
+    page_num = request.args["pagenumber"]
     # search inside the content to get results
     search = "%{}%".format(filter)
     post = local_session.query(JobPost).filter(JobPost.post_title.like(search)).order_by(

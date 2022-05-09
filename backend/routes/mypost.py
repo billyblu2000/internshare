@@ -5,11 +5,7 @@ import json
 
 mypost = Blueprint('mypost', __name__)
 
-def stringfy(date):
-    if date == None:
-        return ""
-    else:
-        return date.strftime("%m/%d/%Y, %H:%M:%S")
+from ..stringfy import stringfy
 
 @mypost.route('/get', methods=["GET", "POST"])
 def get_mypost():
@@ -84,8 +80,8 @@ def create_mypost():
 @mypost.route('/upadte', methods=["GET", "POST"])
 def update_mypost():
     try:
-        user = local_session.query(JobPost).filter(JobPost.id == 3).first()
-        user.apply_end_date = "2022-07-01"
+        user = local_session.query(JobPost).filter(JobPost.id == 3)\
+            .update({JobPost.apply_end_date: "2022-07-01"},synchronize_session='fetch')
     except:
         return json.dumps({"status": "fail"})
 
@@ -133,8 +129,8 @@ def accpet_status():
     try:
         content = request.get_json()
         id = content["application_id"]
-        user = local_session.query(Application).filter(Application.id == id).first()
-        user.status = "Accept"
+        user = local_session.query(Application).filter(Application.id == id)\
+            .update({Application.status : "Accept"},synchronize_session='fetch')
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status":"fail"})
@@ -144,8 +140,8 @@ def reject_status():
     try:
         content = request.get_json()
         id = content["application_id"]
-        user = local_session.query(Application).filter(Application.id == id).first()
-        user.status = "Reject"
+        user = local_session.query(Application).filter(Application.id == id)\
+            .update({Application.status : "Reject"},synchronize_session='fetch')
         return json.dumps({"status": "ok"})
     except:
         return json.dumps({"status": "fail"})

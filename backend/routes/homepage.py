@@ -7,11 +7,7 @@ import json
 homepage = Blueprint('homepage', __name__)
 
 
-def stringfy(date):
-    if date == None:
-        return ""
-    else:
-        return date.strftime("%m/%d/%Y, %H:%M:%S")
+from ..stringfy import stringfy
 
 
 @homepage.route("/recommendpost/jobs",methods=["GET","POST"])

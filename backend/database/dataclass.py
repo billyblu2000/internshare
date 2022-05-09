@@ -5,7 +5,8 @@ from sqlalchemy import Column, String, DateTime, Integer, create_engine, Foreign
 from datetime import datetime
 import os
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker,declarative_base,relationship,scoped_session
+from sqlalchemy.cimmutabledict import immutabledict
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship, scoped_session, query
 from sqlalchemy.pool import NullPool
 
 DB_NAME = 'internshare'
@@ -15,13 +16,16 @@ sessions = scoped_session(sessionmaker(
         bind=engine,
         autocommit=True,
         autoflush=False,
-        expire_on_commit = False
+        expire_on_commit = False,
+
     ))
 
 sessions.configure(bind=engine)
 Base = declarative_base()
 
 local_session = sessions()
+
+
 
 
 
