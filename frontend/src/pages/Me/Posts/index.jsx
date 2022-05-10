@@ -294,7 +294,7 @@ export default function Posts() {
   const handleCreateCallback = (res) => {
     if (res.status === 'ok'){
       message.success({content:'Post Created!', key:'message'})
-      new Api('getAllMyApplicants', [], handleApplicantsInfo)
+      new Api('getAllMyApplicants', [], handleApplicantsInfo);
       new Api('getAllMyPosts', [], handlePostInfo);
       setAllPostWithApplicants(null);
       setShowForm(false);
