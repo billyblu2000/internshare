@@ -153,8 +153,8 @@ def like_comment():
     try:
         content = request.get_json()
         comment_id = content["comment_id"]
-        comment = local_session.query(Comment).filter(Comment.id == comment_id).first()
-        comment.Likes += 1
+        comment = local_session.query(Comment).filter(Comment.id == comment_id).update({Comment.Likes : Comment.Likes + 1})
+
 
         return json.dumps({"status": "ok"})
     except:
@@ -167,8 +167,17 @@ def create_comment():
     id = content["jobpost_id"]
     comment_content = content["content"]
     email = session["email"]
-    target = int(content["target_id"])
-    root = int(content["root"])
+
+    if content["target_id"] is not None:
+        target = int(content["target_id"])
+    else:
+        target = 'NULL'
+
+    if content["root"] is not None:
+        root = int(content["root"])
+    else:
+        root = 'NULL'
+
     id = int(content['jobpost_id'])
     print(content)
     print(id)
