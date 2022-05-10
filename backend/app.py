@@ -69,6 +69,9 @@ app.register_blueprint(mypost,url_prefix ="/api/mypost")
 from backend.routes.searchPage import search
 app.register_blueprint(search,url_prefix ="/api/search")
 
+from backend.routes.settings import setting
+app.register_blueprint(setting,url_prefix ="/api/setting")
+
 @app.route("/api/homepage/searchsuggestions",methods = ['POST'])
 def hp_search_suggestion():
     content = request.get_json()["content"]

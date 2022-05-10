@@ -19,13 +19,10 @@ def get_profile():
         appli = local_session.query(Application.student_email).filter(JobPost.student_email == session["email"])\
             .filter(Application.post_id == JobPost.id).filter(Application.student_email == Student.email).all()
         for i in appli:
-            all.append(i)
+            all.append(i[0])
+        print("line 24",all)
         user = local_session.query(Profile).filter(Profile.email == email).first()
-
         user_detailed = local_session.query(Student).filter(Student.email == email).first()
-
-        if (user.email not in all) and (user.public == 0):
-            return json.dumps({"status":"Not available"})
         res = {"status":"ok"}
         obj={
             "id":user.id,
@@ -47,14 +44,14 @@ def get_profile():
         else:
             obj["public"] = 0
         if (user.email not in all) and (user.public == False):
-            obj["project"]= ""
-            obj["internship"]=""
-            obj["education"]=""
-            obj["awards"]=""
-            obj["activity"]=""
-            obj["skills"]=""
+            obj["project"]= None
+            obj["internship"]=None
+            obj["education"]=None
+            obj["awards"]=None
+            obj["activity"]=None
+            obj["skills"]=None
         res["result"] = obj
-        print(res)
+        print("Line 54",res)
         return res
 
     except:
