@@ -46,6 +46,13 @@ def get_profile():
             obj["public"] = 1
         else:
             obj["public"] = 0
+        if (user.email not in all) and (user.public == False):
+            obj["project"]= ""
+            obj["internship"]=""
+            obj["education"]=""
+            obj["awards"]=""
+            obj["activity"]=""
+            obj["skills"]=""
         res["result"] = obj
         print(res)
         return res
