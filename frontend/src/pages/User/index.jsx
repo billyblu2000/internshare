@@ -66,7 +66,7 @@ export default function User() {
       </div>
 
       <div className='theme-box' style={{ width: '100%', marginTop: '10px', padding: '30px 40px 0px 40px' }}>
-        {staticInfo.public !== 1?<div style={{minHeight:"200px", textAlign:'center', paddingTop:'30px'}}><div><LockOutlined style={{fontSize:'30px'}}/></div><Typography.Title level={5}>You cannot view {staticInfo.name}'s profile becuase he/she has set it to private</Typography.Title></div>:<>
+        {staticInfo.public === 0 && education === null && internship === null && project === null && activity === null && awards === null && skills === null?<div style={{minHeight:"200px", textAlign:'center', paddingTop:'30px'}}><div><LockOutlined style={{fontSize:'30px'}}/></div><Typography.Title level={5}>You cannot view {staticInfo.name}'s profile becuase he/she has set it to private</Typography.Title></div>:<>
         <div style={{ float: 'left', }}>
           <Typography.Title level={4} style={{ marginTop: '40px', marginBottom: '0px' }}>Profile | Resume</Typography.Title>
           <Typography.Title level={2} style={{ marginTop: '0px' }}>{staticInfo.name}</Typography.Title>
