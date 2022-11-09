@@ -137,7 +137,7 @@ The following services are required to install on your machine:
   - CRUD post information
   - CRUD user information
   
-### Iteration V (Apr. 15 - May. 2)
+### Iteration V (Apr. 15 - May 2)
 - Front-end
   - User setting page
 - Back-end
