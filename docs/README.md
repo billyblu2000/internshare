@@ -61,7 +61,8 @@ The following services are required to install on your machine:
 | /api/mypost/reject/application   | `post` |                  application\_id |         1.3.2 |          reject |
 
 ## Documentation
-[API documentation](../frontend/README.md): detailed API desciption
+- [API documentation](../frontend/README.md): detailed API desciption
+- [Project Documentation](project_documentation.pdf): The overall description of the project
 
 ## Project Overview
 ### Register Page
