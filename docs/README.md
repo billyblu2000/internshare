@@ -18,47 +18,6 @@ The following services are required to install on your machine:
 - [React](https://reactjs.org/)
 - [AWS](https://aws.amazon.com/)
 
-## Iteration Goals
-### Iteration I (Feb. 11 - Feb. 20)
-- Determine project topic
-- Preliminary analysis of needed functions
-
-### Iteration II (Feb. 21 - Mar.13)
-- Identify user cases 
-- Plan iteration
-- Set up environment
-- Design data classes
-- Assign tasks
-
-### Iteration III (Mar. 13 - Mar. 27)
-- Design basic page layout
-- Front-end
-  - Register Page
-- Database
-  - Set up databases
-
-### Iteration IV (Mar. 27 - Apr. 14)
-- Front-end
-  - Login page
-  - Homepage
-- Back-end
-  - CRUD post information
-  - CRUD user information
-  
-### Iteration V (Apr. 15 - May. 2)
-- Front-end
-  - User setting page
-- Back-end
-  - CRUD application information
-  - CURD homepage information
-  
-### Iteration VI (May 3 - May 10)
-- Debugging and testing
-- Finish documentation 
-- Prepare for presentation
-
-
-
 ## Design
 ### System Design
 ![system](imgs/bigpic.png)
@@ -149,3 +108,44 @@ The following services are required to install on your machine:
 
 #### Applications
 ![applied](overview/applied.PNG)
+
+## Iteration Goals
+### Iteration I (Feb. 11 - Feb. 20)
+- Determine project topic
+- Preliminary analysis of needed functions
+
+### Iteration II (Feb. 21 - Mar.13)
+- Identify user cases 
+- Plan iteration
+- Set up environment
+- Design data classes
+- Assign tasks
+
+### Iteration III (Mar. 13 - Mar. 27)
+- Design basic page layout
+- Front-end
+  - Register Page
+- Database
+  - Set up databases
+
+### Iteration IV (Mar. 27 - Apr. 14)
+- Front-end
+  - Login page
+  - Homepage
+- Back-end
+  - CRUD post information
+  - CRUD user information
+  
+### Iteration V (Apr. 15 - May. 2)
+- Front-end
+  - User setting page
+- Back-end
+  - CRUD application information
+  - CURD homepage information
+  
+### Iteration VI (May 3 - May 10)
+- Debugging and testing
+- Finish documentation 
+- Prepare for presentation
+
+
