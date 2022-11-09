@@ -54,7 +54,7 @@ The following services are required to install on your machine:
 | /api/profile/changesvisibility   | `get`  |                           status |         1.3.4 |         profile |
 | /api/mypost/get                  | `get`  |                                  |         1.3.2 |          mypost |
 | /api/mypost/create               | `post` |     post\_title, company\_name,… |         1.3.2 |          mypost |
-| /api/mypost/viewall              | `post  |                                  |         1.3.2 |          mypost |
+| /api/mypost/viewall              | `post` |                                  |         1.3.2 |          mypost |
 | /api/mypost/delete               | `post` |                          job\_id |         1.3.2 |          mypost |
 | /api/mypost/update               | `post` |   id, post\_title, company\_name |         1.3.2 |          mypost |
 | /api/mypost/accept/application   | `post` |                  application\_id |         1.3.2 |          accept |
