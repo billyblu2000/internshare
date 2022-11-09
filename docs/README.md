@@ -23,46 +23,46 @@
 
 ## Project Overview
 ### Register Page
-![register page](overview/register1.png)
+![register page](overview/register1.PNG)
 ![register page2](overview/register2.png)
 ![register page3](overview/register3.png)
-![register page4](overview/register4.png)
+![register page4](overview/register4.PNG)
 #### User confirmation email
 ![confirmation](overview/confirmation.jpeg)
 
 ### Login Page
-![login page](overview/login.png)
+![login page](overview/login.PNG)
 
 ### Homepage
 #### Feed
-![homepage](overview/homepage.png)
+![homepage](overview/homepage.PNG)
 #### Search
-![search](overview/search_page.png)
+![search](overview/search_page.PNG)
 
 #### Comment
-![comment](overview/comment.png)
+![comment](overview/comment.PNG)
 #### Job Posts
-![jobpost](overview/job_post.png)
+![jobpost](overview/job_post.PNG)
 #### Apply Jobs
-![apply](overview/apply_job.png)
+![apply](overview/apply_job.PNG)
 
 
 ### Search Page 
-![search page](overview/search_page.png)
+![search page](overview/search_page.PNG)
 
 ### User settings
-![usersetting](overview/user_setting.png)
+![usersetting](overview/user_setting.PNG)
 #### Profile
-![profile](overview/profile.png)
+![profile](overview/profile.PNG)
 
 #### Change Profile status 
-![status](overview/status.png)
+![status](overview/status.PNG)
 
 #### Posts
-![posts](overview/posts.png)
+![posts](overview/posts.PNG)
 
 #### Create Posts
-![create_post](overview/create_post.png)
+![create_post](overview/create_post.PNG)
 
 #### Applications
-![applied](overview/applied.png)
+![applied](overview/applied.PNG)
