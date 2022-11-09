@@ -1,10 +1,10 @@
 from flask import Blueprint,request,session,render_template
 from werkzeug.security import generate_password_hash,check_password_hash
 from ..database.dataclass import *
-from ..OTP import generateOTP
+from backend.static.utils.OTP import generateOTP
 import json
-from ..color_generator import generate_background_color
-from flask_mail import Mail, Message
+from backend.static.utils.color_generator import generate_background_color
+from flask_mail import Message
 from ..__init__ import mail
 
 loginRegister = Blueprint('loginRegister', __name__)

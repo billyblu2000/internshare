@@ -4,8 +4,7 @@ import json
 from flask_mail import Mail, Message
 from ..__init__ import mail
 from io import BytesIO
-from ..stringfy import stringfy
-from ..stringToDate import toDate
+from backend.static.utils.stringfy import stringfy
 
 
 jobpost = Blueprint('jobpost', __name__)

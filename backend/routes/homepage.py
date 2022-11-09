@@ -1,4 +1,4 @@
-from flask import Blueprint,request,session,render_template
+from flask import Blueprint, session
 from ..database.dataclass import *
 import json
 
@@ -7,7 +7,7 @@ import json
 homepage = Blueprint('homepage', __name__)
 
 
-from ..stringfy import stringfy
+from backend.static.utils.stringfy import stringfy
 
 
 @homepage.route("/recommendpost/jobs",methods=["GET","POST"])
