@@ -4,7 +4,7 @@
 
 ## Project Description
 [InternSHare](https://github.com/billyblu2000/internshare) is a web system that serves the purpose of finding jobs or internships for NYUSH students and serves the companies, NYUSH students to find the candidates or successors for the jobs that they want to offer. Students can register or log in if they are already a member of the system. On the home page, customized job positions will be recommended to students. Students can also search for their desired jobs using hashtags, filters or direct search and then apply. Meanwhile, students can post a job post with job requirements, job title and job description included. They can view their posted job’s candidates and choose to accept or reject their applications. Students can also upload their CV or use the default template as their profile page. Furthermore, they can adjust the status of their profile page to determine if it can be viewed by others. Similarly, companies can register or log in if they are already a member of the system. They can post a job post and decide whether to accept a student’s job application. Both company user and NYUSH student user can start a general post, where users can discuss anything related to job hunting, internship experience, course evaluation e.t.c.
-## Team Member and Role
+## Team Members and Role
 - Back-end: [Yumeng Lu](https://github.com/Lu-Yumeng)
 - Front-end: [Billy Yi](https://github.com/billyblu2000)
 - Database and testing: [Daisy Huynh](https://github.com/DaisyHuynh)
